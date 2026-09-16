@@ -1,8 +1,9 @@
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from 'react';
+import { SignInContent } from './SignInContent';
+import { useSignIn } from './useSignIn';
 
-const SIgnInScreen = () => {
-  return <SafeAreaView style={{ flex: 1 }}></SafeAreaView>;
-};
+export default function SignInScreen() {
+  const { state, action } = useSignIn();
 
-export default SIgnInScreen;
+  return <SignInContent state={state} action={action} />;
+}
