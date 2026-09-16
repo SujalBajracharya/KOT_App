@@ -1,0 +1,269 @@
+import {
+  ActivityIndicator,
+  Modal,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { useTheme } from "@/theme/ThemeContext";
+import { createStyles } from "./styles";
+
+export type Orientation = "portrait" | "landscape";
+
+export interface ServerSetupState {
+  // IP octets + port stored as strings for easy TextInput binding
+  ip1: string;
+  ip2: string;
+  ip3: string;
+  ip4: string;
+  port: string;
+  portError: boolean;
+
+  division: string;
+  terminal: string;
+
+  orientation: Orientation;
+
+  addOrderFromTop: boolean;
+  printBillOnEPayment: boolean;
+  enableOldApiSettings: boolean;
+
+  isLoading: boolean;
+  visible: boolean;
+}
+
+export interface ServerSetupAction {
+  setIp1: (v: string) => void;
+  setIp2: (v: string) => void;
+  setIp3: (v: string) => void;
+  setIp4: (v: string) => void;
+  setPort: (v: string) => void;
+
+  setDivision: (v: string) => void;
+  setTerminal: (v: string) => void;
+
+  setOrientation: (v: Orientation) => void;
+
+  setAddOrderFromTop: (fn: (prev: boolean) => boolean) => void;
+  setPrintBillOnEPayment: (fn: (prev: boolean) => boolean) => void;
+  setEnableOldApiSettings: (fn: (prev: boolean) => boolean) => void;
+
+  onClose: () => void;
+  onSaveReconnect: () => void;
+}
+
+export interface ServerSetupProps {
+  state: ServerSetupState;
+  action: ServerSetupAction;
+}
+
+export function ServerSetup({ state, action }: ServerSetupProps) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
+  const checkboxItems: {
+    label: string;
+    value: boolean;
+    onToggle: () => void;
+  }[] = [
+    {
+      label: "Add order from top",
+      value: state.addOrderFromTop,
+      onToggle: () => action.setAddOrderFromTop((prev) => !prev),
+    },
+    {
+      label: "Print bill on e-payment",
+      value: state.printBillOnEPayment,
+      onToggle: () => action.setPrintBillOnEPayment((prev) => !prev),
+    },
+    {
+      label: "Enable old API settings",
+      value: state.enableOldApiSettings,
+      onToggle: () => action.setEnableOldApiSettings((prev) => !prev),
+    },
+  ];
+
+  return (
+    <Modal
+      visible={state.visible}
+      transparent
+      animationType="slide"
+      onRequestClose={action.onClose}
+    >
+      <Pressable style={styles.overlay} onPress={action.onClose}>
+        {/* Stop tap-through on the sheet itself */}
+        <Pressable onPress={() => {}} style={styles.sheet}>
+
+          {/* ── Header ── */}
+          <View style={styles.headerRow}>
+            <Text style={styles.headerTitle}>Server setup</Text>
+            <Pressable
+              style={styles.closeButton}
+              onPress={action.onClose}
+              hitSlop={8}
+              disabled={state.isLoading}
+            >
+              <Text style={styles.closeButtonText}>✕</Text>
+            </Pressable>
+          </View>
+
+          {/* ── SERVER IP · PORT ── */}
+          <Text style={styles.sectionLabel}>SERVER IP · PORT</Text>
+          <View style={styles.ipPortRow}>
+            {(
+              [
+                { value: state.ip1, onChange: action.setIp1 },
+                { value: state.ip2, onChange: action.setIp2 },
+                { value: state.ip3, onChange: action.setIp3 },
+                { value: state.ip4, onChange: action.setIp4 },
+              ] as const
+            ).map((octet, idx) => (
+              <View key={idx} style={styles.ipOctetBox}>
+                <TextInput
+                  style={styles.ipOctetInput}
+                  value={octet.value}
+                  onChangeText={octet.onChange}
+                  keyboardType="number-pad"
+                  maxLength={3}
+                  selectTextOnFocus
+                  editable={!state.isLoading}
+                  placeholderTextColor={theme.colors.textSecondary + "80"}
+                />
+              </View>
+            ))}
+
+            {/* Port — highlighted with error border when invalid */}
+            <View
+              style={[
+                styles.portBox,
+                state.portError && styles.portBoxError,
+              ]}
+            >
+              <TextInput
+                style={styles.portInput}
+                value={state.port}
+                onChangeText={action.setPort}
+                keyboardType="number-pad"
+                maxLength={5}
+                selectTextOnFocus
+                editable={!state.isLoading}
+                placeholderTextColor={theme.colors.textSecondary + "80"}
+              />
+            </View>
+          </View>
+
+          {/* ── DIVISION + TERMINAL ── */}
+          <View style={styles.divTermRow}>
+            <View style={styles.divTermGroup}>
+              <Text style={styles.sectionLabel}>DIVISION</Text>
+              <View style={styles.divTermBox}>
+                <TextInput
+                  style={styles.divTermInput}
+                  value={state.division}
+                  onChangeText={action.setDivision}
+                  keyboardType="number-pad"
+                  maxLength={4}
+                  editable={!state.isLoading}
+                  placeholderTextColor={theme.colors.textSecondary + "80"}
+                />
+              </View>
+            </View>
+
+            <View style={styles.divTermGroup}>
+              <Text style={styles.sectionLabel}>TERMINAL</Text>
+              <View style={styles.divTermBox}>
+                <TextInput
+                  style={styles.divTermInput}
+                  value={state.terminal}
+                  onChangeText={action.setTerminal}
+                  keyboardType="number-pad"
+                  maxLength={4}
+                  editable={!state.isLoading}
+                  placeholderTextColor={theme.colors.textSecondary + "80"}
+                />
+              </View>
+            </View>
+          </View>
+
+          {/* ── Divider ── */}
+          <View style={styles.divider} />
+
+          {/* ── ORIENTATION ── */}
+          <View style={styles.orientationGroup}>
+            <Text style={styles.sectionLabel}>ORIENTATION</Text>
+            <View style={styles.orientationRow}>
+              {(["portrait", "landscape"] as Orientation[]).map((opt) => {
+                const isActive = state.orientation === opt;
+                return (
+                  <Pressable
+                    key={opt}
+                    style={[
+                      styles.orientationOption,
+                      isActive && styles.orientationOptionActive,
+                    ]}
+                    onPress={() => action.setOrientation(opt)}
+                    disabled={state.isLoading}
+                  >
+                    <Text
+                      style={[
+                        styles.orientationOptionText,
+                        isActive && styles.orientationOptionTextActive,
+                      ]}
+                    >
+                      {opt.toUpperCase()}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
+
+          {/* ── Checkboxes ── */}
+          <View style={styles.checkboxesGroup}>
+            {checkboxItems.map((item) => (
+              <Pressable
+                key={item.label}
+                style={styles.checkboxRow}
+                onPress={item.onToggle}
+                disabled={state.isLoading}
+                hitSlop={4}
+              >
+                <View
+                  style={[
+                    styles.checkbox,
+                    item.value
+                      ? styles.checkboxChecked
+                      : styles.checkboxUnchecked,
+                  ]}
+                >
+                  {item.value && (
+                    <Text style={styles.checkmark}>✓</Text>
+                  )}
+                </View>
+                <Text style={styles.checkboxLabel}>{item.label}</Text>
+              </Pressable>
+            ))}
+          </View>
+
+          {/* ── Save & Reconnect ── */}
+          <Pressable
+            style={[
+              styles.saveButton,
+              state.isLoading && styles.saveButtonDisabled,
+            ]}
+            onPress={action.onSaveReconnect}
+            disabled={state.isLoading}
+          >
+            {state.isLoading ? (
+              <ActivityIndicator color={theme.colors.onPrimary} size="small" />
+            ) : (
+              <Text style={styles.saveButtonText}>SAVE & RECONNECT</Text>
+            )}
+          </Pressable>
+
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}

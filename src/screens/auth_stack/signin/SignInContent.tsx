@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/theme/ThemeContext";
 import { SignInContentProps } from "./types";
 import { createStyles } from "./styles";
+import { ServerSetup } from "@/components/signin/ServerSetup";
 
 export function SignInContent({ state, action }: SignInContentProps) {
   const { theme } = useTheme();
@@ -178,12 +179,18 @@ export function SignInContent({ state, action }: SignInContentProps) {
 
             {/* Footer metadata row */}
             <View style={styles.footerRow}>
-              <Pressable hitSlop={6} disabled={state.isLoading}>
+              <Pressable
+                hitSlop={6}
+                disabled={state.isLoading}
+                onPress={() => action.setOpenModal((prev) => !prev)}
+              >
                 <Text style={styles.serverSetupText}>SERVER SETUP</Text>
               </Pressable>
               <Text style={styles.versionText}>v31.0.9753</Text>
             </View>
           </View>
+
+          {state.openModal && <ServerSetup state={state} action={action} />}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

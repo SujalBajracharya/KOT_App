@@ -1,17 +1,22 @@
-import React, { useCallback, useEffect } from 'react';
-import { NavigationContainer, Theme as NavTheme } from '@react-navigation/native';
+import React, { useCallback, useEffect } from "react";
+import {
+  NavigationContainer,
+  Theme as NavTheme,
+} from "@react-navigation/native";
 import {
   Archivo_400Regular,
   Archivo_800ExtraBold,
-} from '@expo-google-fonts/archivo';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View } from 'react-native';
+} from "@expo-google-fonts/archivo";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { View } from "react-native";
 
-import { ThemeProvider, useTheme } from '@/theme/ThemeContext';
-import AppNavigation from '@/navigation';
+import { ThemeProvider, useTheme } from "@/theme/ThemeContext";
+import AppNavigation from "@/navigation";
+import { Provider } from "react-redux";
+import store from "@/store";
 
 // Prevent the splash screen from auto-hiding before fonts are ready.
 SplashScreen.preventAutoHideAsync();
@@ -35,7 +40,7 @@ function AppRoot() {
   // If fonts failed to load, hide splash and fall back to system fonts gracefully.
   useEffect(() => {
     if (fontError) {
-      console.warn('[KOT] Font loading failed:', fontError);
+      console.warn("[KOT] Font loading failed:", fontError);
       SplashScreen.hideAsync();
     }
   }, [fontError]);
@@ -50,7 +55,7 @@ function AppRoot() {
    * (headers, bottom tabs, drawers) automatically match our design system.
    */
   const navTheme: NavTheme = {
-    dark: colorScheme === 'dark',
+    dark: colorScheme === "dark",
     colors: {
       primary: theme.colors.primary,
       background: theme.colors.background,
@@ -61,20 +66,20 @@ function AppRoot() {
     },
     fonts: {
       regular: {
-        fontFamily: 'Archivo_400Regular',
-        fontWeight: '400',
+        fontFamily: "Archivo_400Regular",
+        fontWeight: "400",
       },
       medium: {
-        fontFamily: 'Archivo_400Regular',
-        fontWeight: '500',
+        fontFamily: "Archivo_400Regular",
+        fontWeight: "500",
       },
       bold: {
-        fontFamily: 'Archivo_800ExtraBold',
-        fontWeight: '800',
+        fontFamily: "Archivo_800ExtraBold",
+        fontWeight: "800",
       },
       heavy: {
-        fontFamily: 'Archivo_800ExtraBold',
-        fontWeight: '800',
+        fontFamily: "Archivo_800ExtraBold",
+        fontWeight: "800",
       },
     },
   };
@@ -86,9 +91,7 @@ function AppRoot() {
           style={{ flex: 1, backgroundColor: theme.colors.background }}
           onLayout={onLayoutRootView}
         >
-          <StatusBar
-            style={colorScheme === 'dark' ? 'light' : 'dark'}
-          />
+          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
           <AppNavigation />
         </View>
       </SafeAreaProvider>
@@ -112,8 +115,10 @@ function AppRoot() {
  */
 export default function App() {
   return (
-    <ThemeProvider>
-      <AppRoot />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <AppRoot />
+      </ThemeProvider>
+    </Provider>
   );
 }
