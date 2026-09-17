@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, ActivityIndicator } from 'react-native';
 
 import { useTheme } from '@/theme/ThemeContext';
-import AuthStack from './auth_stack';
+// import AuthStack from './auth_stack';
 import RootStack from './root_stack';
 
 const Stack = createNativeStackNavigator();
@@ -38,7 +38,7 @@ const AppNavigation = () => {
     <Stack.Navigator
       screenOptions={{ animation: 'slide_from_right', headerShown: false }}
     >
-      <Stack.Screen name="auth_stack" component={AuthStack} />
+      {/* <Stack.Screen name="auth_stack" component={AuthStack} /> */}
       <Stack.Screen name="root_stack" component={RootStack} />
     </Stack.Navigator>
   );

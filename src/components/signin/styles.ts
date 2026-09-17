@@ -73,7 +73,7 @@ export const createStyles = (theme: AppTheme) =>
       justifyContent: "center",
       alignItems: "center",
     },
-    ipOctetBoxError: {
+    BoxFocused: {
       borderColor: theme.colors.primary,
     },
     portBox: {

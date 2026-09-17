@@ -1,15 +1,14 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignInScreen from '../../screens/auth_stack/signin/SignInScreen';
+// import React from 'react';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import SignInScreen from '../../screens/auth_stack/signin/SignInScreen';
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
 
-const AuthStackNavigator = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="signin" component={SignInScreen} />
-    </Stack.Navigator>
-  );
-};
+// const AuthStackNavigator = () => {
+//   return (
+//     <Stack.Navigator screenOptions={{ headerShown: false }}>
+//     </Stack.Navigator>
+//   );
+// };
 
-export default AuthStackNavigator;
+// export default AuthStackNavigator;

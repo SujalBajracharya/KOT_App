@@ -17,13 +17,14 @@ import { ThemeProvider, useTheme } from "@/theme/ThemeContext";
 import AppNavigation from "@/navigation";
 import { Provider } from "react-redux";
 import store from "@/store";
+import { useOrientation } from "@/hooks/useOrientation";
+import { navigationRef } from "@/utils/app_navigation";
 
 // Prevent the splash screen from auto-hiding before fonts are ready.
 SplashScreen.preventAutoHideAsync();
 
-// ── Inner root (needs ThemeProvider context) ──────────────────────────────────
-
 function AppRoot() {
+  useOrientation();
   const { theme, colorScheme } = useTheme();
 
   const [fontsLoaded, fontError] = useFonts({
@@ -85,7 +86,7 @@ function AppRoot() {
   };
 
   return (
-    <NavigationContainer theme={navTheme}>
+    <NavigationContainer ref={navigationRef} theme={navTheme}>
       <SafeAreaProvider>
         <View
           style={{ flex: 1, backgroundColor: theme.colors.background }}

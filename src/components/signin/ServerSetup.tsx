@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { createStyles } from "./styles";
+import { useState } from "react";
 
 export type Orientation = "portrait" | "landscape";
 
@@ -57,8 +58,18 @@ export interface ServerSetupProps {
   state: ServerSetupState;
   action: ServerSetupAction;
 }
+type FocusedField =
+  | "ip1"
+  | "ip2"
+  | "ip3"
+  | "ip4"
+  | "port"
+  | "division"
+  | "terminal"
+  | null;
 
 export function ServerSetup({ state, action }: ServerSetupProps) {
+  const [focusedField, setFocusedField] = useState<FocusedField>(null);
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -94,7 +105,6 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
       <Pressable style={styles.overlay} onPress={action.onClose}>
         {/* Stop tap-through on the sheet itself */}
         <Pressable onPress={() => {}} style={styles.sheet}>
-
           {/* ── Header ── */}
           <View style={styles.headerRow}>
             <Text style={styles.headerTitle}>Server setup</Text>
@@ -113,13 +123,19 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
           <View style={styles.ipPortRow}>
             {(
               [
-                { value: state.ip1, onChange: action.setIp1 },
-                { value: state.ip2, onChange: action.setIp2 },
-                { value: state.ip3, onChange: action.setIp3 },
-                { value: state.ip4, onChange: action.setIp4 },
+                { name: "ip1", value: state.ip1, onChange: action.setIp1 },
+                { name: "ip2", value: state.ip2, onChange: action.setIp2 },
+                { name: "ip3", value: state.ip3, onChange: action.setIp3 },
+                { name: "ip4", value: state.ip4, onChange: action.setIp4 },
               ] as const
-            ).map((octet, idx) => (
-              <View key={idx} style={styles.ipOctetBox}>
+            ).map((octet) => (
+              <View
+                key={octet.name}
+                style={[
+                  styles.ipOctetBox,
+                  focusedField === octet.name && styles.BoxFocused,
+                ]}
+              >
                 <TextInput
                   style={styles.ipOctetInput}
                   value={octet.value}
@@ -128,6 +144,8 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
                   maxLength={3}
                   selectTextOnFocus
                   editable={!state.isLoading}
+                  onFocus={() => setFocusedField(octet.name)}
+                  onBlur={() => setFocusedField(null)}
                   placeholderTextColor={theme.colors.textSecondary + "80"}
                 />
               </View>
@@ -138,6 +156,7 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
               style={[
                 styles.portBox,
                 state.portError && styles.portBoxError,
+                focusedField === "port" && styles.BoxFocused,
               ]}
             >
               <TextInput
@@ -148,6 +167,8 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
                 maxLength={5}
                 selectTextOnFocus
                 editable={!state.isLoading}
+                onFocus={() => setFocusedField("port")}
+                onBlur={() => setFocusedField(null)}
                 placeholderTextColor={theme.colors.textSecondary + "80"}
               />
             </View>
@@ -157,7 +178,12 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
           <View style={styles.divTermRow}>
             <View style={styles.divTermGroup}>
               <Text style={styles.sectionLabel}>DIVISION</Text>
-              <View style={styles.divTermBox}>
+              <View
+                style={[
+                  styles.divTermBox,
+                  focusedField === "division" && styles.BoxFocused,
+                ]}
+              >
                 <TextInput
                   style={styles.divTermInput}
                   value={state.division}
@@ -165,6 +191,8 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
                   keyboardType="number-pad"
                   maxLength={4}
                   editable={!state.isLoading}
+                  onFocus={() => setFocusedField("division")}
+                  onBlur={() => setFocusedField(null)}
                   placeholderTextColor={theme.colors.textSecondary + "80"}
                 />
               </View>
@@ -172,7 +200,12 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
 
             <View style={styles.divTermGroup}>
               <Text style={styles.sectionLabel}>TERMINAL</Text>
-              <View style={styles.divTermBox}>
+              <View
+                style={[
+                  styles.divTermBox,
+                  focusedField === "terminal" && styles.BoxFocused,
+                ]}
+              >
                 <TextInput
                   style={styles.divTermInput}
                   value={state.terminal}
@@ -180,6 +213,8 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
                   keyboardType="number-pad"
                   maxLength={4}
                   editable={!state.isLoading}
+                  onFocus={() => setFocusedField("terminal")}
+                  onBlur={() => setFocusedField(null)}
                   placeholderTextColor={theme.colors.textSecondary + "80"}
                 />
               </View>
@@ -237,9 +272,7 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
                       : styles.checkboxUnchecked,
                   ]}
                 >
-                  {item.value && (
-                    <Text style={styles.checkmark}>✓</Text>
-                  )}
+                  {item.value && <Text style={styles.checkmark}>✓</Text>}
                 </View>
                 <Text style={styles.checkboxLabel}>{item.label}</Text>
               </Pressable>
@@ -261,7 +294,6 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
               <Text style={styles.saveButtonText}>SAVE & RECONNECT</Text>
             )}
           </Pressable>
-
         </Pressable>
       </Pressable>
     </Modal>
