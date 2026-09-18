@@ -50,7 +50,7 @@ export interface OutletSummary {
 
 export type MenuCategory =
   | "STARTER"
-  | "MAIN"
+  | "MAIN COURSE"
   | "DESSERT"
   | "BEVERAGE"
   | "SPECIAL";

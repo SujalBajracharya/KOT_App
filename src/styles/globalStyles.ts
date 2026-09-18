@@ -27,7 +27,8 @@ export const createGlobalStyles = (theme: AppTheme) => {
     header: {
       flexDirection: 'row',
       alignItems: 'center',
-      height: 52,
+      height: 70,
+      marginTop: 10,
       paddingHorizontal: 16,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.border,
@@ -51,11 +52,22 @@ export const createGlobalStyles = (theme: AppTheme) => {
       letterSpacing: 0.5,
     },
     iconButton: {
-      width: 38,
-      height: 38,
-      borderRadius: 6,
+      width: 50,
+      height: 50,
       alignItems: 'center',
       justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+      position: "relative",
+    },
+    button: {
+      paddingVertical: 12,
+      paddingHorizontal: 18,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: theme.colors.textSecondary,
+      position: "relative",
     },
     card: {
       backgroundColor: theme.colors.surface,
@@ -121,6 +133,42 @@ export const createGlobalStyles = (theme: AppTheme) => {
       fontSize: 10,
       fontWeight: '700',
       letterSpacing: 0.5,
+    },
+    Tabs: {
+      maxHeight: 48,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.border,
+      backgroundColor: theme.colors.surface,
+    },
+    Tab: {
+      paddingHorizontal: 16,
+      paddingVertical: 14,
+      backgroundColor: theme.colors.background,
+      borderLeftWidth: 1,
+      borderColor: theme.colors.surface,
+    },
+    TabActive: {
+      backgroundColor: theme.colors.text,
+    },
+    TabText: {
+      fontSize: 12,
+      fontWeight: "700",
+      color: theme.colors.text,
+    },
+    TabTextActive: {
+      color: theme.colors.background,
+    },
+    tableCell: {
+      flex: 1,
+      borderWidth: 1,
+      padding: 12,
+      minHeight: 130,
+      borderColor: theme.colors.border
+    },
+    tableCellHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
     },
   });
 };

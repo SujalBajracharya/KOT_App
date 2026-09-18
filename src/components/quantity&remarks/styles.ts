@@ -7,7 +7,7 @@ export const createStyles = (theme: AppTheme) =>
     overlay: {
       flex: 1,
       justifyContent: "flex-end",
-      backgroundColor: "rgba(45,43,43,0.5)",
+      backgroundColor: "rgba(0,0,0,0.4)",
     },
     sheet: {
       backgroundColor: theme.colors.background,

@@ -1,11 +1,11 @@
-import React from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronRight, Bell, LogOut } from 'lucide-react-native';
-import { useTheme } from '@/theme/ThemeContext';
-import { AppHeader, IconButton } from '@/components/common';
-import { HomeContentProps } from './types';
-import { createStyles } from './styles';
+import React from "react";
+import { Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ChevronRight, Bell, LogOut } from "lucide-react-native";
+import { useTheme } from "@/theme/ThemeContext";
+import { AppHeader, IconButton } from "@/components/common";
+import { HomeContentProps } from "./types";
+import { createStyles } from "./styles";
 
 export function HomeContent({ state, action }: HomeContentProps) {
   const { theme } = useTheme();
@@ -13,29 +13,29 @@ export function HomeContent({ state, action }: HomeContentProps) {
 
   const menuItems = [
     {
-      index: '01',
-      title: 'Take order',
-      subtitle: 'Pick a table, build a KOT',
+      index: "01",
+      title: "Take order",
+      subtitle: "Pick a table, build a KOT",
       onPress: action.onTakeOrder,
       rightContent: <ChevronRight size={22} color={theme.colors.text} />,
     },
     {
-      index: '02',
-      title: 'KOT memo',
-      subtitle: 'Kitchen notes & reprints',
+      index: "02",
+      title: "KOT memo",
+      subtitle: "Kitchen notes & reprints",
       onPress: action.onKOTMemo,
       rightContent: <ChevronRight size={22} color={theme.colors.text} />,
     },
     {
-      index: '03',
-      title: 'Split & transfer',
-      subtitle: 'Move items between tables',
+      index: "03",
+      title: "Split & transfer",
+      subtitle: "Move items between tables",
       onPress: action.onSplitTransfer,
       rightContent: <ChevronRight size={22} color={theme.colors.text} />,
     },
     {
-      index: '04',
-      title: 'Sync menu',
+      index: "04",
+      title: "Sync menu",
       subtitle: `Last synced ${state.lastSynced} · ${state.menuItemCount} items`,
       onPress: action.onSyncMenu,
       rightContent: <Text style={styles.menuSyncAction}>SYNC</Text>,
@@ -43,7 +43,10 @@ export function HomeContent({ state, action }: HomeContentProps) {
   ];
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom', 'left', 'right']}>
+    <SafeAreaView
+      style={styles.safeArea}
+      edges={["top", "bottom", "left", "right"]}
+    >
       <View style={styles.container}>
         {/* ── Header ── */}
         <AppHeader
@@ -52,7 +55,10 @@ export function HomeContent({ state, action }: HomeContentProps) {
           showBack={false}
           rightComponent={
             <>
-              <IconButton style={styles.iconButtonRelative} onPress={action.onNotifications}>
+              <IconButton
+                style={styles.iconButtonRelative}
+                onPress={action.onNotifications}
+              >
                 <Bell size={20} color={theme.colors.text} />
                 {state.notificationCount > 0 && (
                   <View style={styles.notificationBadge}>
@@ -62,7 +68,10 @@ export function HomeContent({ state, action }: HomeContentProps) {
                   </View>
                 )}
               </IconButton>
-              <IconButton onPress={action.onLogOut}>
+              <IconButton
+                style={styles.iconButtonRelative}
+                onPress={action.onLogOut}
+              >
                 <LogOut size={20} color={theme.colors.text} />
               </IconButton>
             </>
@@ -73,11 +82,11 @@ export function HomeContent({ state, action }: HomeContentProps) {
         <View style={styles.statsRow}>
           <View style={styles.statCell}>
             <Text style={styles.statValue}>{state.tablesOpen}</Text>
-            <Text style={styles.statLabel}>TABLES OPEN</Text>
+            <Text style={styles.statLabel}>{"TABLES\nOPEN"}</Text>
           </View>
           <View style={[styles.statCell, styles.statCellBordered]}>
             <Text style={styles.statValue}>{state.billsWaiting}</Text>
-            <Text style={styles.statLabelAlert}>BILLS WAITING</Text>
+            <Text style={styles.statLabelAlert}>{'BILLS\nWAITING'}</Text>
           </View>
           <View style={[styles.statCell, styles.statCellBordered]}>
             <Text style={styles.statValue}>{state.revenueToday}</Text>
@@ -86,7 +95,10 @@ export function HomeContent({ state, action }: HomeContentProps) {
         </View>
 
         {/* ── Menu list ── */}
-        <ScrollView style={styles.menuList} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.menuList}
+          showsVerticalScrollIndicator={false}
+        >
           {menuItems.map((item) => (
             <Pressable
               key={item.index}
@@ -108,7 +120,10 @@ export function HomeContent({ state, action }: HomeContentProps) {
 
         {/* ── Footer ── */}
         <View style={styles.footer}>
-          <Pressable style={styles.settlementButton} onPress={action.onSettlement}>
+          <Pressable
+            style={styles.settlementButton}
+            onPress={action.onSettlement}
+          >
             <Text style={styles.settlementButtonText}>SETTLEMENT</Text>
             <Text style={styles.settlementButtonHint}>end session</Text>
           </Pressable>

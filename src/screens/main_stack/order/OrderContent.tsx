@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   FlatList,
   Pressable,
@@ -6,20 +6,26 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, ArrowRight } from 'lucide-react-native';
-import { useTheme } from '@/theme/ThemeContext';
-import { AppHeader } from '@/components/common';
-import { OrderContentProps } from './types';
-import { createStyles } from './styles';
+  Image,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Search, ArrowRight } from "lucide-react-native";
+import { useTheme } from "@/theme/ThemeContext";
+import { AppHeader } from "@/components/common";
+import { Button } from "@/components/common/Button";
+import { QuantitySheet } from "@/components/quantity&remarks/Quantity&Remarks";
+import { OrderContentProps } from "./types";
+import { createStyles } from "./styles";
 
 export function OrderContent({ state, action }: OrderContentProps) {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom', 'left', 'right']}>
+    <SafeAreaView
+      style={styles.safeArea}
+      edges={["top", "bottom", "left", "right"]}
+    >
       <View style={styles.container}>
         {/* ── Header ── */}
         <AppHeader
@@ -27,9 +33,14 @@ export function OrderContent({ state, action }: OrderContentProps) {
           subtitle={state.tableMeta}
           onBack={action.onBack}
           rightComponent={
-            <Pressable style={styles.newKOTButton} onPress={action.onNewKOT}>
-              <Text style={styles.newKOTText}>NEW KOT</Text>
-            </Pressable>
+            // <Pressable style={styles.newKOTButton} onPress={action.onNewKOT}>
+            //   <Text style={styles.newKOTText}>NEW KOT</Text>
+            // </Pressable>
+            <>
+              <Button onPress={action.onNewKOT}>
+                <Text style={styles.newKOTText}>NEW KOT</Text>
+              </Button>
+            </>
           }
         />
 
@@ -41,14 +52,14 @@ export function OrderContent({ state, action }: OrderContentProps) {
             value={state.searchQuery}
             onChangeText={action.setSearchQuery}
             placeholder="Search item or code"
-            placeholderTextColor={theme.colors.textSecondary + '80'}
+            placeholderTextColor={theme.colors.textSecondary + "80"}
             autoCapitalize="none"
             autoCorrect={false}
           />
-          <Pressable onPress={() => action.setSearchMode('name')} hitSlop={6}>
+          <Pressable onPress={() => action.setSearchMode("name")} hitSlop={6}>
             <Text
               style={
-                state.searchMode === 'name'
+                state.searchMode === "name"
                   ? styles.searchToggleActive
                   : styles.searchToggleInactive
               }
@@ -57,10 +68,10 @@ export function OrderContent({ state, action }: OrderContentProps) {
             </Text>
           </Pressable>
           <View style={styles.searchDivider} />
-          <Pressable onPress={() => action.setSearchMode('code')} hitSlop={6}>
+          <Pressable onPress={() => action.setSearchMode("code")} hitSlop={6}>
             <Text
               style={
-                state.searchMode === 'code'
+                state.searchMode === "code"
                   ? styles.searchToggleActive
                   : styles.searchToggleInactive
               }
@@ -74,20 +85,17 @@ export function OrderContent({ state, action }: OrderContentProps) {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={styles.categoryTabs}
-          contentContainerStyle={{ flexDirection: 'row' }}
+          style={styles.Tabs}
+          contentContainerStyle={{ flexDirection: "row" }}
         >
           {state.categories.map((cat) => (
             <Pressable
               key={cat.id}
-              style={[styles.categoryTab, cat.active && styles.categoryTabActive]}
+              style={[styles.Tab, cat.active && styles.TabActive]}
               onPress={() => action.onCategorySelect(cat.id)}
             >
               <Text
-                style={[
-                  styles.categoryTabText,
-                  cat.active && styles.categoryTabTextActive,
-                ]}
+                style={[styles.TabText, cat.active && styles.TabTextActive]}
               >
                 {cat.name.toUpperCase()}
               </Text>
@@ -101,7 +109,6 @@ export function OrderContent({ state, action }: OrderContentProps) {
           keyExtractor={(item) => item.id}
           numColumns={2}
           style={styles.itemGrid}
-          contentContainerStyle={styles.itemGridContent}
           renderItem={({ item }) => (
             <Pressable
               style={[styles.itemCell, item.inCart && styles.itemCellInCart]}
@@ -113,12 +120,16 @@ export function OrderContent({ state, action }: OrderContentProps) {
                     styles.itemName,
                     item.inCart && styles.itemNameInCart,
                   ]}
-                  numberOfLines={2}
+                  numberOfLines={3}
                 >
                   {item.name}
                 </Text>
                 <View style={styles.itemThumb}>
-                  <Text style={styles.itemThumbCode}>{item.thumbCode}</Text>
+                  <Image
+                    source={require("../../../../assets/placeholderimage.jpg")}
+                    style={styles.itemThumbImage}
+                    resizeMode="cover"
+                  />
                 </View>
               </View>
               <View>
@@ -156,7 +167,14 @@ export function OrderContent({ state, action }: OrderContentProps) {
             </Pressable>
           </View>
         )}
+
+        {/* ── Quantity & Remarks Modal ── */}
+        <QuantitySheet
+          state={state.quantitySheet}
+          action={action.quantitySheet}
+        />
       </View>
     </SafeAreaView>
   );
 }
+

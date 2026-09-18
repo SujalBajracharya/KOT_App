@@ -31,7 +31,7 @@ export function useTables(): UseTablesReturn {
         label: 'FREE',
       };
       const meta = table.occupancy
-        ? `${table.occupancy}/${table.capacity} pax · ${table.elapsedMinutes ?? 0} m`
+        ? `${table.occupancy}/${table.capacity} pax · KOT ${table.kotCount} ·  ${table.elapsedMinutes ?? 0} m`
         : `${table.capacity} pax`;
 
       return {

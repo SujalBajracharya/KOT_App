@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { AppTheme } from '@/theme/ThemeContext';
-import { createGlobalStyles } from '@/styles/globalStyles';
+import { StyleSheet } from "react-native";
+import { AppTheme } from "@/theme/ThemeContext";
+import { createGlobalStyles } from "@/styles/globalStyles";
 
 export const createStyles = (theme: AppTheme) => {
   const global = createGlobalStyles(theme);
@@ -15,13 +15,13 @@ export const createStyles = (theme: AppTheme) => {
     },
     newKOTText: {
       fontSize: 11,
-      fontWeight: '800',
-      color: theme.colors.onPrimary,
+      fontWeight: "800",
+      color: theme.colors.text,
       letterSpacing: 0.5,
     },
     searchBar: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       paddingHorizontal: 12,
       paddingVertical: 8,
       borderBottomWidth: 1,
@@ -37,12 +37,12 @@ export const createStyles = (theme: AppTheme) => {
     },
     searchToggleActive: {
       fontSize: 11,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.primary,
     },
     searchToggleInactive: {
       fontSize: 11,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.textSecondary,
     },
     searchDivider: {
@@ -60,14 +60,14 @@ export const createStyles = (theme: AppTheme) => {
       paddingHorizontal: 14,
       paddingVertical: 12,
       borderBottomWidth: 2,
-      borderBottomColor: 'transparent',
+      borderBottomColor: "transparent",
     },
     categoryTabActive: {
       borderBottomColor: theme.colors.primary,
     },
     categoryTabText: {
       fontSize: 11,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.textSecondary,
     },
     categoryTabTextActive: {
@@ -81,29 +81,27 @@ export const createStyles = (theme: AppTheme) => {
     },
     itemCell: {
       flex: 1,
-      margin: 6,
-      borderRadius: 8,
       borderWidth: 1,
       borderColor: theme.colors.border,
       backgroundColor: theme.colors.surface,
       padding: 12,
-      minHeight: 110,
-      justifyContent: 'space-between',
+      minHeight: 130,
+      justifyContent: "space-between",
     },
     itemCellInCart: {
       borderColor: theme.colors.primary,
-      backgroundColor: theme.colors.primary + '10',
+      backgroundColor: theme.colors.primary + "10",
     },
     itemTop: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
       gap: 8,
     },
     itemName: {
       flex: 1,
       fontSize: 14,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.text,
     },
     itemNameInCart: {
@@ -116,16 +114,22 @@ export const createStyles = (theme: AppTheme) => {
       borderRadius: 4,
       paddingHorizontal: 6,
       paddingVertical: 2,
+      height: 100,
+      width: 100,
+    },
+    itemThumbImage: {
+      width: "100%",
+      height: "100%",
     },
     itemThumbCode: {
       fontSize: 10,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.textSecondary,
     },
     itemBottom: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-end',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-end",
       marginTop: 8,
     },
     itemUnit: {
@@ -133,8 +137,8 @@ export const createStyles = (theme: AppTheme) => {
       color: theme.colors.textSecondary,
     },
     itemPrice: {
-      fontSize: 13,
-      fontWeight: '800',
+      fontSize: 16,
+      fontWeight: "800",
       color: theme.colors.text,
     },
     itemPriceInCart: {
@@ -142,46 +146,46 @@ export const createStyles = (theme: AppTheme) => {
     },
     itemBadge: {
       fontSize: 9,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.primary,
       marginTop: 4,
     },
     cartBar: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      backgroundColor: theme.colors.surface,
-      paddingHorizontal: 16,
-      paddingVertical: 12,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      backgroundColor: theme.colors.text,
+      paddingHorizontal: 18,
+      paddingVertical: 16,
       borderTopWidth: 1,
       borderTopColor: theme.colors.border,
+      height: 90,
     },
     cartInfo: {
       flex: 1,
     },
     cartLabel: {
-      fontSize: 10,
-      fontWeight: '800',
+      fontSize: 12,
+      fontWeight: "800",
       color: theme.colors.textSecondary,
     },
     cartSummary: {
-      fontSize: 14,
-      fontWeight: '800',
-      color: theme.colors.text,
+      fontSize: 18,
+      fontWeight: "800",
+      color: theme.colors.background,
       marginTop: 2,
     },
     reviewButton: {
       backgroundColor: theme.colors.primary,
-      borderRadius: 6,
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 16,
-      height: 40,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 20,
+      height: "100%",
       gap: 8,
     },
     reviewButtonText: {
       fontSize: 13,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.onPrimary,
       letterSpacing: 0.5,
     },

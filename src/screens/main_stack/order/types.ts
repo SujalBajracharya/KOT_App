@@ -1,3 +1,8 @@
+import {
+  QuantitySheetAction,
+  QuantitySheetState,
+} from "@/components/quantity&remarks/Quantity&Remarks";
+
 export interface Category {
   id: string;
   name: string;
@@ -23,6 +28,7 @@ export interface OrderState {
   items: MenuItem[];
   cartItemCount: number;
   cartTotal: string;
+  quantitySheet: QuantitySheetState;
 }
 
 export interface OrderAction {
@@ -33,6 +39,7 @@ export interface OrderAction {
   onCategorySelect: (id: string) => void;
   onItemPress: (id: string) => void;
   onReviewKOT: () => void;
+  quantitySheet: QuantitySheetAction;
 }
 
 export interface UseOrderReturn {
@@ -44,3 +51,4 @@ export interface OrderContentProps {
   state: OrderState;
   action: OrderAction;
 }
+

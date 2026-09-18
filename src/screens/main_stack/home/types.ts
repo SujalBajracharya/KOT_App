@@ -1,7 +1,7 @@
 export interface HomeState {
   userName: string;
   terminal: string;
-  shift: string;
+  shift: number;
   tablesOpen: number;
   billsWaiting: number;
   revenueToday: string;

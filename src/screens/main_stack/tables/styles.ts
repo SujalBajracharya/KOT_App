@@ -1,54 +1,30 @@
-import { StyleSheet } from 'react-native';
-import { AppTheme } from '@/theme/ThemeContext';
-import { createGlobalStyles } from '@/styles/globalStyles';
+import { StyleSheet } from "react-native";
+import { AppTheme } from "@/theme/ThemeContext";
+import { createGlobalStyles } from "@/styles/globalStyles";
 
 export const createStyles = (theme: AppTheme) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
     ...global,
-    floorTabs: {
-      maxHeight: 48,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.border,
-      backgroundColor: theme.colors.surface,
-    },
-    floorTab: {
-      paddingHorizontal: 16,
-      paddingVertical: 14,
-      borderBottomWidth: 2,
-      borderBottomColor: 'transparent',
-    },
-    floorTabActive: {
-      borderBottomColor: theme.colors.primary,
-    },
-    floorTabText: {
-      fontSize: 12,
-      fontWeight: '700',
-      color: theme.colors.textSecondary,
-    },
-    floorTabTextActive: {
-      color: theme.colors.primary,
-    },
     legend: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-around',
-      paddingVertical: 10,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-around",
+      paddingVertical: 12,
       paddingHorizontal: 16,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.border,
       backgroundColor: theme.colors.background,
     },
     legendItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       gap: 6,
     },
     legendSwatch: {
       width: 12,
       height: 12,
-      borderRadius: 3,
     },
     legendSwatchFree: {
       backgroundColor: theme.colors.statusFree,
@@ -64,26 +40,19 @@ export const createStyles = (theme: AppTheme) => {
     },
     legendText: {
       fontSize: 10,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.textSecondary,
     },
     tableGrid: {
       flex: 1,
     },
-    tableGridContent: {
-      padding: 12,
-      gap: 12,
-    },
     tableCell: {
       flex: 1,
-      margin: 6,
-      borderRadius: 8,
       borderWidth: 1,
       padding: 12,
-      minHeight: 110,
-      justifyContent: 'space-between',
+      minHeight: 130,
     },
-    tableCellFree: {
+    tableCellHeld: {
       backgroundColor: theme.colors.surface,
       borderColor: theme.colors.border,
     },
@@ -95,14 +64,18 @@ export const createStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.statusBill,
       borderColor: theme.colors.statusBill,
     },
+    tableCellFree: {
+      backgroundColor: theme.colors.statusFree,
+      borderColor: theme.colors.statusFree,
+    },
     tableCellHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
     },
     tableNumber: {
       fontSize: 18,
-      fontWeight: '800',
+      fontWeight: "800",
     },
     tableNumberLight: {
       color: theme.colors.text,
@@ -112,7 +85,7 @@ export const createStyles = (theme: AppTheme) => {
     },
     tableStatus: {
       fontSize: 10,
-      fontWeight: '800',
+      fontWeight: "800",
     },
     tableStatusLight: {
       color: theme.colors.textSecondary,
@@ -123,8 +96,8 @@ export const createStyles = (theme: AppTheme) => {
     },
     tableMeta: {
       fontSize: 11,
-      fontWeight: '600',
-      marginTop: 4,
+      fontWeight: "600",
+      marginTop: 40,
     },
     tableMetaLight: {
       color: theme.colors.textSecondary,
@@ -135,7 +108,7 @@ export const createStyles = (theme: AppTheme) => {
     },
     tableAmount: {
       fontSize: 14,
-      fontWeight: '800',
+      fontWeight: "800",
       marginTop: 8,
     },
     tableAmountLight: {

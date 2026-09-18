@@ -1,11 +1,11 @@
-import React from 'react';
-import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, RefreshCw } from 'lucide-react-native';
-import { useTheme } from '@/theme/ThemeContext';
-import { AppHeader, IconButton } from '@/components/common';
-import { TableStatus, TablesContentProps } from './types';
-import { createStyles } from './styles';
+import React from "react";
+import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Search, RefreshCw } from "lucide-react-native";
+import { useTheme } from "@/theme/ThemeContext";
+import { AppHeader, IconButton } from "@/components/common";
+import { TableStatus, TablesContentProps } from "./types";
+import { createStyles } from "./styles";
 
 export function TablesContent({ state, action }: TablesContentProps) {
   const { theme } = useTheme();
@@ -13,21 +13,26 @@ export function TablesContent({ state, action }: TablesContentProps) {
 
   function cellStyles(status: TableStatus) {
     switch (status) {
-      case 'occupied':
+      case "occupied":
         return styles.tableCellOccupied;
-      case 'bill':
+      case "bill":
         return styles.tableCellBill;
+      case "held":
+        return styles.tableCellHeld;
       default:
         return styles.tableCellFree;
     }
   }
 
   function isDark(status: TableStatus) {
-    return status === 'occupied' || status === 'bill';
+    return status === "occupied" || status === "bill";
   }
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom', 'left', 'right']}>
+    <SafeAreaView
+      style={styles.safeArea}
+      edges={["top", "bottom", "left", "right"]}
+    >
       <View style={styles.container}>
         {/* ── Stack Header Component ── */}
         <AppHeader
@@ -49,19 +54,19 @@ export function TablesContent({ state, action }: TablesContentProps) {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={styles.floorTabs}
-          contentContainerStyle={{ flexDirection: 'row' }}
+          style={styles.Tabs}
+          contentContainerStyle={{ flexDirection: "row" }}
         >
           {state.floors.map((floor) => (
             <Pressable
               key={floor.id}
-              style={[styles.floorTab, floor.active && styles.floorTabActive]}
+              style={[styles.Tab, floor.active && styles.TabActive]}
               onPress={() => action.onFloorSelect(floor.id)}
             >
               <Text
                 style={[
-                  styles.floorTabText,
-                  floor.active && styles.floorTabTextActive,
+                  styles.TabText,
+                  floor.active && styles.TabTextActive,
                 ]}
               >
                 {floor.name.toUpperCase()}
@@ -73,19 +78,19 @@ export function TablesContent({ state, action }: TablesContentProps) {
         {/* ── Legend ── */}
         <View style={styles.legend}>
           {[
-            { label: 'FREE', variant: 'free' },
-            { label: 'OCCUPIED', variant: 'occupied' },
-            { label: 'BILL', variant: 'bill' },
-            { label: 'HELD', variant: 'held' },
+            { label: "FREE", variant: "free" },
+            { label: "OCCUPIED", variant: "occupied" },
+            { label: "BILL", variant: "bill" },
+            { label: "HELD", variant: "held" },
           ].map(({ label, variant }) => (
             <View key={label} style={styles.legendItem}>
               <View
                 style={[
                   styles.legendSwatch,
-                  variant === 'free' && styles.legendSwatchFree,
-                  variant === 'occupied' && styles.legendSwatchOccupied,
-                  variant === 'bill' && styles.legendSwatchBill,
-                  variant === 'held' && styles.legendSwatchHeld,
+                  variant === "free" && styles.legendSwatchFree,
+                  variant === "occupied" && styles.legendSwatchOccupied,
+                  variant === "bill" && styles.legendSwatchBill,
+                  variant === "held" && styles.legendSwatchHeld,
                 ]}
               />
               <Text style={styles.legendText}>{label}</Text>
@@ -99,7 +104,6 @@ export function TablesContent({ state, action }: TablesContentProps) {
           keyExtractor={(t) => t.id}
           numColumns={2}
           style={styles.tableGrid}
-          contentContainerStyle={styles.tableGridContent}
           renderItem={({ item: t }) => {
             const dark = isDark(t.status);
             return (
