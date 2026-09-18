@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
-import navigation from '@/utils/app_navigation';
-import { mockMenuResponse } from '@/data/mock/menu';
-import { MenuItem, UseOrderReturn } from './types';
+import { useCallback, useMemo, useState } from "react";
+import navigation from "@/utils/app_navigation";
+import { mockMenuResponse } from "@/data/mock/menu";
+import { MenuItem, UseOrderReturn } from "./types";
 
 export interface CartItem {
   id: string;
@@ -16,9 +16,9 @@ export interface CartItem {
 }
 
 export function useOrder(): UseOrderReturn {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchMode, setSearchMode] = useState<'name' | 'code'>('name');
-  const [activeCategory, setActiveCategory] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchMode, setSearchMode] = useState<"name" | "code">("name");
+  const [activeCategory, setActiveCategory] = useState("ALL");
 
   // Cart state
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -34,12 +34,12 @@ export function useOrder(): UseOrderReturn {
   } | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [activeRemarks, setActiveRemarks] = useState<string[]>([]);
-  const [customNote, setCustomNote] = useState<string>('');
+  const [customNote, setCustomNote] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const categories = useMemo(() => {
     return [
-      { id: 'ALL', name: 'All', active: activeCategory === 'ALL' },
+      { id: "ALL", name: "All", active: activeCategory === "ALL" },
       ...Array.from(
         new Set(mockMenuResponse.result.map((item) => item.category)),
       ).map((category) => ({
@@ -55,12 +55,12 @@ export function useOrder(): UseOrderReturn {
 
     return mockMenuResponse.result
       .filter(
-        (item) => activeCategory === 'ALL' || item.category === activeCategory,
+        (item) => activeCategory === "ALL" || item.category === activeCategory,
       )
       .filter((item) => {
         if (!query) return true;
         const searchableValue =
-          searchMode === 'name' ? item.itemName : item.itemCode;
+          searchMode === "name" ? item.itemName : item.itemCode;
         return searchableValue.toLowerCase().includes(query);
       })
       .map((item) => {
@@ -68,10 +68,10 @@ export function useOrder(): UseOrderReturn {
         return {
           id: item.itemId,
           name: item.itemName,
-          unit: 'plate',
+          unit: "plate",
           price: `NPR ${item.unitPrice.toLocaleString()}`,
           thumbCode: item.itemCode,
-          badge: item.isAvailable ? undefined : 'UNAVAILABLE',
+          badge: item.isAvailable ? undefined : "UNAVAILABLE",
           inCart: Boolean(cartItem && cartItem.quantity > 0),
         };
       });
@@ -107,7 +107,7 @@ export function useOrder(): UseOrderReturn {
         name: menuItem.itemName,
         category: menuItem.category,
         code: menuItem.itemCode,
-        unit: 'plate',
+        unit: "plate",
         unitPrice: menuItem.unitPrice,
       });
 
@@ -118,7 +118,7 @@ export function useOrder(): UseOrderReturn {
       } else {
         setQuantity(1);
         setActiveRemarks([]);
-        setCustomNote('');
+        setCustomNote("");
       }
 
       setIsModalVisible(true);
@@ -126,7 +126,9 @@ export function useOrder(): UseOrderReturn {
     [cartItems],
   );
 
-  const onReviewKOT = useCallback(() => {}, []);
+  const onReviewKOT = useCallback(() => {
+    navigation.navigate("review");
+  }, []);
 
   // Quantity modal actions
   const onCloseModal = useCallback(() => {
@@ -199,12 +201,12 @@ export function useOrder(): UseOrderReturn {
 
   const itemMeta = selectedItem
     ? `${selectedItem.category} · CODE ${selectedItem.code} · ${selectedItem.unit}`
-    : '';
+    : "";
 
   return {
     state: {
-      tableLabel: 'New order',
-      tableMeta: 'Select a table to begin',
+      tableLabel: "New order",
+      tableMeta: "Select a table to begin",
       searchQuery,
       searchMode,
       categories,
@@ -213,7 +215,7 @@ export function useOrder(): UseOrderReturn {
       cartTotal,
       quantitySheet: {
         visible: isModalVisible,
-        itemName: selectedItem?.name || '',
+        itemName: selectedItem?.name || "",
         itemMeta,
         quantity,
         activeRemarks,
@@ -242,4 +244,3 @@ export function useOrder(): UseOrderReturn {
     },
   };
 }
-

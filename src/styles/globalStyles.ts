@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { AppTheme } from '@/theme/ThemeContext';
+import { StyleSheet } from "react-native";
+import { AppTheme } from "@/theme/ThemeContext";
 
 export const createGlobalStyles = (theme: AppTheme) => {
   return StyleSheet.create({
@@ -12,21 +12,21 @@ export const createGlobalStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.background,
     },
     flexRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
     },
     flexBetween: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
     },
     flexCenter: {
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     },
     header: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       height: 70,
       marginTop: 10,
       paddingHorizontal: 16,
@@ -36,38 +36,44 @@ export const createGlobalStyles = (theme: AppTheme) => {
     },
     headerTitleContainer: {
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: "center",
     },
     headerTitle: {
       fontSize: 18,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.text,
       letterSpacing: -0.3,
     },
     headerSubtitle: {
       fontSize: 11,
-      fontWeight: '600',
+      fontWeight: "600",
       color: theme.colors.textSecondary,
-      textTransform: 'uppercase',
+      textTransform: "uppercase",
       letterSpacing: 0.5,
     },
     iconButton: {
       width: 50,
       height: 50,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
       borderWidth: 1,
-      borderColor: theme.colors.border,
+      borderColor: theme.colors.textSecondary,
       position: "relative",
     },
     button: {
       paddingVertical: 12,
       paddingHorizontal: 18,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
       borderWidth: 1,
       borderColor: theme.colors.textSecondary,
       position: "relative",
+    },
+    ButtonText: {
+      fontSize: 11,
+      fontWeight: "800",
+      color: theme.colors.text,
+      letterSpacing: 0.5,
     },
     card: {
       backgroundColor: theme.colors.surface,
@@ -84,31 +90,31 @@ export const createGlobalStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.primary,
       height: 46,
       borderRadius: 6,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
       paddingHorizontal: 16,
     },
     buttonPrimaryText: {
       color: theme.colors.onPrimary,
       fontSize: 14,
-      fontWeight: '700',
+      fontWeight: "700",
       letterSpacing: 0.5,
     },
     buttonSecondary: {
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent",
       height: 42,
       borderRadius: 6,
       borderWidth: 1,
       borderColor: theme.colors.borderStrong,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
       paddingHorizontal: 12,
     },
     buttonSecondaryText: {
       color: theme.colors.text,
       fontSize: 13,
-      fontWeight: '600',
+      fontWeight: "600",
     },
     inputWrapper: {
       borderWidth: 1,
@@ -117,7 +123,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.surface,
       paddingHorizontal: 12,
       height: 44,
-      justifyContent: 'center',
+      justifyContent: "center",
     },
     input: {
       fontSize: 14,
@@ -127,11 +133,11 @@ export const createGlobalStyles = (theme: AppTheme) => {
       paddingHorizontal: 6,
       paddingVertical: 2,
       borderRadius: 4,
-      alignSelf: 'flex-start',
+      alignSelf: "flex-start",
     },
     badgeText: {
       fontSize: 10,
-      fontWeight: '700',
+      fontWeight: "700",
       letterSpacing: 0.5,
     },
     Tabs: {
@@ -141,6 +147,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.surface,
     },
     Tab: {
+      flex: 1,
       paddingHorizontal: 16,
       paddingVertical: 14,
       backgroundColor: theme.colors.background,
@@ -163,7 +170,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
       borderWidth: 1,
       padding: 12,
       minHeight: 130,
-      borderColor: theme.colors.border
+      borderColor: theme.colors.border,
     },
     tableCellHeader: {
       flexDirection: "row",

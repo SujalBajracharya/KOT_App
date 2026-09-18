@@ -3,7 +3,8 @@ import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, RefreshCw } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
-import { AppHeader, IconButton } from "@/components/common";
+import { AppHeader } from "@/components/common/Header";
+import { IconButton } from "@/components/common/IconButton";
 import { TableStatus, TablesContentProps } from "./types";
 import { createStyles } from "./styles";
 

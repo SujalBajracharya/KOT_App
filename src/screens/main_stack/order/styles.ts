@@ -13,12 +13,6 @@ export const createStyles = (theme: AppTheme) => {
       paddingVertical: 6,
       borderRadius: 4,
     },
-    newKOTText: {
-      fontSize: 11,
-      fontWeight: "800",
-      color: theme.colors.text,
-      letterSpacing: 0.5,
-    },
     searchBar: {
       flexDirection: "row",
       alignItems: "center",

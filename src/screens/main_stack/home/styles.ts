@@ -32,10 +32,10 @@ export const createStyles = (theme: AppTheme) => {
     },
     statsRow: {
       flexDirection: "row",
-      borderTopWidth: 2,
+      // borderTopWidth: 2,
       borderBottomWidth: 2,
       borderBottomColor: theme.colors.borderStrong,
-      borderTopColor: theme.colors.borderStrong,
+      // borderTopColor: theme.colors.borderStrong,
       backgroundColor: theme.colors.surface,
     },
     statCell: {

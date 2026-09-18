@@ -3,9 +3,10 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronRight, Bell, LogOut } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
-import { AppHeader, IconButton } from "@/components/common";
+import { AppHeader } from "@/components/common/Header";
 import { HomeContentProps } from "./types";
 import { createStyles } from "./styles";
+import { IconButton } from "@/components/common/IconButton";
 
 export function HomeContent({ state, action }: HomeContentProps) {
   const { theme } = useTheme();
@@ -86,7 +87,7 @@ export function HomeContent({ state, action }: HomeContentProps) {
           </View>
           <View style={[styles.statCell, styles.statCellBordered]}>
             <Text style={styles.statValue}>{state.billsWaiting}</Text>
-            <Text style={styles.statLabelAlert}>{'BILLS\nWAITING'}</Text>
+            <Text style={styles.statLabelAlert}>{"BILLS\nWAITING"}</Text>
           </View>
           <View style={[styles.statCell, styles.statCellBordered]}>
             <Text style={styles.statValue}>{state.revenueToday}</Text>

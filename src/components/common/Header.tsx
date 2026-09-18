@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
-import { ArrowLeft } from 'lucide-react-native';
-import { useTheme } from '@/theme/ThemeContext';
-import { createGlobalStyles } from '@/styles/globalStyles';
-import { IconButton } from './IconButton';
+import React from "react";
+import { StyleProp, Text, View, ViewStyle } from "react-native";
+import { ArrowLeft } from "lucide-react-native";
+import { useTheme } from "@/theme/ThemeContext";
+import { createGlobalStyles } from "@/styles/globalStyles";
+import { IconButton } from "./IconButton";
 
 export interface AppHeaderProps {
   title: string;
@@ -28,7 +28,13 @@ export function AppHeader({
   const globalStyles = createGlobalStyles(theme);
 
   return (
-    <View style={[globalStyles.header, style]}>
+    <View
+      style={[
+        globalStyles.header,
+        { borderBottomColor: theme.colors.borderStrong, borderBottomWidth: 2 },
+        style,
+      ]}
+    >
       {leftComponent ? (
         leftComponent
       ) : showBack && onBack ? (
@@ -37,7 +43,12 @@ export function AppHeader({
         </IconButton>
       ) : null}
 
-      <View style={[globalStyles.headerTitleContainer, { marginLeft: (showBack && onBack) || leftComponent ? 8 : 0 }]}>
+      <View
+        style={[
+          globalStyles.headerTitleContainer,
+          { marginLeft: (showBack && onBack) || leftComponent ? 8 : 0 },
+        ]}
+      >
         <Text style={globalStyles.headerTitle} numberOfLines={1}>
           {title}
         </Text>
@@ -49,7 +60,7 @@ export function AppHeader({
       </View>
 
       {rightComponent ? (
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
           {rightComponent}
         </View>
       ) : null}

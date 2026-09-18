@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, ArrowRight } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
-import { AppHeader } from "@/components/common";
+import { AppHeader } from "@/components/common/Header";
 import { Button } from "@/components/common/Button";
 import { QuantitySheet } from "@/components/quantity&remarks/Quantity&Remarks";
 import { OrderContentProps } from "./types";
@@ -38,7 +38,7 @@ export function OrderContent({ state, action }: OrderContentProps) {
             // </Pressable>
             <>
               <Button onPress={action.onNewKOT}>
-                <Text style={styles.newKOTText}>NEW KOT</Text>
+                <Text style={styles.ButtonText}>NEW KOT</Text>
               </Button>
             </>
           }
