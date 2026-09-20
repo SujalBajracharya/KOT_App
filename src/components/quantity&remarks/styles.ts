@@ -187,7 +187,7 @@ export const createStyles = (theme: AppTheme) =>
     // ── Action buttons ──
     actionRow: {
       flexDirection: "row",
-      gap: spacing.xs,
+      gap: spacing.sm,
       paddingHorizontal: spacing.lg,
       paddingBottom: spacing.xl,
     },

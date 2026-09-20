@@ -6,6 +6,7 @@ import TableScreen from '@/screens/main_stack/tables/TableScreen';
 import OrderScreen from '@/screens/main_stack/order/OrderScreen';
 import ReviewKOTScreen from '@/screens/main_stack/kot_review/ReviewKOTScreen';
 import NotificationsScreen from '@/screens/main_stack/notifications/NotificationsScreen';
+import SplitTransferScreen from '@/screens/main_stack/splittransfer/SplitTransferScreen';
 
 export type RootStackParamList = {
   signin: undefined;
@@ -14,6 +15,7 @@ export type RootStackParamList = {
   table: undefined;
   review: undefined;
   notification: undefined;
+  splittransfer: undefined; 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,6 +29,7 @@ const RootStackNavigator = () => {
       <Stack.Screen name="order" component={OrderScreen} />
       <Stack.Screen name="review" component={ReviewKOTScreen} />
       <Stack.Screen name="notification" component={NotificationsScreen} />
+      <Stack.Screen name="splittransfer" component={SplitTransferScreen} />
     </Stack.Navigator>
   );
 };

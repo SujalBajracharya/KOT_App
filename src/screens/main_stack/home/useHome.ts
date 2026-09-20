@@ -21,7 +21,7 @@ export function useHome(): UseHomeReturn {
     navigation.navigate('order');
   }, []);
 
-  const onSplitTransfer = useCallback(() => {}, []);
+  const onSplitTransfer = useCallback(() => {navigation.navigate('splittransfer')}, []);
   const onSyncMenu = useCallback(() => {}, []);
   const onSettlement = useCallback(() => {}, []);
   const onNotifications = useCallback(() => {navigation.navigate('notification')}, []);
