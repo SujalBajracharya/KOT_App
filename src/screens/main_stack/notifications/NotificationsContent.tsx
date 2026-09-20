@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { Alert, FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/theme/ThemeContext";
 import { AppHeader } from "@/components/common/Header";
@@ -14,6 +14,24 @@ export function NotificationsContent({
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
+  const handleClearAll = () => {
+    Alert.alert(
+      "Clear Notifications",
+      "Are you sure you want to clear all notifications?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          style: "destructive",
+          onPress: action.onClearAll,
+        },
+      ],
+    );
+  };
+
   return (
     <SafeAreaView
       style={styles.safeArea}
@@ -25,7 +43,7 @@ export function NotificationsContent({
           title="Requests"
           onBack={action.onBack}
           rightComponent={
-            <Pressable onPress={action.onClearAll} hitSlop={8}>
+            <Pressable onPress={handleClearAll} hitSlop={8}>
               <Text style={styles.clearAllText}>CLEAR ALL</Text>
             </Pressable>
           }

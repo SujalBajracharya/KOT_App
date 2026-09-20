@@ -18,7 +18,7 @@ export function useHome(): UseHomeReturn {
   }, []);
 
   const onKOTMemo = useCallback(() => {
-    navigation.navigate('order');
+    navigation.navigate('memo');
   }, []);
 
   const onSplitTransfer = useCallback(() => {navigation.navigate('splittransfer')}, []);

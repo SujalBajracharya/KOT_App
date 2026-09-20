@@ -7,6 +7,7 @@ import OrderScreen from '@/screens/main_stack/order/OrderScreen';
 import ReviewKOTScreen from '@/screens/main_stack/kot_review/ReviewKOTScreen';
 import NotificationsScreen from '@/screens/main_stack/notifications/NotificationsScreen';
 import SplitTransferScreen from '@/screens/main_stack/splittransfer/SplitTransferScreen';
+import { KOTMemoScreen } from '@/screens/main_stack/kot_memo/KotMemoScreen';
 
 export type RootStackParamList = {
   signin: undefined;
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   review: undefined;
   notification: undefined;
   splittransfer: undefined; 
+  memo: undefined; 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,6 +32,7 @@ const RootStackNavigator = () => {
       <Stack.Screen name="review" component={ReviewKOTScreen} />
       <Stack.Screen name="notification" component={NotificationsScreen} />
       <Stack.Screen name="splittransfer" component={SplitTransferScreen} />
+      <Stack.Screen name="memo" component={KOTMemoScreen} />
     </Stack.Navigator>
   );
 };

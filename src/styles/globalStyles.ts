@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
+import { typography } from "@/constants";
 
 export const createGlobalStyles = (theme: AppTheme) => {
   return StyleSheet.create({
@@ -39,10 +40,9 @@ export const createGlobalStyles = (theme: AppTheme) => {
       justifyContent: "center",
     },
     headerTitle: {
-      fontSize: 18,
-      fontWeight: "700",
+      ...typography.display,
+      fontSize: 22,
       color: theme.colors.text,
-      letterSpacing: -0.3,
     },
     headerSubtitle: {
       fontSize: 11,
@@ -185,6 +185,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
       fontSize: 12,
       fontWeight: "700",
       color: theme.colors.text,
+      textAlign: "center",
     },
     TabTextActive: {
       color: theme.colors.background,
