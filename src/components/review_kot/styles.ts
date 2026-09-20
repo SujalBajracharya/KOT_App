@@ -26,7 +26,7 @@ export const createStyles = (theme: AppTheme) =>
       flex: 1,
     },
     lineName: {
-      fontSize: 17,
+      fontSize: 16,
       fontWeight: "700",
       color: theme.colors.text,
     },

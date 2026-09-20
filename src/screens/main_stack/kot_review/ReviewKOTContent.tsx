@@ -1,14 +1,13 @@
 import React from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Minus, Plus, ArrowRight } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { AppHeader } from "@/components/common/Header";
 import { ReviewKOTContentProps } from "./types";
 import { createStyles } from "./styles";
 import { Button } from "@/components/common/Button";
 import { LineItem } from "@/components/review_kot/LineItem";
-import { Divider } from "@/components/common/Divider";
+import { OrderFooter } from "@/components/common/OrderFooter";
 
 export function ReviewKOTContent({ state, action }: ReviewKOTContentProps) {
   const { theme } = useTheme();
@@ -55,39 +54,14 @@ export function ReviewKOTContent({ state, action }: ReviewKOTContentProps) {
         />
 
         {/* ── Footer ── */}
-        <View style={styles.footer}>
-          <View style={styles.totalsBlock}>
-            <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Gross</Text>
-              <Text style={styles.totalValue}>{state.gross}</Text>
-            </View>
-            <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Discount 5%</Text>
-              <Text style={styles.totalValue}>{state.discount}</Text>
-            </View>
-            <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>VAT 13%</Text>
-              <Text style={styles.totalValue}>{state.vat}</Text>
-            </View>
-            <Divider />
-            <View style={styles.grandTotalRow}>
-              <Text style={styles.grandTotalLabel}>TOTAL</Text>
-              <Text style={styles.grandTotalValue}>{state.total}</Text>
-            </View>
-          </View>
-          <View style={styles.actionRow}>
-            <Pressable style={styles.billButton} onPress={action.onBill}>
-              <Text style={styles.billButtonText}>BILL</Text>
-            </Pressable>
-            <Pressable
-              style={styles.sendButton}
-              onPress={action.onSendToKitchen}
-            >
-              <Text style={styles.sendButtonText}>SEND TO KITCHEN</Text>
-              <ArrowRight size={20} color={theme.colors.onPrimary} />
-            </Pressable>
-          </View>
-        </View>
+        <OrderFooter
+          gross={state.gross}
+          discount={state.discount}
+          vat={state.vat}
+          total={state.total}
+          onBill={action.onBill}
+          onSendToKitchen={action.onSendToKitchen}
+        />
       </View>
     </SafeAreaView>
   );

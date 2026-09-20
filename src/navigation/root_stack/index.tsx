@@ -5,6 +5,7 @@ import HomeScreen from '@/screens/main_stack/home/HomeScreen';
 import TableScreen from '@/screens/main_stack/tables/TableScreen';
 import OrderScreen from '@/screens/main_stack/order/OrderScreen';
 import ReviewKOTScreen from '@/screens/main_stack/kot_review/ReviewKOTScreen';
+import NotificationsScreen from '@/screens/main_stack/notifications/NotificationsScreen';
 
 export type RootStackParamList = {
   signin: undefined;
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   order: undefined;
   table: undefined;
   review: undefined;
+  notification: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -24,6 +26,7 @@ const RootStackNavigator = () => {
       <Stack.Screen name="table" component={TableScreen} />
       <Stack.Screen name="order" component={OrderScreen} />
       <Stack.Screen name="review" component={ReviewKOTScreen} />
+      <Stack.Screen name="notification" component={NotificationsScreen} />
     </Stack.Navigator>
   );
 };

@@ -24,7 +24,7 @@ export function useHome(): UseHomeReturn {
   const onSplitTransfer = useCallback(() => {}, []);
   const onSyncMenu = useCallback(() => {}, []);
   const onSettlement = useCallback(() => {}, []);
-  const onNotifications = useCallback(() => {}, []);
+  const onNotifications = useCallback(() => {navigation.navigate('notification')}, []);
   const onLogOut = useCallback(() => {}, []);
 
   return {
