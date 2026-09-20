@@ -7,7 +7,9 @@ import OrderScreen from '@/screens/main_stack/order/OrderScreen';
 import ReviewKOTScreen from '@/screens/main_stack/kot_review/ReviewKOTScreen';
 import NotificationsScreen from '@/screens/main_stack/notifications/NotificationsScreen';
 import SplitTransferScreen from '@/screens/main_stack/splittransfer/SplitTransferScreen';
-import { KOTMemoScreen } from '@/screens/main_stack/kot_memo/KotMemoScreen';
+import KOTMemoScreen from '@/screens/main_stack/kot_memo/KotMemoScreen';
+import BillPaymentScreen from '@/screens/main_stack/bill&payment/BillPaymentScreen';
+import SettlementScreen from '@/screens/main_stack/settlement/SettlementScreen';
 
 export type RootStackParamList = {
   signin: undefined;
@@ -18,6 +20,8 @@ export type RootStackParamList = {
   notification: undefined;
   splittransfer: undefined; 
   memo: undefined; 
+  bill: undefined; 
+  settlement: undefined; 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -33,6 +37,8 @@ const RootStackNavigator = () => {
       <Stack.Screen name="notification" component={NotificationsScreen} />
       <Stack.Screen name="splittransfer" component={SplitTransferScreen} />
       <Stack.Screen name="memo" component={KOTMemoScreen} />
+      <Stack.Screen name="bill" component={BillPaymentScreen} />
+      <Stack.Screen name="settlement" component={SettlementScreen} />
     </Stack.Navigator>
   );
 };

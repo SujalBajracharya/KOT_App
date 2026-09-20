@@ -23,7 +23,7 @@ export function useHome(): UseHomeReturn {
 
   const onSplitTransfer = useCallback(() => {navigation.navigate('splittransfer')}, []);
   const onSyncMenu = useCallback(() => {}, []);
-  const onSettlement = useCallback(() => {}, []);
+  const onSettlement = useCallback(() => {navigation.navigate('settlement')}, []);
   const onNotifications = useCallback(() => {navigation.navigate('notification')}, []);
   const onLogOut = useCallback(() => {}, []);
 

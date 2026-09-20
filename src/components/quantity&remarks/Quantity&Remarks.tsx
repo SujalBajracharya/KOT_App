@@ -125,8 +125,8 @@ export function QuantitySheet({ state, action }: QuantitySheetProps) {
             <Pressable style={styles.cancelButton} onPress={action.onCancel}>
               <Text style={styles.cancelButtonText}>CANCEL</Text>
             </Pressable>
-            <Pressable style={styles.addButton} onPress={action.onAddToKOT}>
-              <Text style={styles.addButtonText}>ADD TO KOT</Text>
+            <Pressable style={styles.primaryButton} onPress={action.onAddToKOT}>
+              <Text style={styles.primaryButtonText}>ADD TO KOT</Text>
               <Check size={20} color={theme.colors.onPrimary} />
             </Pressable>
           </View>

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
-import { typography } from "@/constants";
+import { spacing, typography } from "@/constants";
 
 export const createGlobalStyles = (theme: AppTheme) => {
   return StyleSheet.create({
@@ -69,7 +69,30 @@ export const createGlobalStyles = (theme: AppTheme) => {
       borderColor: theme.colors.textSecondary,
       position: "relative",
     },
-     primaryButton: {
+    primaryButton: {
+      flex: 1.6,
+      height: 64,
+      backgroundColor: theme.colors.primary,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: spacing.lg,
+    },
+    primaryButtonText: {
+      ...typography.subheading,
+      fontSize: 14,
+      letterSpacing: 0.6,
+      color: theme.colors.onPrimary,
+    },
+    field: {
+      minHeight: 46,
+      paddingHorizontal: 12,
+      borderWidth: 1,
+      borderColor: theme.colors.textSecondary,
+      color: theme.colors.text,
+      textAlignVertical: "center",
+    },
+    primaryButtonutton: {
       paddingVertical: 12,
       paddingHorizontal: 18,
       alignItems: "center",
@@ -162,6 +185,12 @@ export const createGlobalStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.background,
       borderLeftWidth: 1,
       borderColor: theme.colors.surface,
+    },
+    DiscountTab: {
+      flex: 1,
+      paddingHorizontal: 16,
+      paddingVertical: 14,
+      backgroundColor: theme.colors.background,
     },
     SplitTabs: {
       height: 48,

@@ -206,7 +206,7 @@ export const createStyles = (theme: AppTheme) =>
       letterSpacing: 0.6,
       color: theme.colors.text,
     },
-    addButton: {
+    primaryButton: {
       flex: 1.6,
       height: 64,
       backgroundColor: theme.colors.primary,
@@ -215,7 +215,7 @@ export const createStyles = (theme: AppTheme) =>
       justifyContent: "space-between",
       paddingHorizontal: spacing.lg,
     },
-    addButtonText: {
+    primaryButtonText: {
       ...typography.subheading,
       fontSize: 14,
       letterSpacing: 0.6,

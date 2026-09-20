@@ -102,7 +102,7 @@ export function SplitTransferContent({
             <Text style={styles.footerSummaryText}>{state.movingSummary}</Text>
             <Text style={styles.footerSummaryText}>{state.stayingSummary}</Text>
           </View>
-          <PrimaryButton
+          <Button
             onPress={action.onConfirm}
             style={{
               height: 64,
@@ -111,12 +111,11 @@ export function SplitTransferContent({
               justifyContent: "space-between",
               alignItems: "center",
               gap: 8,
-              borderColor: "theme.colors.primary",
             }}
           >
             <Text style={styles.confirmButtonText}>CONFIRM SPLIT</Text>
             <Check size={20} color={theme.colors.onPrimary} />
-          </PrimaryButton>
+          </Button>
         </View>
       </View>
     </SafeAreaView>

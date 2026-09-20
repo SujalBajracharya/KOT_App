@@ -15,7 +15,7 @@ async function reprintKOT(memoId: string): Promise<void> {
   console.log("[KOTMemo] reprint requested for", memoId);
 }
 
-export function KOTMemoScreen() {
+export default function KOTMemoScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const route = useRoute<KOTMemoRoute>();
 
