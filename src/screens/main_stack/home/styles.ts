@@ -2,11 +2,21 @@ import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
 
-export const createStyles = (theme: AppTheme) => {
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
     ...global,
+    body: {
+      flex: 1,
+      flexDirection: isLandscape ? "row" : "column",
+    },
+    sidePanel: {
+      width: isLandscape ? 230 : "100%",
+      borderRightWidth: isLandscape ? 1 : 0,
+      borderRightColor: isLandscape ? theme.colors.border : undefined,
+      justifyContent: isLandscape ? "space-between" : undefined,
+    },
     iconButtonRelative: {
       borderWidth: 1,
       borderColor: theme.colors.border,
@@ -31,11 +41,11 @@ export const createStyles = (theme: AppTheme) => {
       fontWeight: "800",
     },
     statsRow: {
-      flexDirection: "row",
-      // borderTopWidth: 2,
-      borderBottomWidth: 2,
+      flexDirection: isLandscape ? "column" : "row",
+      flex: isLandscape ? 1 : undefined,
+      maxHeight: isLandscape ? undefined : 80,
+      borderBottomWidth: 1,
       borderBottomColor: theme.colors.borderStrong,
-      // borderTopColor: theme.colors.borderStrong,
       backgroundColor: theme.colors.surface,
     },
     statCell: {

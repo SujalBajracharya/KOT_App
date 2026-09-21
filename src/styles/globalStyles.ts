@@ -61,6 +61,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
       position: "relative",
     },
     button: {
+      flex: 1,
       paddingVertical: 12,
       paddingHorizontal: 18,
       alignItems: "center",
@@ -70,7 +71,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
       position: "relative",
     },
     primaryButton: {
-      flex: 1.6,
+      flex: 1,
       height: 64,
       backgroundColor: theme.colors.primary,
       flexDirection: "row",
@@ -220,11 +221,13 @@ export const createGlobalStyles = (theme: AppTheme) => {
       color: theme.colors.background,
     },
     tableCell: {
+      aspectRatio: 1.2/1,
+      marginBottom: 2,
       flex: 1,
       borderWidth: 1,
       padding: 12,
-      minHeight: 130,
-      borderColor: theme.colors.border,
+      justifyContent: "space-between",
+      // maxHeight: isLandscape ? 100 : 130,
     },
     tableCellHeader: {
       flexDirection: "row",

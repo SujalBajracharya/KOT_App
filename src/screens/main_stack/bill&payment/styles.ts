@@ -3,11 +3,23 @@ import { AppTheme } from '@/theme/ThemeContext';
 import { createGlobalStyles } from '@/styles/globalStyles';
 import { fonts } from '@/constants';
 
-export const createStyles = (theme: AppTheme) => {
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
     ...global,
+    contentRow: {
+      flex: 1,
+      flexDirection: isLandscape ? "row" : "column",
+    },
+    mainContent: {
+      flex: 1,
+    },
+    sidePanel: {
+      width: isLandscape ? 230 : "100%",
+      borderLeftWidth: isLandscape ? 1 : 0,
+      borderLeftColor: isLandscape ? theme.colors.border : undefined,
+    },
     lineItem: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -53,7 +65,7 @@ export const createStyles = (theme: AppTheme) => {
     discountRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 8,
+      gap: 10,
     },
     discountLabel: {
       fontSize: 11,
@@ -91,12 +103,13 @@ export const createStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.primary,
     },
     discountTypeBtnText: {
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: '800',
       color: theme.colors.textSecondary,
+      textAlign: "center",
     },
     discountTypeBtnTextActive: {
-      color: theme.colors.onPrimary,
+      color: theme.colors.text,
     },
     discountSpacer: {
       flex: 1,
@@ -154,6 +167,7 @@ export const createStyles = (theme: AppTheme) => {
       color: theme.colors.textSecondary,
     },
     paymentMethodRow: {
+      gap: 10,
       justifyContent: "space-between",
       flexDirection: 'row',
     },

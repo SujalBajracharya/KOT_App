@@ -8,6 +8,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ArrowLeft } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
+import { useOrientation } from "@/hooks/useOrientation";
 import { createStyles } from "./styles";
 import { KOTMemoContentProps, MemoFilter, MemoItem, MemoStatus } from "./types";
 import { AppHeader } from "@/components/common/Header";
@@ -87,7 +88,8 @@ function MemoCard({
 // ─────────────────────────────────────────────
 export function KOTMemoContent({ state, action }: KOTMemoContentProps) {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const { isLandscape } = useOrientation();
+  const styles = createStyles(theme, isLandscape);
 
   return (
     <SafeAreaView
@@ -133,8 +135,10 @@ export function KOTMemoContent({ state, action }: KOTMemoContentProps) {
           </View>
         ) : (
           <FlatList
+            key={isLandscape ? "landscape" : "portrait"}
             data={state.memos}
             keyExtractor={(m) => m.id}
+            numColumns={isLandscape ? 2 : 1}
             style={styles.memoList}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
 
-export const createStyles = (theme: AppTheme) => {
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
@@ -74,12 +74,14 @@ export const createStyles = (theme: AppTheme) => {
       padding: 10,
     },
     itemCell: {
+      flexBasis: isLandscape ? "32.9%" : "49.7%",
+      maxWidth: isLandscape ? "32.9%" : "49.7%",
       flex: 1,
       borderWidth: 1,
-      borderColor: theme.colors.border,
-      backgroundColor: theme.colors.surface,
+      borderColor: theme.colors.surface,
+      backgroundColor: theme.colors.border,
       padding: 12,
-      minHeight: 130,
+      minHeight: isLandscape ? 180 : 130,
       justifyContent: "space-between",
     },
     itemCellInCart: {
@@ -93,7 +95,7 @@ export const createStyles = (theme: AppTheme) => {
       gap: 8,
     },
     itemName: {
-      flex: 1,
+      width: isLandscape ? 75 : 55,
       fontSize: 14,
       fontWeight: "700",
       color: theme.colors.text,
@@ -102,14 +104,14 @@ export const createStyles = (theme: AppTheme) => {
       color: theme.colors.primary,
     },
     itemThumb: {
+      flex: 1,
+      aspectRatio: 1,
       backgroundColor: theme.colors.background,
       borderWidth: 1,
       borderColor: theme.colors.border,
       borderRadius: 4,
       paddingHorizontal: 6,
       paddingVertical: 2,
-      height: 100,
-      width: 100,
     },
     itemThumbImage: {
       width: "100%",
@@ -150,10 +152,10 @@ export const createStyles = (theme: AppTheme) => {
       justifyContent: "space-between",
       backgroundColor: theme.colors.text,
       paddingHorizontal: 18,
-      paddingVertical: 16,
+      paddingVertical: isLandscape ? 8 : 16,
       borderTopWidth: 1,
       borderTopColor: theme.colors.border,
-      height: 90,
+      height: isLandscape ? 60 : 90,
     },
     cartInfo: {
       flex: 1,

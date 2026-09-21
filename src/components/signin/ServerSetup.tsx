@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Modal,
   Pressable,
+  ScrollView,
   Text,
   TextInput,
   View,
@@ -9,8 +10,6 @@ import {
 import { useTheme } from "@/theme/ThemeContext";
 import { createStyles } from "./styles";
 import { useState } from "react";
-
-export type Orientation = "portrait" | "landscape";
 
 export interface ServerSetupState {
   // IP octets + port stored as strings for easy TextInput binding
@@ -23,8 +22,6 @@ export interface ServerSetupState {
 
   division: string;
   terminal: string;
-
-  orientation: Orientation;
 
   addOrderFromTop: boolean;
   printBillOnEPayment: boolean;
@@ -43,8 +40,6 @@ export interface ServerSetupAction {
 
   setDivision: (v: string) => void;
   setTerminal: (v: string) => void;
-
-  setOrientation: (v: Orientation) => void;
 
   setAddOrderFromTop: (fn: (prev: boolean) => boolean) => void;
   setPrintBillOnEPayment: (fn: (prev: boolean) => boolean) => void;
@@ -105,195 +100,170 @@ export function ServerSetup({ state, action }: ServerSetupProps) {
       <Pressable style={styles.overlay} onPress={action.onClose}>
         {/* Stop tap-through on the sheet itself */}
         <Pressable onPress={() => {}} style={styles.sheet}>
-          {/* ── Header ── */}
-          <View style={styles.headerRow}>
-            <Text style={styles.headerTitle}>Server setup</Text>
-            <Pressable
-              style={styles.closeButton}
-              onPress={action.onClose}
-              hitSlop={8}
-              disabled={state.isLoading}
-            >
-              <Text style={styles.closeButtonText}>✕</Text>
-            </Pressable>
-          </View>
-
-          {/* ── SERVER IP · PORT ── */}
-          <Text style={styles.sectionLabel}>SERVER IP · PORT</Text>
-          <View style={styles.ipPortRow}>
-            {(
-              [
-                { name: "ip1", value: state.ip1, onChange: action.setIp1 },
-                { name: "ip2", value: state.ip2, onChange: action.setIp2 },
-                { name: "ip3", value: state.ip3, onChange: action.setIp3 },
-                { name: "ip4", value: state.ip4, onChange: action.setIp4 },
-              ] as const
-            ).map((octet) => (
-              <View
-                key={octet.name}
-                style={[
-                  styles.ipOctetBox,
-                  focusedField === octet.name && styles.BoxFocused,
-                ]}
-              >
-                <TextInput
-                  style={styles.ipOctetInput}
-                  value={octet.value}
-                  onChangeText={octet.onChange}
-                  keyboardType="number-pad"
-                  maxLength={3}
-                  selectTextOnFocus
-                  editable={!state.isLoading}
-                  onFocus={() => setFocusedField(octet.name)}
-                  onBlur={() => setFocusedField(null)}
-                  placeholderTextColor={theme.colors.textSecondary + "80"}
-                />
-              </View>
-            ))}
-
-            {/* Port — highlighted with error border when invalid */}
-            <View
-              style={[
-                styles.portBox,
-                state.portError && styles.portBoxError,
-                focusedField === "port" && styles.BoxFocused,
-              ]}
-            >
-              <TextInput
-                style={styles.portInput}
-                value={state.port}
-                onChangeText={action.setPort}
-                keyboardType="number-pad"
-                maxLength={5}
-                selectTextOnFocus
-                editable={!state.isLoading}
-                onFocus={() => setFocusedField("port")}
-                onBlur={() => setFocusedField(null)}
-                placeholderTextColor={theme.colors.textSecondary + "80"}
-              />
-            </View>
-          </View>
-
-          {/* ── DIVISION + TERMINAL ── */}
-          <View style={styles.divTermRow}>
-            <View style={styles.divTermGroup}>
-              <Text style={styles.sectionLabel}>DIVISION</Text>
-              <View
-                style={[
-                  styles.divTermBox,
-                  focusedField === "division" && styles.BoxFocused,
-                ]}
-              >
-                <TextInput
-                  style={styles.divTermInput}
-                  value={state.division}
-                  onChangeText={action.setDivision}
-                  keyboardType="number-pad"
-                  maxLength={4}
-                  editable={!state.isLoading}
-                  onFocus={() => setFocusedField("division")}
-                  onBlur={() => setFocusedField(null)}
-                  placeholderTextColor={theme.colors.textSecondary + "80"}
-                />
-              </View>
-            </View>
-
-            <View style={styles.divTermGroup}>
-              <Text style={styles.sectionLabel}>TERMINAL</Text>
-              <View
-                style={[
-                  styles.divTermBox,
-                  focusedField === "terminal" && styles.BoxFocused,
-                ]}
-              >
-                <TextInput
-                  style={styles.divTermInput}
-                  value={state.terminal}
-                  onChangeText={action.setTerminal}
-                  keyboardType="number-pad"
-                  maxLength={4}
-                  editable={!state.isLoading}
-                  onFocus={() => setFocusedField("terminal")}
-                  onBlur={() => setFocusedField(null)}
-                  placeholderTextColor={theme.colors.textSecondary + "80"}
-                />
-              </View>
-            </View>
-          </View>
-
-          {/* ── Divider ── */}
-          <View style={styles.divider} />
-
-          {/* ── ORIENTATION ── */}
-          <View style={styles.orientationGroup}>
-            <Text style={styles.sectionLabel}>ORIENTATION</Text>
-            <View style={styles.orientationRow}>
-              {(["portrait", "landscape"] as Orientation[]).map((opt) => {
-                const isActive = state.orientation === opt;
-                return (
-                  <Pressable
-                    key={opt}
-                    style={[
-                      styles.orientationOption,
-                      isActive && styles.orientationOptionActive,
-                    ]}
-                    onPress={() => action.setOrientation(opt)}
-                    disabled={state.isLoading}
-                  >
-                    <Text
-                      style={[
-                        styles.orientationOptionText,
-                        isActive && styles.orientationOptionTextActive,
-                      ]}
-                    >
-                      {opt.toUpperCase()}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          </View>
-
-          {/* ── Checkboxes ── */}
-          <View style={styles.checkboxesGroup}>
-            {checkboxItems.map((item) => (
+          <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+            {/* ── Header ── */}
+            <View style={styles.headerRow}>
+              <Text style={styles.headerTitle}>Server setup</Text>
               <Pressable
-                key={item.label}
-                style={styles.checkboxRow}
-                onPress={item.onToggle}
+                style={styles.closeButton}
+                onPress={action.onClose}
+                hitSlop={8}
                 disabled={state.isLoading}
-                hitSlop={4}
               >
+                <Text style={styles.closeButtonText}>✕</Text>
+              </Pressable>
+            </View>
+
+            {/* ── SERVER IP · PORT ── */}
+            <Text style={styles.sectionLabel}>SERVER IP · PORT</Text>
+            <View style={styles.ipPortRow}>
+              {(
+                [
+                  { name: "ip1", value: state.ip1, onChange: action.setIp1 },
+                  { name: "ip2", value: state.ip2, onChange: action.setIp2 },
+                  { name: "ip3", value: state.ip3, onChange: action.setIp3 },
+                  { name: "ip4", value: state.ip4, onChange: action.setIp4 },
+                ] as const
+              ).map((octet) => (
                 <View
+                  key={octet.name}
                   style={[
-                    styles.checkbox,
-                    item.value
-                      ? styles.checkboxChecked
-                      : styles.checkboxUnchecked,
+                    styles.ipOctetBox,
+                    focusedField === octet.name && styles.BoxFocused,
                   ]}
                 >
-                  {item.value && <Text style={styles.checkmark}>✓</Text>}
+                  <TextInput
+                    style={styles.ipOctetInput}
+                    value={octet.value}
+                    onChangeText={octet.onChange}
+                    keyboardType="number-pad"
+                    maxLength={3}
+                    selectTextOnFocus
+                    editable={!state.isLoading}
+                    onFocus={() => setFocusedField(octet.name)}
+                    onBlur={() => setFocusedField(null)}
+                    placeholderTextColor={theme.colors.textSecondary + "80"}
+                  />
                 </View>
-                <Text style={styles.checkboxLabel}>{item.label}</Text>
-              </Pressable>
-            ))}
-          </View>
+              ))}
 
-          {/* ── Save & Reconnect ── */}
-          <Pressable
-            style={[
-              styles.saveButton,
-              state.isLoading && styles.saveButtonDisabled,
-            ]}
-            onPress={action.onSaveReconnect}
-            disabled={state.isLoading}
-          >
-            {state.isLoading ? (
-              <ActivityIndicator color={theme.colors.onPrimary} size="small" />
-            ) : (
-              <Text style={styles.saveButtonText}>SAVE & RECONNECT</Text>
-            )}
-          </Pressable>
+              {/* Port — highlighted with error border when invalid */}
+              <View
+                style={[
+                  styles.portBox,
+                  state.portError && styles.portBoxError,
+                  focusedField === "port" && styles.BoxFocused,
+                ]}
+              >
+                <TextInput
+                  style={styles.portInput}
+                  value={state.port}
+                  onChangeText={action.setPort}
+                  keyboardType="number-pad"
+                  maxLength={5}
+                  selectTextOnFocus
+                  editable={!state.isLoading}
+                  onFocus={() => setFocusedField("port")}
+                  onBlur={() => setFocusedField(null)}
+                  placeholderTextColor={theme.colors.textSecondary + "80"}
+                />
+              </View>
+            </View>
+
+            {/* ── DIVISION + TERMINAL ── */}
+            <View style={styles.divTermRow}>
+              <View style={styles.divTermGroup}>
+                <Text style={styles.sectionLabel}>DIVISION</Text>
+                <View
+                  style={[
+                    styles.divTermBox,
+                    focusedField === "division" && styles.BoxFocused,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.divTermInput}
+                    value={state.division}
+                    onChangeText={action.setDivision}
+                    keyboardType="number-pad"
+                    maxLength={4}
+                    editable={!state.isLoading}
+                    onFocus={() => setFocusedField("division")}
+                    onBlur={() => setFocusedField(null)}
+                    placeholderTextColor={theme.colors.textSecondary + "80"}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.divTermGroup}>
+                <Text style={styles.sectionLabel}>TERMINAL</Text>
+                <View
+                  style={[
+                    styles.divTermBox,
+                    focusedField === "terminal" && styles.BoxFocused,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.divTermInput}
+                    value={state.terminal}
+                    onChangeText={action.setTerminal}
+                    keyboardType="number-pad"
+                    maxLength={4}
+                    editable={!state.isLoading}
+                    onFocus={() => setFocusedField("terminal")}
+                    onBlur={() => setFocusedField(null)}
+                    placeholderTextColor={theme.colors.textSecondary + "80"}
+                  />
+                </View>
+              </View>
+            </View>
+
+            {/* ── Divider ── */}
+            <View style={styles.divider} />
+
+            {/* ── Checkboxes ── */}
+            <View style={styles.checkboxesGroup}>
+              {checkboxItems.map((item) => (
+                <Pressable
+                  key={item.label}
+                  style={styles.checkboxRow}
+                  onPress={item.onToggle}
+                  disabled={state.isLoading}
+                  hitSlop={4}
+                >
+                  <View
+                    style={[
+                      styles.checkbox,
+                      item.value
+                        ? styles.checkboxChecked
+                        : styles.checkboxUnchecked,
+                    ]}
+                  >
+                    {item.value && <Text style={styles.checkmark}>✓</Text>}
+                  </View>
+                  <Text style={styles.checkboxLabel}>{item.label}</Text>
+                </Pressable>
+              ))}
+            </View>
+
+            {/* ── Save & Reconnect ── */}
+            <Pressable
+              style={[
+                styles.saveButton,
+                state.isLoading && styles.saveButtonDisabled,
+              ]}
+              onPress={action.onSaveReconnect}
+              disabled={state.isLoading}
+            >
+              {state.isLoading ? (
+                <ActivityIndicator
+                  color={theme.colors.onPrimary}
+                  size="small"
+                />
+              ) : (
+                <Text style={styles.saveButtonText}>SAVE & RECONNECT</Text>
+              )}
+            </Pressable>
+          </ScrollView>
         </Pressable>
       </Pressable>
     </Modal>

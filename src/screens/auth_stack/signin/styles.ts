@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
 import { AppTheme } from "@/theme/ThemeContext";
 
-export const createStyles = (theme: AppTheme) =>
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) =>
   StyleSheet.create({
     safeArea: {
       flex: 1,
@@ -14,12 +14,15 @@ export const createStyles = (theme: AppTheme) =>
     scrollContent: {
       flexGrow: 1,
       justifyContent: "space-between",
+      alignItems: isLandscape ? "center" : undefined,
       paddingHorizontal: spacing.lg,
       paddingTop: spacing.lg,
       paddingBottom: spacing.lg,
     },
     mainSection: {
       flex: 1,
+      width: "100%",
+      maxWidth: isLandscape ? 560 : undefined,
     },
     brandTag: {
       ...typography.labelBold,
@@ -150,6 +153,8 @@ export const createStyles = (theme: AppTheme) =>
     bottomSection: {
       marginTop: spacing.xxl,
       gap: spacing.lg,
+      width: "100%",
+      maxWidth: isLandscape ? 560 : undefined,
     },
     bottomDivider: {
       height: 2,

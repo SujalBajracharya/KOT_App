@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { AppTheme } from '@/theme/ThemeContext';
 import { createGlobalStyles } from '@/styles/globalStyles';
 
-export const createStyles = (theme: AppTheme) => {
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
@@ -17,6 +17,7 @@ export const createStyles = (theme: AppTheme) => {
       flex: 1,
     },
     notifRow: {
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'flex-start',
       paddingHorizontal: 16,

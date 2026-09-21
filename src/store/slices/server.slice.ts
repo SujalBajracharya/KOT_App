@@ -8,7 +8,6 @@ interface ServerConfigState {
   port: string;
   division: string;
   terminal: string;
-  orientation: "portrait" | "landscape";
   addOrderFromTop: boolean;
   printBillOnEPayment: boolean;
   enableOldApiSettings: boolean;
@@ -22,7 +21,6 @@ const initialState: ServerConfigState = {
   port: "",
   division: "",
   terminal: "",
-  orientation: "portrait",
   addOrderFromTop: false,
   printBillOnEPayment: false,
   enableOldApiSettings: false,

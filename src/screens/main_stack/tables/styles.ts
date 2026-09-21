@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
 
-export const createStyles = (theme: AppTheme) => {
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
@@ -47,10 +47,13 @@ export const createStyles = (theme: AppTheme) => {
       flex: 1,
     },
     tableCell: {
+      aspectRatio: 1/1,
+      marginBottom: 2,
       flex: 1,
       borderWidth: 1,
       padding: 12,
-      minHeight: 130,
+      justifyContent: "space-between",
+      // maxHeight: isLandscape ? 100 : 130,
     },
     tableCellHeld: {
       backgroundColor: theme.colors.surface,
@@ -70,6 +73,11 @@ export const createStyles = (theme: AppTheme) => {
     },
     tableCellHeader: {
       flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+    },
+    tableCellFooter: {
+      flexDirection: "column",
       justifyContent: "space-between",
       alignItems: "flex-start",
     },
@@ -97,7 +105,7 @@ export const createStyles = (theme: AppTheme) => {
     tableMeta: {
       fontSize: 11,
       fontWeight: "600",
-      marginTop: 40,
+      marginTop: isLandscape ? 16 : 40,
     },
     tableMetaLight: {
       color: theme.colors.textSecondary,

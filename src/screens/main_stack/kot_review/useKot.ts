@@ -48,7 +48,8 @@ export function useKot(): UseKotReturn {
     );
   }, []);
 
-  const onBill = useCallback(() => {}, []);
+  const onBill = useCallback(() => {navigation.navigate("bill")
+  }, []);
   const onSendToKitchen = useCallback(() => {}, []);
 
   return {

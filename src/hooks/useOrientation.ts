@@ -1,26 +1,18 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import * as ScreenOrientation from "expo-screen-orientation";
-import { RootState } from "@/store";
+import { useMemo } from "react";
+import { useWindowDimensions } from "react-native";
 
 export function useOrientation() {
-  const orientation = useSelector(
-    (state: RootState) => state.server.orientation
-  );
+  const { width, height } = useWindowDimensions();
 
-  useEffect(() => {
-    const applyOrientation = async () => {
-      if (orientation === "landscape") {
-        await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.LANDSCAPE
-        );
-      } else {
-        await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.PORTRAIT
-        );
-      }
+  return useMemo(() => {
+    const isLandscape = width > height;
+
+    return {
+      width,
+      height,
+      isLandscape,
+      isPortrait: !isLandscape,
+      orientation: isLandscape ? "landscape" : "portrait",
     };
-
-    applyOrientation();
-  }, [orientation]);
+  }, [width, height]);
 }

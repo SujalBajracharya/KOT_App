@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/theme/ThemeContext";
+import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
 import { NotificationsContentProps } from "./types";
 import { createStyles } from "./styles";
@@ -12,7 +13,8 @@ export function NotificationsContent({
   action,
 }: NotificationsContentProps) {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const { isLandscape } = useOrientation();
+  const styles = createStyles(theme, isLandscape);
 
   const handleClearAll = () => {
     Alert.alert(
@@ -51,8 +53,10 @@ export function NotificationsContent({
 
         {/* ── Notification list ── */}
         <FlatList
+          key={isLandscape ? "landscape" : "portrait"}
           data={state.notifications}
           keyExtractor={(n) => n.id}
+          numColumns={isLandscape ? 2 : 1}
           style={styles.notifList}
           renderItem={({ item }) => (
             <NotificationItem

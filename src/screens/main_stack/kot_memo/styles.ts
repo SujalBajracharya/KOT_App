@@ -3,7 +3,7 @@ import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
 import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
 
-export const createStyles = (theme: AppTheme) => {
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
@@ -55,6 +55,7 @@ export const createStyles = (theme: AppTheme) => {
 
     // ── Memo card ──
     memoCard: {
+      flex: isLandscape ? 1 : undefined,
       paddingHorizontal: spacing.lg,
       paddingVertical: spacing.md,
       borderBottomWidth: 1,

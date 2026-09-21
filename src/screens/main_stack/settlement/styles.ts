@@ -2,11 +2,25 @@ import { StyleSheet } from 'react-native';
 import { AppTheme } from '@/theme/ThemeContext';
 import { createGlobalStyles } from '@/styles/globalStyles';
 
-export const createStyles = (theme: AppTheme) => {
+export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
 
   return StyleSheet.create({
     ...global,
+    contentRow: {
+      flex: 1,
+      flexDirection: isLandscape ? "row" : "column",
+    },
+    mainContent: {
+      flex: 1,
+      padding: 16,
+    },
+    sidePanel: {
+      width: isLandscape ? 320 : "100%",
+      borderLeftWidth: isLandscape ? 1 : 0,
+      borderLeftColor: isLandscape ? theme.colors.border : undefined,
+      justifyContent: isLandscape ? "flex-end" : undefined,
+    },
     content: {
       flex: 1,
       padding: 16,

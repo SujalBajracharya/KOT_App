@@ -3,6 +3,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronRight, Bell, LogOut } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
+import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
 import { HomeContentProps } from "./types";
 import { createStyles } from "./styles";
@@ -10,7 +11,8 @@ import { IconButton } from "@/components/common/IconButton";
 
 export function HomeContent({ state, action }: HomeContentProps) {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const { isLandscape } = useOrientation();
+  const styles = createStyles(theme, isLandscape);
 
   const menuItems = [
     {
@@ -79,55 +81,85 @@ export function HomeContent({ state, action }: HomeContentProps) {
           }
         />
 
-        {/* ── Stats row ── */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCell}>
-            <Text style={styles.statValue}>{state.tablesOpen}</Text>
-            <Text style={styles.statLabel}>{"TABLES\nOPEN"}</Text>
-          </View>
-          <View style={[styles.statCell, styles.statCellBordered]}>
-            <Text style={styles.statValue}>{state.billsWaiting}</Text>
-            <Text style={styles.statLabelAlert}>{"BILLS\nWAITING"}</Text>
-          </View>
-          <View style={[styles.statCell, styles.statCellBordered]}>
-            <Text style={styles.statValue}>{state.revenueToday}</Text>
-            <Text style={styles.statLabel}>RS TODAY</Text>
-          </View>
-        </View>
+        <View style={styles.body}>
+          <View style={styles.sidePanel}>
+            {/* ── Stats row ── */}
+            <View style={styles.statsRow}>
+              <View style={styles.statCell}>
+                <Text style={styles.statValue}>{state.tablesOpen}</Text>
+                <Text style={styles.statLabel}>{"TABLES\nOPEN"}</Text>
+              </View>
+              <View style={[styles.statCell, styles.statCellBordered]}>
+                <Text style={styles.statValue}>{state.billsWaiting}</Text>
+                <Text style={styles.statLabelAlert}>{"BILLS\nWAITING"}</Text>
+              </View>
+              <View style={[styles.statCell, styles.statCellBordered]}>
+                <Text style={styles.statValue}>{state.revenueToday}</Text>
+                <Text style={styles.statLabel}>RS TODAY</Text>
+              </View>
+            </View>
 
-        {/* ── Menu list ── */}
-        <ScrollView
-          style={styles.menuList}
-          showsVerticalScrollIndicator={false}
-        >
-          {menuItems.map((item) => (
-            <Pressable
-              key={item.index}
-              style={styles.menuItem}
-              onPress={item.onPress}
-              hitSlop={4}
+            {/* {isLandscape && (
+              <View style={styles.footer}>
+                <Pressable
+                  style={styles.settlementButton}
+                  onPress={action.onSettlement}
+                >
+                  <Text style={styles.settlementButtonText}>SETTLEMENT</Text>
+                  <Text style={styles.settlementButtonHint}>end session</Text>
+                </Pressable>
+              </View>
+            )} */}
+          </View>
+
+          {/* ── Menu list ── */}
+          <View style={{flex: 1}}>
+            <ScrollView
+              style={styles.menuList}
+              showsVerticalScrollIndicator={false}
             >
-              <View style={styles.menuIndex}>
-                <Text style={styles.menuIndexText}>{item.index}</Text>
+              {menuItems.map((item) => (
+                <Pressable
+                  key={item.index}
+                  style={styles.menuItem}
+                  onPress={item.onPress}
+                  hitSlop={4}
+                >
+                  <View style={styles.menuIndex}>
+                    <Text style={styles.menuIndexText}>{item.index}</Text>
+                  </View>
+                  <View style={styles.menuTextGroup}>
+                    <Text style={styles.menuTitle}>{item.title}</Text>
+                    <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
+                  </View>
+                  {item.rightContent}
+                </Pressable>
+              ))}
+            </ScrollView>
+            {isLandscape && (
+              <View style={styles.footer}>
+                <Pressable
+                  style={styles.settlementButton}
+                  onPress={action.onSettlement}
+                >
+                  <Text style={styles.settlementButtonText}>SETTLEMENT</Text>
+                  <Text style={styles.settlementButtonHint}>end session</Text>
+                </Pressable>
               </View>
-              <View style={styles.menuTextGroup}>
-                <Text style={styles.menuTitle}>{item.title}</Text>
-                <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
-              </View>
-              {item.rightContent}
-            </Pressable>
-          ))}
-        </ScrollView>
+            )}
+          </View>
 
-        {/* ── Footer ── */}
-        <View style={styles.footer}>
-          <Pressable
-            style={styles.settlementButton}
-            onPress={action.onSettlement}
-          >
-            <Text style={styles.settlementButtonText}>SETTLEMENT</Text>
-            <Text style={styles.settlementButtonHint}>end session</Text>
-          </Pressable>
+          {!isLandscape && (
+            <View style={styles.footer}>
+              <Pressable
+                style={styles.settlementButton}
+                onPress={action.onSettlement}
+              >
+                <Text style={styles.settlementButtonText}>SETTLEMENT</Text>
+                <Text style={styles.settlementButtonHint}>end session</Text>
+              </Pressable>
+            </View>
+          )}
         </View>
       </View>
     </SafeAreaView>

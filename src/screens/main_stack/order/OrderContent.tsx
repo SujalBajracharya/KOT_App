@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, ArrowRight } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
+import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
 import { Button } from "@/components/common/Button";
 import { QuantitySheet } from "@/components/quantity&remarks/Quantity&Remarks";
@@ -19,7 +20,8 @@ import { createStyles } from "./styles";
 
 export function OrderContent({ state, action }: OrderContentProps) {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const { isLandscape } = useOrientation();
+  const styles = createStyles(theme, isLandscape);
 
   return (
     <SafeAreaView
@@ -37,7 +39,7 @@ export function OrderContent({ state, action }: OrderContentProps) {
             //   <Text style={styles.newKOTText}>NEW KOT</Text>
             // </Pressable>
             <>
-              <Button onPress={action.onNewKOT}>
+              <Button onPress={action.onNewKOT} style={{ flex: 0 }}>
                 <Text style={styles.ButtonText}>NEW KOT</Text>
               </Button>
             </>
@@ -105,13 +107,15 @@ export function OrderContent({ state, action }: OrderContentProps) {
 
         {/* ── Item grid ── */}
         <FlatList
+          key={isLandscape ? "landscape" : "portrait"}
           data={state.items}
           keyExtractor={(item) => item.id}
-          numColumns={2}
+          numColumns={isLandscape ? 3 : 2}
+          columnWrapperStyle={{ gap: 2 }}
           style={styles.itemGrid}
           renderItem={({ item }) => (
             <Pressable
-              style={[styles.itemCell, item.inCart && styles.itemCellInCart]}
+              style={[styles.itemCell, {marginBottom: 2}, item.inCart && styles.itemCellInCart]}
               onPress={() => action.onItemPress(item.id)}
             >
               <View style={styles.itemTop}>
@@ -120,7 +124,7 @@ export function OrderContent({ state, action }: OrderContentProps) {
                     styles.itemName,
                     item.inCart && styles.itemNameInCart,
                   ]}
-                  numberOfLines={3}
+                  numberOfLines={2}
                 >
                   {item.name}
                 </Text>
@@ -177,4 +181,3 @@ export function OrderContent({ state, action }: OrderContentProps) {
     </SafeAreaView>
   );
 }
-

@@ -10,13 +10,15 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/theme/ThemeContext";
+import { useOrientation } from "@/hooks/useOrientation";
 import { SignInContentProps } from "./types";
 import { createStyles } from "./styles";
 import { ServerSetup } from "@/components/signin/ServerSetup";
 
 export function SignInContent({ state, action }: SignInContentProps) {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const { isLandscape } = useOrientation();
+  const styles = createStyles(theme, isLandscape);
 
   return (
     <SafeAreaView

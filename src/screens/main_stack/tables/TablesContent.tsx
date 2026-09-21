@@ -3,6 +3,7 @@ import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, RefreshCw } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
+import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
 import { IconButton } from "@/components/common/IconButton";
 import { TableStatus, TablesContentProps } from "./types";
@@ -10,7 +11,8 @@ import { createStyles } from "./styles";
 
 export function TablesContent({ state, action }: TablesContentProps) {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const { isLandscape } = useOrientation();
+  const styles = createStyles(theme, isLandscape);
 
   function cellStyles(status: TableStatus) {
     switch (status) {
@@ -65,10 +67,7 @@ export function TablesContent({ state, action }: TablesContentProps) {
               onPress={() => action.onFloorSelect(floor.id)}
             >
               <Text
-                style={[
-                  styles.TabText,
-                  floor.active && styles.TabTextActive,
-                ]}
+                style={[styles.TabText, floor.active && styles.TabTextActive]}
               >
                 {floor.name.toUpperCase()}
               </Text>
@@ -101,10 +100,12 @@ export function TablesContent({ state, action }: TablesContentProps) {
 
         {/* ── Table grid ── */}
         <FlatList
+          key={isLandscape ? "landscape" : "portrait"}
           data={state.tables}
           keyExtractor={(t) => t.id}
-          numColumns={2}
+          numColumns={isLandscape ? 4 : 2}
           style={styles.tableGrid}
+          columnWrapperStyle={{ gap: 2 }}
           renderItem={({ item: t }) => {
             const dark = isDark(t.status);
             return (
@@ -130,22 +131,24 @@ export function TablesContent({ state, action }: TablesContentProps) {
                     {t.statusLabel}
                   </Text>
                 </View>
-                <Text
-                  style={[
-                    styles.tableMeta,
-                    dark ? styles.tableMetaDark : styles.tableMetaLight,
-                  ]}
-                >
-                  {t.meta}
-                </Text>
-                <Text
-                  style={[
-                    styles.tableAmount,
-                    dark ? styles.tableAmountDark : styles.tableAmountLight,
-                  ]}
-                >
-                  {t.amount}
-                </Text>
+                <View style={styles.tableCellFooter}>
+                  <Text
+                    style={[
+                      styles.tableMeta,
+                      dark ? styles.tableMetaDark : styles.tableMetaLight,
+                    ]}
+                  >
+                    {t.meta}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.tableAmount,
+                      dark ? styles.tableAmountDark : styles.tableAmountLight,
+                    ]}
+                  >
+                    {t.amount}
+                  </Text>
+                </View>
               </Pressable>
             );
           }}

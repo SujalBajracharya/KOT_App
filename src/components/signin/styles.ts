@@ -7,16 +7,21 @@ export const createStyles = (theme: AppTheme) =>
     // Modal overlay / backdrop
     overlay: {
       flex: 1,
-      justifyContent: "flex-end",
+      justifyContent: "center",
+      alignItems: "center",
       backgroundColor: "rgba(0,0,0,0.4)",
+      padding: spacing.md,
     },
 
-    // Sheet container (bottom sheet style)
+    // Sheet container
     sheet: {
       backgroundColor: theme.colors.background,
       paddingHorizontal: spacing.lg,
       paddingTop: spacing.lg,
-      paddingBottom: spacing.xxl,
+      paddingBottom: spacing.lg,
+      width: "100%",
+      maxWidth: 540,
+      maxHeight: "90%",
     },
 
     // Header row: title + close button
