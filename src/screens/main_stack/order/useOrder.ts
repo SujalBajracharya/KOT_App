@@ -5,6 +5,7 @@ import { MenuItem, UseOrderReturn } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { saveOrder } from "@/store/slices/order.slice";
 import { Alert } from "react-native";
+import { RootState } from "@/store";
 
 export interface CartItem {
   id: string;
@@ -25,7 +26,9 @@ export function useOrder(TABLENO: string): UseOrderReturn {
   const [isCartExpanded, setIsCartExpanded] = useState(false);
 
   // Cart state
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItemsByTable, setCartItemsByTable] = useState<
+    Record<string, CartItem[]>
+  >({});
   const dispatch = useDispatch();
 
   // Quantity sheet state
@@ -41,6 +44,26 @@ export function useOrder(TABLENO: string): UseOrderReturn {
   const [activeRemarks, setActiveRemarks] = useState<string[]>([]);
   const [customNote, setCustomNote] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const savedOrder = useSelector((state: RootState) => state.order);
+
+  const savedOrderItems = useMemo(
+    () => savedOrder.orders[TABLENO] ?? [],
+    [savedOrder.orders, TABLENO],
+  );
+  const cartItems = useMemo(() => {
+    const localCartItems = cartItemsByTable[TABLENO] ?? [];
+    const itemsById = new Map(
+      savedOrderItems.map((item) => [item.id, item]),
+    );
+
+    localCartItems.forEach((item) => {
+      itemsById.set(item.id, item);
+    });
+
+    return Array.from(itemsById.values());
+  }, [cartItemsByTable, savedOrderItems, TABLENO]);
+
+  const hasExistingOrder = savedOrderItems.length > 0;
 
   const categories = useMemo(() => {
     return [
@@ -183,14 +206,14 @@ export function useOrder(TABLENO: string): UseOrderReturn {
   const onAddToKOT = useCallback(() => {
     if (!selectedItem) return;
 
-    setCartItems((prev) => {
-      if (quantity <= 0) {
-        return prev.filter((ci) => ci.id !== selectedItem.id);
-      }
+    setCartItemsByTable((prevByTable) => {
+      const prev = prevByTable[TABLENO] ?? savedOrderItems;
+      let next: CartItem[];
 
-      const exists = prev.some((ci) => ci.id === selectedItem.id);
-      if (exists) {
-        return prev.map((ci) =>
+      if (quantity <= 0) {
+        next = prev.filter((ci) => ci.id !== selectedItem.id);
+      } else if (prev.some((ci) => ci.id === selectedItem.id)) {
+        next = prev.map((ci) =>
           ci.id === selectedItem.id
             ? {
                 ...ci,
@@ -201,7 +224,7 @@ export function useOrder(TABLENO: string): UseOrderReturn {
             : ci,
         );
       } else {
-        return [
+        next = [
           ...prev,
           {
             id: selectedItem.id,
@@ -216,10 +239,19 @@ export function useOrder(TABLENO: string): UseOrderReturn {
           },
         ];
       }
+
+      return { ...prevByTable, [TABLENO]: next };
     });
 
     setIsModalVisible(false);
-  }, [selectedItem, quantity, activeRemarks, customNote]);
+  }, [
+    TABLENO,
+    activeRemarks,
+    customNote,
+    quantity,
+    savedOrderItems,
+    selectedItem,
+  ]);
 
   const lineTotalNumber = (selectedItem?.RATE_A || 0) * quantity;
   const lineTotal = `NPR ${lineTotalNumber.toLocaleString()}`;
@@ -227,6 +259,8 @@ export function useOrder(TABLENO: string): UseOrderReturn {
   const itemMeta = selectedItem
     ? `${selectedItem.category} · CODE ${selectedItem.code} · ${selectedItem.unit}`
     : "";
+
+  const existingOrderItems = cartItems;
 
   return {
     state: {
@@ -240,6 +274,9 @@ export function useOrder(TABLENO: string): UseOrderReturn {
       cartTotal,
       isCartExpanded,
       cartItems,
+      hasExistingOrder,
+      existingOrderItems,
+      savedOrderItems,
       quantitySheet: {
         visible: isModalVisible,
         itemName: selectedItem?.name || "",

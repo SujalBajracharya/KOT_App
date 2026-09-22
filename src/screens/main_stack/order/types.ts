@@ -32,6 +32,9 @@ export interface OrderState {
   quantitySheet: QuantitySheetState;
   isCartExpanded: boolean;
   cartItems: CartItem[];
+  hasExistingOrder: boolean;
+  existingOrderItems: CartItem[];
+  savedOrderItems: CartItem[];
 }
 
 export interface OrderAction {

@@ -6,15 +6,9 @@ import {
   Text,
   TextInput,
   View,
-  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Search,
-  ArrowRight,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react-native";
+import { Search } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
@@ -23,6 +17,7 @@ import { QuantitySheet } from "@/components/quantity&remarks/Quantity&Remarks";
 import { OrderContentProps } from "./types";
 import { createStyles } from "./styles";
 import { ExpandableCartReview } from "@/components/order/ExpandableCartReview";
+import { MenuItemCard } from "@/components/order/MenuItemCard";
 
 export function OrderContent({ TABLENO, state, action }: OrderContentProps) {
   const { theme } = useTheme();
@@ -119,73 +114,32 @@ export function OrderContent({ TABLENO, state, action }: OrderContentProps) {
           numColumns={isLandscape ? 3 : 2}
           columnWrapperStyle={{ gap: 2 }}
           style={styles.itemGrid}
-          renderItem={({ item }) => (
-            <Pressable
-              style={[
-                styles.itemCell,
-                { marginBottom: 2 },
-                item.inCart && styles.itemCellInCart,
-              ]}
-              onPress={() => action.onItemPress(item.id)}
-            >
-              <View style={styles.itemTop}>
-                <Text
-                  style={[
-                    styles.itemName,
-                    item.inCart && styles.itemNameInCart,
-                  ]}
-                  numberOfLines={2}
-                >
-                  {item.name}
-                </Text>
-                <View style={styles.itemThumb}>
-                  <Image
-                    source={require("../../../../assets/placeholderimage.jpg")}
-                    style={styles.itemThumbImage}
-                    resizeMode="cover"
-                  />
-                </View>
-              </View>
-              <View>
-                <View style={styles.itemBottom}>
-                  <Text style={styles.itemUnit}>{item.unit}</Text>
-                  <Text
-                    style={[
-                      styles.itemPrice,
-                      item.inCart && styles.itemPriceInCart,
-                    ]}
-                  >
-                    {item.price}
-                  </Text>
-                </View>
-                {item.badge ? (
-                  <Text style={styles.itemBadge}>{item.badge}</Text>
-                ) : null}
-              </View>
-            </Pressable>
-          )}
+          renderItem={({ item }) => {
+            const isInCart =
+              item.inCart ||
+              state.savedOrderItems.some(
+                (savedItem) => savedItem.id === item.id,
+              );
+
+            return (
+              <MenuItemCard
+                item={item}
+                isInCart={isInCart}
+                onPress={() => action.onItemPress(item.id)}
+                styles={styles}
+              />
+            );
+          }}
         />
 
         {/* ── Cart bar ── */}
-        {/* {state.cartItemCount > 0 && (
-          <View style={styles.cartBar}>
-            <View style={styles.cartInfo}>
-              <Text style={styles.cartLabel}>RUNNING KOT</Text>
-              <Text style={styles.cartSummary}>
-                {state.cartItemCount} items · {state.cartTotal}
-              </Text>
-            </View>
-            <Pressable style={styles.reviewButton} onPress={action.onSendToKitchen}>
-              <Text style={styles.reviewButtonText}>SEND TO KITCHEN</Text>
-              <ArrowRight size={20} color={theme.colors.onPrimary} />
-            </Pressable>
-          </View>
-        )} */}
-
-        {state.cartItemCount > 0 && (
+        {(state.cartItemCount > 0 || state.hasExistingOrder) && (
           <ExpandableCartReview
-            items={state.cartItems}
-            itemCount={state.cartItemCount}
+            items={state.existingOrderItems}
+            itemCount={state.existingOrderItems.reduce(
+              (total, item) => total + item.quantity,
+              0,
+            )}
             total={state.cartTotal}
             isExpanded={state.isCartExpanded}
             onToggle={() => action.setIsCartExpanded(!state.isCartExpanded)}
