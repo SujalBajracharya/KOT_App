@@ -56,17 +56,21 @@ export type MenuCategory =
   | "SPECIAL";
 
 export interface MenuItem {
-  itemId: string;
-  itemCode: string;
-  itemName: string;
-  category: MenuCategory;
-  unitPrice: number;
-  /** Currency code, e.g. "NPR" */
+  TYPE: MenuCategory;
   currency: string;
   isAvailable: boolean;
-  /** Optional tax percentage (e.g. 13 for 13% VAT) */
   taxPercent?: number;
-  choices?: ChoiceItem[];
+  MCODE: string;
+  MENUCODE: string;
+  DESCA: string;
+  PARENT: string;
+  PTYPE: number;
+  BASEUNIT: string;
+  RATE_A: number;
+  IsBarItem: number;
+  MGROUP: string;
+  IsUnknown: number;
+  MCAT1: string;
 }
 
 export interface ChoiceItem {
@@ -121,20 +125,24 @@ export type TableStatus = "FREE" | "OCCUPIED" | "BILL" | "HELD";
 
 export interface Table {
   tableId: string;
-  tableNumber: string;
-  floorName: string;
+  TABLENO: string;
+  LayoutName: string;
   capacity: number;
+  TRNDATE: string;
+  PREBILL_STATUS: number;
   status: TableStatus;
+  KOTR: number;
   /** If OCCUPIED / BILL / HELD — occupancy head count */
-  occupancy?: number;
+  Occupied?: number;
   /** If OCCUPIED / BILL / HELD — active order id */
   orderId?: string;
   /** If OCCUPIED — number of KOTs sent */
   kotCount?: number;
   /** If OCCUPIED — elapsed time in minutes since first order */
-  elapsedMinutes?: number;
+  KOTTIME?: null | number;
   /** If BILL / HELD — amount due */
-  amountDue?: number;
+  QUANTITY?: number;
+  disabled: boolean;
 }
 
 export interface TableLayout {

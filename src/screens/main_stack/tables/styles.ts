@@ -46,8 +46,11 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     tableGrid: {
       flex: 1,
     },
+    disabledTable: {
+      opacity: 0.2,
+    },
     tableCell: {
-      aspectRatio: 1/1,
+      aspectRatio: 1 / 1,
       marginBottom: 2,
       flex: 1,
       borderWidth: 1,

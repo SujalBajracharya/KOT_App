@@ -90,7 +90,6 @@ export function useSignIn(): UseSignInReturn {
         port,
         division,
         terminal,
-        orientation,
         addOrderFromTop,
         printBillOnEPayment,
         enableOldApiSettings,

@@ -30,17 +30,18 @@ export function useTables(): UseTablesReturn {
         status: 'free',
         label: 'FREE',
       };
-      const meta = table.occupancy
-        ? `${table.occupancy}/${table.capacity} pax · KOT ${table.kotCount} ·  ${table.elapsedMinutes ?? 0} m`
+      const meta = table.Occupied
+        ? `${table.Occupied}/${table.capacity} pax · KOT ${table.kotCount} ·  ${table.KOTTIME ?? 0} m`
         : `${table.capacity} pax`;
 
       return {
         id: table.tableId,
-        name: table.tableNumber,
+        name: table.TABLENO,
         status: status.status,
         statusLabel: status.label,
         meta,
-        amount: formatAmount(table.amountDue),
+        disabled: table.disabled,
+        amount: formatAmount(table.QUANTITY),
       };
     });
   }, [activeLayout]);
@@ -55,9 +56,11 @@ export function useTables(): UseTablesReturn {
     setActiveFloorId(floorId);
   }, []);
 
-  const onTablePress = useCallback((tableId: string) => {
-    navigation.navigate('order');
-  }, []);
+  const onTablePress = useCallback((TABLENO: string) => {
+  navigation.navigate("order", {
+    TABLENO,
+  });
+}, [navigation]);
 
   return {
     state: {

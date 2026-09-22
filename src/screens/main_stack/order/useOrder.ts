@@ -2,6 +2,9 @@ import { useCallback, useMemo, useState } from "react";
 import navigation from "@/utils/app_navigation";
 import { mockMenuResponse } from "@/data/mock/menu";
 import { MenuItem, UseOrderReturn } from "./types";
+import { useDispatch, useSelector } from "react-redux";
+import { saveOrder } from "@/store/slices/order.slice";
+import { Alert } from "react-native";
 
 export interface CartItem {
   id: string;
@@ -9,19 +12,21 @@ export interface CartItem {
   category: string;
   code: string;
   unit: string;
-  unitPrice: number;
+  RATE_A: number;
   quantity: number;
   activeRemarks: string[];
   customNote: string;
 }
 
-export function useOrder(): UseOrderReturn {
+export function useOrder(TABLENO: string): UseOrderReturn {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchMode, setSearchMode] = useState<"name" | "code">("name");
   const [activeCategory, setActiveCategory] = useState("ALL");
+  const [isCartExpanded, setIsCartExpanded] = useState(false);
 
   // Cart state
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const dispatch = useDispatch();
 
   // Quantity sheet state
   const [selectedItem, setSelectedItem] = useState<{
@@ -30,7 +35,7 @@ export function useOrder(): UseOrderReturn {
     category: string;
     code: string;
     unit: string;
-    unitPrice: number;
+    RATE_A: number;
   } | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [activeRemarks, setActiveRemarks] = useState<string[]>([]);
@@ -41,7 +46,7 @@ export function useOrder(): UseOrderReturn {
     return [
       { id: "ALL", name: "All", active: activeCategory === "ALL" },
       ...Array.from(
-        new Set(mockMenuResponse.result.map((item) => item.category)),
+        new Set(mockMenuResponse.result.map((item) => item.TYPE)),
       ).map((category) => ({
         id: category,
         name: category,
@@ -55,22 +60,21 @@ export function useOrder(): UseOrderReturn {
 
     return mockMenuResponse.result
       .filter(
-        (item) => activeCategory === "ALL" || item.category === activeCategory,
+        (item) => activeCategory === "ALL" || item.TYPE === activeCategory,
       )
       .filter((item) => {
         if (!query) return true;
-        const searchableValue =
-          searchMode === "name" ? item.itemName : item.itemCode;
+        const searchableValue = searchMode === "name" ? item.DESCA : item.MCODE;
         return searchableValue.toLowerCase().includes(query);
       })
       .map((item) => {
-        const cartItem = cartItems.find((ci) => ci.id === item.itemId);
+        const cartItem = cartItems.find((ci) => ci.id === item.MCODE);
         return {
-          id: item.itemId,
-          name: item.itemName,
-          unit: "plate",
-          price: `NPR ${item.unitPrice.toLocaleString()}`,
-          thumbCode: item.itemCode,
+          id: item.MCODE,
+          name: item.DESCA,
+          unit: item.BASEUNIT,
+          price: `NPR ${item.RATE_A.toLocaleString()}`,
+          thumbCode: item.MCODE,
           badge: item.isAvailable ? undefined : "UNAVAILABLE",
           inCart: Boolean(cartItem && cartItem.quantity > 0),
         };
@@ -83,7 +87,7 @@ export function useOrder(): UseOrderReturn {
 
   const cartTotal = useMemo(() => {
     const total = cartItems.reduce(
-      (sum, ci) => sum + ci.unitPrice * ci.quantity,
+      (sum, ci) => sum + ci.RATE_A * ci.quantity,
       0,
     );
     return `NPR ${total.toLocaleString()}`;
@@ -97,18 +101,18 @@ export function useOrder(): UseOrderReturn {
 
   const onItemPress = useCallback(
     (id: string) => {
-      const menuItem = mockMenuResponse.result.find((m) => m.itemId === id);
+      const menuItem = mockMenuResponse.result.find((m) => m.MCODE === id);
       if (!menuItem) return;
 
       const existingCartItem = cartItems.find((ci) => ci.id === id);
 
       setSelectedItem({
-        id: menuItem.itemId,
-        name: menuItem.itemName,
-        category: menuItem.category,
-        code: menuItem.itemCode,
+        id: menuItem.MCODE,
+        name: menuItem.DESCA,
+        category: menuItem.TYPE,
+        code: menuItem.MCODE,
         unit: "plate",
-        unitPrice: menuItem.unitPrice,
+        RATE_A: menuItem.RATE_A,
       });
 
       if (existingCartItem) {
@@ -126,9 +130,30 @@ export function useOrder(): UseOrderReturn {
     [cartItems],
   );
 
-  const onReviewKOT = useCallback(() => {
-    navigation.navigate("review");
-  }, []);
+  // const onReviewKOT = useCallback(() => {
+  //   navigation.navigate("review");
+  // }, []);
+
+  const onSendToKitchen = useCallback(() => {
+    const orderData = {
+      tableNo: TABLENO,
+      items: cartItems,
+    };
+
+    console.log("Saving order to Redux:", JSON.stringify(orderData, null, 2));
+
+    dispatch(saveOrder(orderData));
+
+    console.log(
+      "Order dispatched successfully:",
+      JSON.stringify(orderData, null, 2),
+    );
+
+    Alert.alert(
+      "Order Sent",
+      "Your order has been sent to the kitchen successfully.",
+    );
+  }, [dispatch, TABLENO, cartItems]);
 
   // Quantity modal actions
   const onCloseModal = useCallback(() => {
@@ -184,7 +209,7 @@ export function useOrder(): UseOrderReturn {
             category: selectedItem.category,
             code: selectedItem.code,
             unit: selectedItem.unit,
-            unitPrice: selectedItem.unitPrice,
+            RATE_A: selectedItem.RATE_A,
             quantity,
             activeRemarks,
             customNote,
@@ -196,7 +221,7 @@ export function useOrder(): UseOrderReturn {
     setIsModalVisible(false);
   }, [selectedItem, quantity, activeRemarks, customNote]);
 
-  const lineTotalNumber = (selectedItem?.unitPrice || 0) * quantity;
+  const lineTotalNumber = (selectedItem?.RATE_A || 0) * quantity;
   const lineTotal = `NPR ${lineTotalNumber.toLocaleString()}`;
 
   const itemMeta = selectedItem
@@ -213,6 +238,8 @@ export function useOrder(): UseOrderReturn {
       items,
       cartItemCount,
       cartTotal,
+      isCartExpanded,
+      cartItems,
       quantitySheet: {
         visible: isModalVisible,
         itemName: selectedItem?.name || "",
@@ -230,7 +257,8 @@ export function useOrder(): UseOrderReturn {
       setSearchMode,
       onCategorySelect: setActiveCategory,
       onItemPress,
-      onReviewKOT,
+      onSendToKitchen,
+      setIsCartExpanded,
       quantitySheet: {
         onClose: onCloseModal,
         onDecrement: onDecrementQuantity,

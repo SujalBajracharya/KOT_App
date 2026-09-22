@@ -2,6 +2,7 @@ import {
   QuantitySheetAction,
   QuantitySheetState,
 } from "@/components/quantity&remarks/Quantity&Remarks";
+import { CartItem } from "./useOrder";
 
 export interface Category {
   id: string;
@@ -29,6 +30,8 @@ export interface OrderState {
   cartItemCount: number;
   cartTotal: string;
   quantitySheet: QuantitySheetState;
+  isCartExpanded: boolean;
+  cartItems: CartItem[];
 }
 
 export interface OrderAction {
@@ -38,7 +41,8 @@ export interface OrderAction {
   setSearchMode: (mode: "name" | "code") => void;
   onCategorySelect: (id: string) => void;
   onItemPress: (id: string) => void;
-  onReviewKOT: () => void;
+  onSendToKitchen: () => void;
+  setIsCartExpanded: (isCartExpanded: boolean) => void;
   quantitySheet: QuantitySheetAction;
 }
 
@@ -48,6 +52,7 @@ export interface UseOrderReturn {
 }
 
 export interface OrderContentProps {
+  TABLENO: string;
   state: OrderState;
   action: OrderAction;
 }

@@ -9,7 +9,12 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Search, ArrowRight } from "lucide-react-native";
+import {
+  Search,
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
@@ -17,8 +22,9 @@ import { Button } from "@/components/common/Button";
 import { QuantitySheet } from "@/components/quantity&remarks/Quantity&Remarks";
 import { OrderContentProps } from "./types";
 import { createStyles } from "./styles";
+import { ExpandableCartReview } from "@/components/order/ExpandableCartReview";
 
-export function OrderContent({ state, action }: OrderContentProps) {
+export function OrderContent({ TABLENO, state, action }: OrderContentProps) {
   const { theme } = useTheme();
   const { isLandscape } = useOrientation();
   const styles = createStyles(theme, isLandscape);
@@ -31,8 +37,8 @@ export function OrderContent({ state, action }: OrderContentProps) {
       <View style={styles.container}>
         {/* ── Header ── */}
         <AppHeader
-          title={state.tableLabel}
-          subtitle={state.tableMeta}
+          title={TABLENO ? TABLENO : state.tableLabel}
+          subtitle={!TABLENO ? state.tableMeta : undefined}
           onBack={action.onBack}
           rightComponent={
             // <Pressable style={styles.newKOTButton} onPress={action.onNewKOT}>
@@ -115,7 +121,11 @@ export function OrderContent({ state, action }: OrderContentProps) {
           style={styles.itemGrid}
           renderItem={({ item }) => (
             <Pressable
-              style={[styles.itemCell, {marginBottom: 2}, item.inCart && styles.itemCellInCart]}
+              style={[
+                styles.itemCell,
+                { marginBottom: 2 },
+                item.inCart && styles.itemCellInCart,
+              ]}
               onPress={() => action.onItemPress(item.id)}
             >
               <View style={styles.itemTop}>
@@ -157,7 +167,7 @@ export function OrderContent({ state, action }: OrderContentProps) {
         />
 
         {/* ── Cart bar ── */}
-        {state.cartItemCount > 0 && (
+        {/* {state.cartItemCount > 0 && (
           <View style={styles.cartBar}>
             <View style={styles.cartInfo}>
               <Text style={styles.cartLabel}>RUNNING KOT</Text>
@@ -165,11 +175,22 @@ export function OrderContent({ state, action }: OrderContentProps) {
                 {state.cartItemCount} items · {state.cartTotal}
               </Text>
             </View>
-            <Pressable style={styles.reviewButton} onPress={action.onReviewKOT}>
-              <Text style={styles.reviewButtonText}>REVIEW</Text>
+            <Pressable style={styles.reviewButton} onPress={action.onSendToKitchen}>
+              <Text style={styles.reviewButtonText}>SEND TO KITCHEN</Text>
               <ArrowRight size={20} color={theme.colors.onPrimary} />
             </Pressable>
           </View>
+        )} */}
+
+        {state.cartItemCount > 0 && (
+          <ExpandableCartReview
+            items={state.cartItems}
+            itemCount={state.cartItemCount}
+            total={state.cartTotal}
+            isExpanded={state.isCartExpanded}
+            onToggle={() => action.setIsCartExpanded(!state.isCartExpanded)}
+            onSendToKitchen={action.onSendToKitchen}
+          />
         )}
 
         {/* ── Quantity & Remarks Modal ── */}

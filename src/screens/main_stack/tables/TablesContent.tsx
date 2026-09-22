@@ -110,8 +110,13 @@ export function TablesContent({ state, action }: TablesContentProps) {
             const dark = isDark(t.status);
             return (
               <Pressable
-                style={[styles.tableCell, cellStyles(t.status)]}
-                onPress={() => action.onTablePress(t.id)}
+                disabled={t.disabled == true}
+                style={[
+                  styles.tableCell,
+                  cellStyles(t.status),
+                  t.disabled == true && styles.disabledTable,
+                ]}
+                onPress={() => action.onTablePress(t.name)}
               >
                 <View style={styles.tableCellHeader}>
                   <Text
@@ -128,7 +133,7 @@ export function TablesContent({ state, action }: TablesContentProps) {
                       dark ? styles.tableStatusDark : styles.tableStatusLight,
                     ]}
                   >
-                    {t.statusLabel}
+                    {t.disabled == true? "DISABLED" : t.statusLabel}
                   </Text>
                 </View>
                 <View style={styles.tableCellFooter}>

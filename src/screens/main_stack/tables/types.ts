@@ -7,6 +7,7 @@ export interface TableItem {
   statusLabel: string;
   meta: string;   // e.g. "4 pax · 42 m"
   amount: string; // e.g. "Rs 2,000" or ""
+  disabled: boolean;
 }
 
 export interface Floor {
@@ -25,7 +26,7 @@ export interface TablesAction {
   onSearch: () => void;
   onRefresh: () => void;
   onFloorSelect: (floorId: string) => void;
-  onTablePress: (tableId: string) => void;
+  onTablePress: (TABLENO: string) => void;
 }
 
 export interface UseTablesReturn {
