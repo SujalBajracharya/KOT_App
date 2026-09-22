@@ -42,7 +42,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       color: theme.colors.text,
     },
     lineQty: {
-      width: 40,
+      minWidth: 60,
       textAlign: 'center',
       fontSize: 13,
       fontWeight: '700',

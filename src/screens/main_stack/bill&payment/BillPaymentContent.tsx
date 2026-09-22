@@ -54,9 +54,9 @@ export function BillPaymentContent({ state, action }: BillContentProps) {
                   <Text style={styles.lineNumber}>{l.n}</Text>
                   <Text style={styles.lineName}>{l.name}</Text>
                   <Text style={styles.lineQty}>
-                    {l.qty}*{l.amount}
+                    {l.qty}*{l.rate}
                   </Text>
-                  <Text style={styles.lineAmount}>{l.amount * l.qty}</Text>
+                  <Text style={styles.lineAmount}>{l.amount}</Text>
                 </View>
               )}
             />

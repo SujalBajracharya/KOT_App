@@ -30,6 +30,11 @@ export default function KOTMemoScreen() {
         TABLENO: tableLabel,
       });
     },
+    onBill: (_memoId, tableLabel) => {
+      navigation.navigate("bill", {
+        TABLENO: tableLabel,
+      });
+    },
   });
 
   return <KOTMemoContent state={state} action={action} />;

@@ -12,6 +12,8 @@ export interface UseKOTMemoParams {
   onBack: () => void;
   /** Called when OPEN TABLE is pressed — navigate to that table's order screen */
   onOpenTable: (memoId: string, tableLabel: string) => void;
+  /** Called when BILL is pressed — navigate to bill screen for that table */
+  onBill?: (memoId: string, tableLabel: string) => void;
   /** API / service call to trigger a reprint job */
   reprintKOT: (memoId: string) => Promise<void>;
   /** Initial memo list, e.g. from a parent loader or route params */
@@ -23,9 +25,8 @@ export interface UseKOTMemoReturn {
   action: KOTMemoAction;
 }
 
-// ─────────────────────────────────────────────
 //  Filter helpers
-// ─────────────────────────────────────────────
+
 function applyFilter(memos: MemoItem[], filter: MemoFilter): MemoItem[] {
   switch (filter) {
     case "voided":
@@ -39,12 +40,11 @@ function applyFilter(memos: MemoItem[], filter: MemoFilter): MemoItem[] {
   }
 }
 
-// ─────────────────────────────────────────────
 //  Hook
-// ─────────────────────────────────────────────
 export function useKOTMemo({
   onBack,
   onOpenTable,
+  onBill,
   reprintKOT,
   initialMemos = [],
 }: UseKOTMemoParams): UseKOTMemoReturn {
@@ -70,7 +70,6 @@ export function useKOTMemo({
   );
 
   // ── Actions ──
-
   const handleFilterChange = useCallback((f: MemoFilter) => {
     setFilter(f);
   }, []);
@@ -85,6 +84,15 @@ export function useKOTMemo({
       }
     },
     [reprintKOT],
+  );
+
+  const handleBill = useCallback(
+    (memoId: string) => {
+      const memo = allMemos.find((m) => m.id === memoId);
+      if (!memo) return;
+      onBill?.(memoId, memo.table);
+    },
+    [allMemos, onBill],
   );
 
   const handleOpenTable = useCallback(
@@ -107,6 +115,7 @@ export function useKOTMemo({
       onBack,
       onFilterChange: handleFilterChange,
       onReprint: handleReprint,
+      onBill: handleBill,
       onOpenTable: handleOpenTable,
     },
   };

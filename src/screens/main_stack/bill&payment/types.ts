@@ -7,6 +7,7 @@ export interface BillLine {
   name: string;
   qty: number;
   amount: number;
+  rate: number;
 }
 
 export interface BillState {

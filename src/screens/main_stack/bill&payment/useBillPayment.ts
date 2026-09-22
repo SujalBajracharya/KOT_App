@@ -1,4 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import navigation from "@/utils/app_navigation";
 import {
   BillLine,
@@ -7,32 +9,29 @@ import {
   UseBillPaymentReturn,
 } from "./types";
 
-export function useBillPayment(): UseBillPaymentReturn {
+export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
   const [discountValue, setDiscountValue] = useState("");
   const [appliedDiscountValue, setAppliedDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<DiscountType>("flat");
   const [selectedPayment, setPaymentMethod] = useState<PaymentMethod>("cash");
 
-  const lines: BillLine[] = [
-    {
-      id: "1",
-      n: "1",
-      name: "Momo Chicken (C)",
-      qty: 4,
-      amount: 420,
-    },
-    {
-      id: "2",
-      n: "2",
-      name: "Coke 500ml",
-      qty: 2,
-      amount: 100,
-    },
-  ];
+  const orders = useSelector((state: RootState) => state.order.orders);
+  const items = TABLENO ? orders[TABLENO] ?? [] : [];
+
+  const lines: BillLine[] = useMemo(() => {
+    return items.map((item, index) => ({
+      id: item.id,
+      n: String(index + 1),
+      name: item.name,
+      qty: item.quantity,
+      amount: item.RATE_A * item.quantity,
+      rate: item.RATE_A,
+    }));
+  }, [items]);
 
   const calculations = useMemo(() => {
     const gross = lines.reduce(
-      (total, line) => total + line.qty * line.amount,
+      (total, line) => total + line.amount,
       0,
     );
 
@@ -45,7 +44,6 @@ export function useBillPayment(): UseBillPaymentReturn {
 
     const vat = taxableAmount * 0.13;
 
-    // const total = taxableAmount + vat;
     const total = Math.round(taxableAmount + vat);
 
     return {
@@ -72,7 +70,7 @@ export function useBillPayment(): UseBillPaymentReturn {
 
   return {
     state: {
-      tableLabel: "Table 4",
+      tableLabel: TABLENO ? TABLENO : "Table 4",
       billMeta: "BILL NO 2140 · 14:38",
       lines,
       discountValue,

@@ -22,6 +22,7 @@ export interface KOTMemoAction {
   onBack: () => void;
   onFilterChange: (filter: MemoFilter) => void;
   onReprint: (memoId: string) => void;
+  onBill: (memoId: string) => void;
   onOpenTable: (memoId: string) => void;
 }
 

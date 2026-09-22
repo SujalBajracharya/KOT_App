@@ -22,7 +22,9 @@ export type RootStackParamList = {
   notification: undefined;
   splittransfer: undefined;
   memo: undefined;
-  bill: undefined;
+  bill: {
+    TABLENO?: string;
+  } | undefined;
   settlement: undefined;
 };
 

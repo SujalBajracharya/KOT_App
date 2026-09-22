@@ -28,11 +28,13 @@ const FILTERS: { key: MemoFilter; label: string }[] = [
 function MemoCard({
   item,
   onReprint,
+  onBill,
   onOpenTable,
   styles,
 }: {
   item: MemoItem;
   onReprint: (id: string) => void;
+  onBill: (id: string) => void;
   onOpenTable: (id: string) => void;
   styles: ReturnType<typeof createStyles>;
 }) {
@@ -70,6 +72,13 @@ function MemoCard({
           hitSlop={4}
         >
           <Text style={styles.memoActionText}>REPRINT</Text>
+        </Pressable>
+        <Pressable
+          style={styles.memoActionBtn}
+          onPress={() => onBill(item.id)}
+          hitSlop={4}
+        >
+          <Text style={styles.memoActionText}>BILL</Text>
         </Pressable>
         <Pressable
           style={styles.memoActionBtn}
@@ -145,6 +154,7 @@ export function KOTMemoContent({ state, action }: KOTMemoContentProps) {
               <MemoCard
                 item={item}
                 onReprint={action.onReprint}
+                onBill={action.onBill}
                 onOpenTable={action.onOpenTable}
                 styles={styles}
               />
