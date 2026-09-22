@@ -1,38 +1,66 @@
-import { useCallback, useMemo, useState } from 'react';
-import navigation from '@/utils/app_navigation';
-import { mockTableLayoutsResponse } from '@/data/mock/tables';
-import { TableItem, TableStatus, UseTablesReturn } from './types';
+import { useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import navigation from "@/utils/app_navigation";
+import { RootState } from "@/store";
+import { TableItem, TableStatus, UseTablesReturn } from "./types";
 
-const tableStatusMap: Record<string, { status: TableStatus; label: string }> = {
-  FREE: { status: 'free', label: 'FREE' },
-  OCCUPIED: { status: 'occupied', label: 'OCCUPIED' },
-  BILL: { status: 'bill', label: 'BILL' },
-  HELD: { status: 'held', label: 'HELD' },
+const tableStatusMap: Record<
+  string,
+  { status: TableStatus; label: string }
+> = {
+  FREE: { status: "free", label: "FREE" },
+  OCCUPIED: { status: "occupied", label: "OCCUPIED" },
+  BILL: { status: "bill", label: "BILL" },
+  HELD: { status: "held", label: "HELD" },
 };
 
 function formatAmount(amount?: number) {
-  return amount === undefined ? '' : `Rs ${amount.toLocaleString()}`;
+  return amount === undefined
+    ? ""
+    : `Rs ${amount.toLocaleString()}`;
+}
+
+function getElapsedMinutes(kotTime: string | null) {
+  if (!kotTime) return 0;
+
+  const startTime = new Date(kotTime).getTime();
+  const currentTime = Date.now();
+
+  const elapsedMilliseconds = currentTime - startTime;
+
+  return Math.max(
+    0,
+    Math.floor(elapsedMilliseconds / (1000 * 60)),
+  );
 }
 
 export function useTables(): UseTablesReturn {
-  const layouts = mockTableLayoutsResponse.result;
+  const layouts = useSelector(
+    (state: RootState) => state.table.layouts,
+  );
 
   const [activeFloorId, setActiveFloorId] = useState(
-    layouts[0]?.layoutId ?? '',
+    layouts[0]?.layoutId ?? "",
   );
 
   const activeLayout =
-    layouts.find((layout) => layout.layoutId === activeFloorId) ?? layouts[0];
+    layouts.find(
+      (layout) => layout.layoutId === activeFloorId,
+    ) ?? layouts[0];
 
   const tables = useMemo<TableItem[]>(() => {
     return (activeLayout?.tables ?? []).map((table) => {
       const status = tableStatusMap[table.status] ?? {
-        status: 'free',
-        label: 'FREE',
+        status: "free",
+        label: "FREE",
       };
-      const meta = table.Occupied
-        ? `${table.Occupied}/${table.capacity} pax · KOT ${table.kotCount} ·  ${table.KOTTIME ?? 0} m`
-        : `${table.capacity} pax`;
+
+      const elapsedMinutes = getElapsedMinutes(table.KOTTIME);
+
+      const meta =
+        table.status === "OCCUPIED"
+          ? `${table.capacity} pax · ${elapsedMinutes} m`
+          : `${table.capacity} pax`;
 
       return {
         id: table.tableId,
@@ -51,16 +79,18 @@ export function useTables(): UseTablesReturn {
   }, []);
 
   const onSearch = useCallback(() => {}, []);
+
   const onRefresh = useCallback(() => {}, []);
+
   const onFloorSelect = useCallback((floorId: string) => {
     setActiveFloorId(floorId);
   }, []);
 
   const onTablePress = useCallback((TABLENO: string) => {
-  navigation.navigate("order", {
-    TABLENO,
-  });
-}, [navigation]);
+    navigation.navigate("order", {
+      TABLENO,
+    });
+  }, []);
 
   return {
     state: {
@@ -71,6 +101,7 @@ export function useTables(): UseTablesReturn {
       })),
       tables,
     },
+
     action: {
       onBack,
       onSearch,

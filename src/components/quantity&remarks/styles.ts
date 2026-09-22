@@ -23,8 +23,8 @@ export const createStyles = (theme: AppTheme, isPortrait: boolean = false) =>
       ...(isPortrait
         ? {
             width: "100%",
-            height: "65%",
-            maxHeight: "65%",
+            height: "70%",
+            maxHeight: "70%",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderTopWidth: 1,

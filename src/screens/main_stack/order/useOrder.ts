@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveOrder } from "@/store/slices/order.slice";
 import { Alert } from "react-native";
 import { RootState } from "@/store";
+import { updateTableAfterKOT } from "@/store/slices/table.slice";
 
 export interface CartItem {
   id: string;
@@ -52,9 +53,7 @@ export function useOrder(TABLENO: string): UseOrderReturn {
   );
   const cartItems = useMemo(() => {
     const localCartItems = cartItemsByTable[TABLENO] ?? [];
-    const itemsById = new Map(
-      savedOrderItems.map((item) => [item.id, item]),
-    );
+    const itemsById = new Map(savedOrderItems.map((item) => [item.id, item]));
 
     localCartItems.forEach((item) => {
       itemsById.set(item.id, item);
@@ -158,6 +157,13 @@ export function useOrder(TABLENO: string): UseOrderReturn {
   // }, []);
 
   const onSendToKitchen = useCallback(() => {
+    const total = cartItems.reduce(
+      (sum, item) => sum + item.RATE_A * item.quantity,
+      0,
+    );
+
+    const kotTime = new Date().toISOString();
+
     const orderData = {
       tableNo: TABLENO,
       items: cartItems,
@@ -165,12 +171,27 @@ export function useOrder(TABLENO: string): UseOrderReturn {
 
     console.log("Saving order to Redux:", JSON.stringify(orderData, null, 2));
 
+    // Save food items to order slice
     dispatch(saveOrder(orderData));
 
-    console.log(
-      "Order dispatched successfully:",
-      JSON.stringify(orderData, null, 2),
+    // Update table state
+    dispatch(
+      updateTableAfterKOT({
+        tableNo: TABLENO,
+        quantity: total,
+        kotTime,
+      }),
     );
+
+    console.log("Order dispatched successfully:", {
+      orderData,
+      tableUpdate: {
+        tableNo: TABLENO,
+        quantity: total,
+        kotTime,
+        status: "OCCUPIED",
+      },
+    });
 
     Alert.alert(
       "Order Sent",

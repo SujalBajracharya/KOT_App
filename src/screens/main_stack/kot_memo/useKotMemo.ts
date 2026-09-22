@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { KOTMemoAction, KOTMemoState, MemoFilter, MemoItem } from "./types";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 // ─────────────────────────────────────────────
 //  Hook params — injected by the Screen so the
@@ -46,12 +48,26 @@ export function useKOTMemo({
   reprintKOT,
   initialMemos = [],
 }: UseKOTMemoParams): UseKOTMemoReturn {
-  const [allMemos] = useState<MemoItem[]>(initialMemos);
+  const savedOrders = useSelector((state: RootState) => state.order.orders);
   const [filter, setFilter] = useState<MemoFilter>("today");
   const [isLoading, setIsLoading] = useState(false);
 
+  const allMemos = useMemo<MemoItem[]>(() => {
+    return Object.entries(savedOrders).map(([tableNo, items]) => ({
+      id: tableNo,
+      kot: tableNo,
+      table: tableNo,
+      status: "sent",
+      statusLabel: "SENT",
+      lines: items.map((item) => `${item.quantity} × ${item.name}`).join(", "),
+    }));
+  }, [savedOrders]);
+
   // Derived: memos filtered by active tab
-  const memos = useMemo(() => applyFilter(allMemos, filter), [allMemos, filter]);
+  const memos = useMemo(
+    () => applyFilter(allMemos, filter),
+    [allMemos, filter],
+  );
 
   // ── Actions ──
 
@@ -68,7 +84,7 @@ export function useKOTMemo({
         setIsLoading(false);
       }
     },
-    [reprintKOT]
+    [reprintKOT],
   );
 
   const handleOpenTable = useCallback(
@@ -76,8 +92,9 @@ export function useKOTMemo({
       const memo = allMemos.find((m) => m.id === memoId);
       if (!memo) return;
       onOpenTable(memoId, memo.table);
+      console.log(memo.table);
     },
-    [allMemos, onOpenTable]
+    [allMemos, onOpenTable],
   );
 
   return {

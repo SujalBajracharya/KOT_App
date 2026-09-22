@@ -43,7 +43,7 @@ export function MenuItemCard({
 
         <View style={styles.itemThumb}>
           <Image
-            source={require("../../../../assets/placeholderimage.jpg")}
+            source={require("../../../assets/placeholderimage.jpg")}
             style={styles.itemThumbImage}
             resizeMode="cover"
           />

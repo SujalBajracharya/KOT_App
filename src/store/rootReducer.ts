@@ -1,12 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import serverReducer from './slices/server.slice';
 import orderReducer from './slices/order.slice';
-
-
+import tableReducer from './slices/table.slice';
 
 const combinedReducer = combineReducers({
   server: serverReducer,
-  order: orderReducer
+  order: orderReducer,
+  table: tableReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

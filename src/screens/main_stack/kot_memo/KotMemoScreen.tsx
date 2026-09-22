@@ -26,8 +26,9 @@ export default function KOTMemoScreen() {
     reprintKOT,
     onBack: () => navigation.goBack(),
     onOpenTable: (_memoId, tableLabel) => {
-      // Navigate to the order screen for this table
-      navigation.navigate("order", { tableLabel });
+      navigation.navigate("order", {
+        TABLENO: tableLabel,
+      });
     },
   });
 
