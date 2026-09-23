@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import navigation from "@/utils/app_navigation";
 import {
@@ -8,15 +8,17 @@ import {
   PaymentMethod,
   UseBillPaymentReturn,
 } from "./types";
+import { addPayment, createSettlement, settleSettlement } from "@/store/slices/settlements.slice";
 
 export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
   const [discountValue, setDiscountValue] = useState("");
   const [appliedDiscountValue, setAppliedDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<DiscountType>("flat");
-  const [selectedPayment, setPaymentMethod] = useState<PaymentMethod>("cash");
+  const [selectedPayment, setPaymentMethod] = useState<PaymentMethod>("CASH");
+  const dispatch = useDispatch();
 
   const orders = useSelector((state: RootState) => state.order.orders);
-  const items = TABLENO ? orders[TABLENO] ?? [] : [];
+  const items = TABLENO ? (orders[TABLENO] ?? []) : [];
 
   const lines: BillLine[] = useMemo(() => {
     return items.map((item, index) => ({
@@ -30,10 +32,7 @@ export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
   }, [items]);
 
   const calculations = useMemo(() => {
-    const gross = lines.reduce(
-      (total, line) => total + line.amount,
-      0,
-    );
+    const gross = lines.reduce((total, line) => total + line.amount, 0);
 
     const discount =
       discountType === "percent"
@@ -66,7 +65,31 @@ export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
     setAppliedDiscountValue(value);
   }, [discountValue]);
 
-  const onSettle = useCallback(() => {}, []);
+  const onSettle = useCallback(() => {
+    if (!TABLENO) {
+      console.error("TABLENO is missing");
+      return;
+    }
+    const settlementId = `SET-${Date.now()}`;
+
+    dispatch(
+      createSettlement({
+        settlementId,
+        TABLENO,
+        billTotal: calculations.total,
+      }),
+    );
+
+    dispatch(
+      addPayment({
+        settlementId,
+        paymentMethod: selectedPayment,
+        amount: calculations.total,
+      }),
+    );
+
+    dispatch(settleSettlement(settlementId));
+  }, [dispatch, TABLENO, calculations.total, selectedPayment]);
 
   return {
     state: {

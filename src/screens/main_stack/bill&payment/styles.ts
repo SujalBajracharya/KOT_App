@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { AppTheme } from '@/theme/ThemeContext';
-import { createGlobalStyles } from '@/styles/globalStyles';
-import { fonts } from '@/constants';
+import { StyleSheet } from "react-native";
+import { AppTheme } from "@/theme/ThemeContext";
+import { createGlobalStyles } from "@/styles/globalStyles";
+import { fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
@@ -11,6 +11,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     contentRow: {
       flex: 1,
       flexDirection: isLandscape ? "row" : "column",
+      justifyContent: "flex-end",
     },
     mainContent: {
       flex: 1,
@@ -19,10 +20,11 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       width: isLandscape ? 230 : "100%",
       borderLeftWidth: isLandscape ? 1 : 0,
       borderLeftColor: isLandscape ? theme.colors.border : undefined,
+      height: isLandscape ? "100%" : 80,
     },
     lineItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       paddingHorizontal: 16,
       paddingVertical: 12,
       borderBottomWidth: 1,
@@ -32,27 +34,27 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     lineNumber: {
       width: 24,
       fontSize: 12,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.textSecondary,
     },
     lineName: {
       flex: 1,
       fontSize: 14,
-      fontWeight: '600',
+      fontWeight: "600",
       color: theme.colors.text,
     },
     lineQty: {
       minWidth: 60,
-      textAlign: 'center',
+      textAlign: "center",
       fontSize: 13,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.text,
     },
     lineAmount: {
       width: 80,
-      textAlign: 'right',
+      textAlign: "right",
       fontSize: 14,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.text,
     },
     footer: {
@@ -63,13 +65,13 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       gap: 12,
     },
     discountRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       gap: 10,
     },
     discountLabel: {
       fontSize: 11,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.textSecondary,
     },
     discountInput: {
@@ -78,21 +80,21 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       borderWidth: 1,
       borderColor: theme.colors.border,
       borderRadius: 4,
-      justifyContent: 'center',
+      justifyContent: "center",
       backgroundColor: theme.colors.background,
     },
     discountInputText: {
       fontSize: 13,
-      fontWeight: '700',
+      fontWeight: "700",
       color: theme.colors.text,
     },
     discountTypeToggle: {
       width: 100,
-      flexDirection: 'row',
+      flexDirection: "row",
       borderWidth: 1,
       borderBottomWidth: 1,
       borderColor: theme.colors.text,
-      overflow: 'hidden',
+      overflow: "hidden",
     },
     discountTypeBtn: {
       paddingHorizontal: 10,
@@ -104,7 +106,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     discountTypeBtnText: {
       fontSize: 12,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.textSecondary,
       textAlign: "center",
     },
@@ -122,7 +124,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     applyButtonText: {
       fontSize: 11,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.onPrimary,
     },
     totalsBlock: {
@@ -133,8 +135,8 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       borderColor: theme.colors.border,
     },
     totalRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      justifyContent: "space-between",
     },
     totalLabel: {
       fontSize: 12,
@@ -142,34 +144,34 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     totalValue: {
       fontSize: 12,
-      fontWeight: '600',
+      fontWeight: "600",
       color: theme.colors.text,
     },
     grandTotalRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      justifyContent: "space-between",
       alignItems: "flex-end",
       marginTop: 4,
     },
     grandTotalLabel: {
       fontSize: 14,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.text,
     },
     grandTotalValue: {
       fontSize: fonts.size.xxl,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.primary,
     },
     paymentMethodLabel: {
       fontSize: 10,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.textSecondary,
     },
     paymentMethodRow: {
       gap: 10,
       justifyContent: "space-between",
-      flexDirection: 'row',
+      flexDirection: "row",
     },
     paymentMethodBtn: {
       flex: 1,
@@ -177,24 +179,24 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       borderWidth: 1,
       borderColor: theme.colors.border,
       borderRadius: 4,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
       backgroundColor: theme.colors.background,
     },
     paymentMethodBtnActive: {
       borderColor: theme.colors.primary,
-      backgroundColor: theme.colors.primary + '15',
+      backgroundColor: theme.colors.primary + "15",
     },
     paymentMethodText: {
       fontSize: 11,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.textSecondary,
     },
     paymentMethodTextActive: {
       color: theme.colors.primary,
     },
     actionRow: {
-      flexDirection: 'row',
+      flexDirection: "row",
       gap: 10,
       marginTop: 4,
     },
@@ -204,12 +206,12 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       borderWidth: 1,
       borderColor: theme.colors.borderStrong,
       borderRadius: 6,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     },
     printButtonText: {
       fontSize: 13,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.text,
     },
     settleButton: {
@@ -217,14 +219,14 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       height: 44,
       backgroundColor: theme.colors.primary,
       borderRadius: 6,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
       gap: 8,
     },
     settleButtonText: {
       fontSize: 13,
-      fontWeight: '800',
+      fontWeight: "800",
       color: theme.colors.onPrimary,
     },
   });

@@ -1,5 +1,5 @@
 export type DiscountType = "flat" | "percent";
-export type PaymentMethod = "cash" | "card" | "qr" | "credit";
+export type PaymentMethod = "CASH" | "CARD" | "QR" | "CREDIT";
 
 export interface BillLine {
   id: string;

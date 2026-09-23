@@ -13,10 +13,10 @@ import { Button } from "@/components/common/Button";
 import { PrimaryButton } from "@/components/common/PrimaryButton";
 
 const PAYMENT_METHODS: { key: PaymentMethod; label: string }[] = [
-  { key: "cash", label: "CASH" },
-  { key: "card", label: "CARD" },
-  { key: "qr", label: "QR" },
-  { key: "credit", label: "CREDIT" },
+  { key: "CASH", label: "CASH" },
+  { key: "CARD", label: "CARD" },
+  { key: "QR", label: "QR" },
+  { key: "CREDIT", label: "CREDIT" },
 ];
 
 export function BillPaymentContent({ state, action }: BillContentProps) {
