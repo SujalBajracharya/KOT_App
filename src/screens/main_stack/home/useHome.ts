@@ -1,17 +1,92 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 import navigation from '@/utils/app_navigation';
 import { UseHomeReturn } from './types';
+
+/** Returns true if an ISO timestamp string is from today (local date) */
+function isToday(isoString: string | null): boolean {
+  if (!isoString) return false;
+  const d = new Date(isoString);
+  const now = new Date();
+  return (
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate()
+  );
+}
+
+function formatRevenue(amount: number): string {
+  if (amount >= 1000) {
+    const k = amount / 1000;
+    // Show one decimal only when needed (e.g. 1.5K, not 1.0K)
+    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}K`;
+  }
+  return String(amount);
+}
 
 export function useHome(): UseHomeReturn {
   const [userName] = useState('User');
   const [terminal] = useState('04');
   const [shift] = useState(2);
-  const [tablesOpen] = useState(7);
-  const [billsWaiting] = useState(3);
-  const [revenueToday] = useState('41K');
   const [notificationCount] = useState(2);
   const [lastSynced] = useState('Never');
   const [menuItemCount] = useState(0);
+
+  // ── Redux selectors ─────────────────────────────────────────────────────────
+
+  const layouts = useSelector((state: RootState) => state.table.layouts);
+  const orderMeta = useSelector((state: RootState) => state.order.orderMeta);
+  const orders = useSelector((state: RootState) => state.order.orders);
+  const settlements = useSelector(
+    (state: RootState) => state.settlement.settlements,
+  );
+
+  // ── Tables Open ─────────────────────────────────────────────────────────────
+  // Count of non-disabled tables with status "FREE"
+  const tablesOpen = useMemo(() => {
+    let count = 0;
+    for (const layout of layouts) {
+      for (const table of layout.tables) {
+        if (!table.disabled && table.status === 'FREE') {
+          count++;
+        }
+      }
+    }
+    return count;
+  }, [layouts]);
+
+  // ── Bills Waiting ────────────────────────────────────────────────────────────
+  // Orders that are ACTIVE (not voided) and not yet settled
+  const billsWaiting = useMemo(() => {
+    const settledTableNos = new Set(
+      settlements
+        .filter((s) => s.status === 'SETTLED')
+        .map((s) => s.TABLENO),
+    );
+
+    let count = 0;
+    for (const tableNo of Object.keys(orders)) {
+      const meta = orderMeta[tableNo];
+      const isActive = !meta || meta.status === 'ACTIVE';
+      const isSettled = settledTableNos.has(tableNo);
+      if (isActive && !isSettled) {
+        count++;
+      }
+    }
+    return count;
+  }, [orders, orderMeta, settlements]);
+
+  // ── Rs Today ─────────────────────────────────────────────────────────────────
+  // Sum of billTotal for settlements settled today
+  const revenueToday = useMemo(() => {
+    const total = settlements
+      .filter((s) => s.status === 'SETTLED' && isToday(s.settledAt))
+      .reduce((sum, s) => sum + s.billTotal, 0);
+    return formatRevenue(total);
+  }, [settlements]);
+
+  // ── Actions ──────────────────────────────────────────────────────────────────
 
   const onTakeOrder = useCallback(() => {
     navigation.navigate('table');
@@ -21,10 +96,20 @@ export function useHome(): UseHomeReturn {
     navigation.navigate('memo');
   }, []);
 
-  const onSplitTransfer = useCallback(() => {navigation.navigate('splittransfer')}, []);
+  const onSplitTransfer = useCallback(() => {
+    navigation.navigate('splittransfer');
+  }, []);
+
   const onSyncMenu = useCallback(() => {}, []);
-  const onSettlement = useCallback(() => {navigation.navigate('settlement')}, []);
-  const onNotifications = useCallback(() => {navigation.navigate('notification')}, []);
+
+  const onSettlement = useCallback(() => {
+    navigation.navigate('settlement');
+  }, []);
+
+  const onNotifications = useCallback(() => {
+    navigation.navigate('notification');
+  }, []);
+
   const onLogOut = useCallback(() => {}, []);
 
   return {

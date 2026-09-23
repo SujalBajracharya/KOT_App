@@ -1,12 +1,10 @@
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   Text,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeft } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { useOrientation } from "@/hooks/useOrientation";
 import { createStyles } from "./styles";
@@ -29,12 +27,14 @@ function MemoCard({
   item,
   onReprint,
   onBill,
+  onCancel,
   onOpenTable,
   styles,
 }: {
   item: MemoItem;
   onReprint: (id: string) => void;
   onBill: (id: string) => void;
+  onCancel: (id: string) => void;
   onOpenTable: (id: string) => void;
   styles: ReturnType<typeof createStyles>;
 }) {
@@ -82,6 +82,13 @@ function MemoCard({
         </Pressable>
         <Pressable
           style={styles.memoActionBtn}
+          onPress={() => onCancel(item.id)}
+          hitSlop={4}
+        >
+          <Text style={styles.memoActionText}>CANCEL</Text>
+        </Pressable>
+        <Pressable
+          style={styles.memoActionBtn}
           onPress={() => onOpenTable(item.id)}
           hitSlop={4}
         >
@@ -107,10 +114,7 @@ export function KOTMemoContent({ state, action }: KOTMemoContentProps) {
     >
       <View style={styles.container}>
         {/* ── Header ── */}
-        <AppHeader
-          title="KOT Memo"
-          onBack={action.onBack}
-        />
+        <AppHeader title="KOT Memo" onBack={action.onBack} />
 
         {/* ── Filter tabs ── */}
         <View style={styles.SplitTabs}>
@@ -155,6 +159,7 @@ export function KOTMemoContent({ state, action }: KOTMemoContentProps) {
                 item={item}
                 onReprint={action.onReprint}
                 onBill={action.onBill}
+                onCancel={action.onCancel}
                 onOpenTable={action.onOpenTable}
                 styles={styles}
               />

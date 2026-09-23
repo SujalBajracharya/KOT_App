@@ -24,6 +24,7 @@ export interface KOTMemoAction {
   onReprint: (memoId: string) => void;
   onBill: (memoId: string) => void;
   onOpenTable: (memoId: string) => void;
+  onCancel: (memoId: string) => void;
 }
 
 export interface KOTMemoContentProps {

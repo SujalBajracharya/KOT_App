@@ -15,6 +15,8 @@ export interface Settlement {
   billTotal: number;
   payments: SettlementPayment[];
   status: SettlementStatus;
+  /** ISO timestamp set when settleSettlement is dispatched */
+  settledAt: string | null;
 }
 
 interface SettlementState {
@@ -44,6 +46,7 @@ const settlementSlice = createSlice({
         billTotal: action.payload.billTotal,
         payments: [],
         status: "PENDING",
+        settledAt: null,
       });
     },
 
@@ -75,6 +78,7 @@ const settlementSlice = createSlice({
       if (!settlement) return;
 
       settlement.status = "SETTLED";
+      settlement.settledAt = new Date().toISOString();
     },
 
     voidSettlement: (state, action: PayloadAction<string>) => {

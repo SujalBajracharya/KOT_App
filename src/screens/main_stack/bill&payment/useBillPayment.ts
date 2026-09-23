@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import navigation from "@/utils/app_navigation";
@@ -8,7 +9,13 @@ import {
   PaymentMethod,
   UseBillPaymentReturn,
 } from "./types";
-import { addPayment, createSettlement, settleSettlement } from "@/store/slices/settlements.slice";
+import {
+  addPayment,
+  createSettlement,
+  settleSettlement,
+} from "@/store/slices/settlements.slice";
+import { resetTable } from "@/store/slices/table.slice";
+import { clearTableOrder } from "@/store/slices/order.slice";
 
 export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
   const [discountValue, setDiscountValue] = useState("");
@@ -61,17 +68,19 @@ export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
 
   const onApplyDiscount = useCallback(() => {
     const value = Number(discountValue) || 0;
-
     setAppliedDiscountValue(value);
   }, [discountValue]);
 
-  const onSettle = useCallback(() => {
+  /** Perform the actual settlement — called only after user confirms the Alert */
+  const performSettle = useCallback(() => {
     if (!TABLENO) {
       console.error("TABLENO is missing");
       return;
     }
+
     const settlementId = `SET-${Date.now()}`;
 
+    // 1. Create the settlement record
     dispatch(
       createSettlement({
         settlementId,
@@ -80,6 +89,7 @@ export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
       }),
     );
 
+    // 2. Record the payment (one entry for the selected method + full total)
     dispatch(
       addPayment({
         settlementId,
@@ -88,13 +98,40 @@ export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
       }),
     );
 
+    // 3. Mark as SETTLED (sets settledAt timestamp)
     dispatch(settleSettlement(settlementId));
+
+    // 4. Free the table
+    dispatch(resetTable({ tableNo: TABLENO }));
+
+    // 5. Clear the order so it no longer shows in KOT Memo active list
+    dispatch(clearTableOrder(TABLENO));
+
+    // 6. Return to previous screen
+    navigation.goBack();
   }, [dispatch, TABLENO, calculations.total, selectedPayment]);
+
+  const onSettle = useCallback(() => {
+    Alert.alert(
+      "Confirm Settlement",
+      "Are you sure you want to settle this bill?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: performSettle,
+        },
+      ],
+    );
+  }, [performSettle]);
 
   return {
     state: {
-      tableLabel: TABLENO ? TABLENO : "Table 4",
-      billMeta: "BILL NO 2140 · 14:38",
+      tableLabel: TABLENO ? TABLENO : "Table",
+      billMeta: `BILL · ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
       lines,
       discountValue,
       discountType,

@@ -1,7 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
-import { KOTMemoAction, KOTMemoState, MemoFilter, MemoItem } from "./types";
-import { useSelector } from "react-redux";
+import { Alert } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { voidOrder } from "@/store/slices/order.slice";
+import { resetTable } from "@/store/slices/table.slice";
+import { KOTMemoAction, KOTMemoState, MemoFilter, MemoItem } from "./types";
 
 // ─────────────────────────────────────────────
 //  Hook params — injected by the Screen so the
@@ -46,22 +49,32 @@ export function useKOTMemo({
   onOpenTable,
   onBill,
   reprintKOT,
-  initialMemos = [],
 }: UseKOTMemoParams): UseKOTMemoReturn {
+  const dispatch = useDispatch();
   const savedOrders = useSelector((state: RootState) => state.order.orders);
+  const orderMeta = useSelector((state: RootState) => state.order.orderMeta);
   const [filter, setFilter] = useState<MemoFilter>("today");
   const [isLoading, setIsLoading] = useState(false);
 
+  /**
+   * Build the full memo list from ALL orders in Redux (both ACTIVE and VOIDED).
+   * Status is derived from orderMeta so it stays reactive.
+   */
   const allMemos = useMemo<MemoItem[]>(() => {
-    return Object.entries(savedOrders).map(([tableNo, items]) => ({
-      id: tableNo,
-      kot: tableNo,
-      table: tableNo,
-      status: "sent",
-      statusLabel: "SENT",
-      lines: items.map((item) => `${item.quantity} × ${item.name}`).join(", "),
-    }));
-  }, [savedOrders]);
+    return Object.entries(savedOrders).map(([tableNo, items]) => {
+      const meta = orderMeta[tableNo];
+      const isVoided = meta?.status === "VOIDED";
+
+      return {
+        id: tableNo,
+        kot: tableNo,
+        table: tableNo,
+        status: isVoided ? "voided" : "sent",
+        statusLabel: isVoided ? "VOIDED" : "SENT",
+        lines: items.map((item) => `${item.quantity} × ${item.name}`).join(", "),
+      };
+    });
+  }, [savedOrders, orderMeta]);
 
   // Derived: memos filtered by active tab
   const memos = useMemo(
@@ -100,9 +113,37 @@ export function useKOTMemo({
       const memo = allMemos.find((m) => m.id === memoId);
       if (!memo) return;
       onOpenTable(memoId, memo.table);
-      console.log(memo.table);
     },
     [allMemos, onOpenTable],
+  );
+
+  const handleCancel = useCallback(
+    (memoId: string) => {
+      const memo = allMemos.find((m) => m.id === memoId);
+      if (!memo) return;
+
+      // Already voided — nothing to do
+      if (memo.status === "voided") return;
+
+      Alert.alert(
+        "Cancel Order?",
+        "Are you sure you want to cancel this order?",
+        [
+          { text: "No", style: "cancel" },
+          {
+            text: "Yes",
+            style: "destructive",
+            onPress: () => {
+              // Mark order as VOIDED (keeps data so Voided tab can display it)
+              dispatch(voidOrder(memo.table));
+              // Free the table
+              dispatch(resetTable({ tableNo: memo.table }));
+            },
+          },
+        ],
+      );
+    },
+    [allMemos, dispatch],
   );
 
   return {
@@ -117,6 +158,7 @@ export function useKOTMemo({
       onReprint: handleReprint,
       onBill: handleBill,
       onOpenTable: handleOpenTable,
+      onCancel: handleCancel,
     },
   };
 }
