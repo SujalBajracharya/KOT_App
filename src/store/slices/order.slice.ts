@@ -8,12 +8,23 @@ export interface OrderMeta {
   voidedAt: string | null;
 }
 
+/** Historical record preserved when an order is voided */
+export interface VoidedOrder {
+  items: CartItem[];
+  voidedAt: string;
+}
+
 interface OrderState {
   tableNo: string;
   items: CartItem[];
+
+  /** Active orders only — voided orders are removed from here */
   orders: Record<string, CartItem[]>;
-  /** Per-table metadata — status and void timestamp */
+  /** Per-table metadata for ACTIVE orders only */
   orderMeta: Record<string, OrderMeta>;
+
+  /** Historical voided orders — never removed during normal void flow */
+  voidedOrders: Record<string, VoidedOrder>;
 }
 
 interface SplitAndTransferPayload {
@@ -30,6 +41,7 @@ const initialState: OrderState = {
   items: [],
   orders: {},
   orderMeta: {},
+  voidedOrders: {},
 };
 
 const orderSlice = createSlice({
@@ -56,6 +68,7 @@ const orderSlice = createSlice({
       state.items = [];
       state.orders = {};
       state.orderMeta = {};
+      state.voidedOrders = {};
     },
 
     /** Remove a single table's order and metadata (called after settlement) */
@@ -65,13 +78,34 @@ const orderSlice = createSlice({
       delete state.orderMeta[tableNo];
     },
 
-    /** Mark an order as VOIDED — does NOT delete it so Voided tab can show it */
+    /**
+     * Void an order:
+     *   - Copies the full CartItem list into `voidedOrders` for history.
+     *   - Removes the order from active `orders` and `orderMeta`.
+     *   - Clears the current selection if the voided table was selected.
+     */
     voidOrder: (state, action: PayloadAction<string>) => {
       const tableNo = action.payload;
-      state.orderMeta[tableNo] = {
-        status: "VOIDED",
+      const items = state.orders[tableNo];
+
+      // Nothing to void — bail out safely
+      if (!items) return;
+
+      // Preserve the full order in the voided history
+      state.voidedOrders[tableNo] = {
+        items: [...items],
         voidedAt: new Date().toISOString(),
       };
+
+      // Remove from active orders and metadata
+      delete state.orders[tableNo];
+      delete state.orderMeta[tableNo];
+
+      // Clear current selection if the voided table was active
+      if (state.tableNo === tableNo) {
+        state.tableNo = "";
+        state.items = [];
+      }
     },
 
     splitAndTransferOrder: (

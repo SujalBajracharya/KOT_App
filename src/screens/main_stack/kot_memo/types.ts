@@ -9,6 +9,7 @@ export interface MemoItem {
   status: MemoStatus;
   statusLabel: string;
   lines: string;
+  voidedAt?: string;
 }
 
 

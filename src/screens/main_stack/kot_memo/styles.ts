@@ -95,6 +95,11 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     memoStatusPrinting: {
       color: theme.colors.text,
     },
+    memoVoidedAt: {
+      ...typography.caption,
+      fontSize: 11,
+      color: theme.colors.textSecondary,
+    },
     memoLines: {
       ...typography.body,
       fontSize: 13.5,

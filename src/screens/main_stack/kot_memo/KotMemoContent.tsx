@@ -1,9 +1,4 @@
-import {
-  FlatList,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/theme/ThemeContext";
 import { useOrientation } from "@/hooks/useOrientation";
@@ -11,18 +6,12 @@ import { createStyles } from "./styles";
 import { KOTMemoContentProps, MemoFilter, MemoItem, MemoStatus } from "./types";
 import { AppHeader } from "@/components/common/Header";
 
-// ─────────────────────────────────────────────
-//  Constants
-// ─────────────────────────────────────────────
 const FILTERS: { key: MemoFilter; label: string }[] = [
   { key: "today", label: "TODAY" },
   { key: "voided", label: "VOIDED" },
   { key: "all", label: "ALL" },
 ];
 
-// ─────────────────────────────────────────────
-//  Sub-components
-// ─────────────────────────────────────────────
 function MemoCard({
   item,
   onReprint,
@@ -59,48 +48,54 @@ function MemoCard({
         <Text style={[styles.memoStatus, statusStyle(item.status)]}>
           {item.statusLabel}
         </Text>
+        {item.voidedAt ? (
+          <Text style={styles.memoVoidedAt}>{item.voidedAt}</Text>
+        ) : null}
       </View>
 
       {/* Line summary */}
       <Text style={styles.memoLines}>{item.lines}</Text>
 
       {/* Actions */}
-      <View style={styles.memoActions}>
-        <Pressable
-          style={styles.memoActionBtn}
-          onPress={() => onReprint(item.id)}
-          hitSlop={4}
-        >
-          <Text style={styles.memoActionText}>REPRINT</Text>
-        </Pressable>
-        <Pressable
-          style={styles.memoActionBtn}
-          onPress={() => onBill(item.id)}
-          hitSlop={4}
-        >
-          <Text style={styles.memoActionText}>BILL</Text>
-        </Pressable>
-        <Pressable
-          style={styles.memoActionBtn}
-          onPress={() => onCancel(item.id)}
-          hitSlop={4}
-        >
-          <Text style={styles.memoActionText}>CANCEL</Text>
-        </Pressable>
-        <Pressable
-          style={styles.memoActionBtn}
-          onPress={() => onOpenTable(item.id)}
-          hitSlop={4}
-        >
-          <Text style={styles.memoActionText}>OPEN TABLE</Text>
-        </Pressable>
-      </View>
+      {item.status !== "voided" && (
+        <View style={styles.memoActions}>
+          <Pressable
+            style={styles.memoActionBtn}
+            onPress={() => onReprint(item.id)}
+            hitSlop={4}
+          >
+            <Text style={styles.memoActionText}>REPRINT</Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.memoActionBtn}
+            onPress={() => onBill(item.id)}
+            hitSlop={4}
+          >
+            <Text style={styles.memoActionText}>BILL</Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.memoActionBtn}
+            onPress={() => onCancel(item.id)}
+            hitSlop={4}
+          >
+            <Text style={styles.memoActionText}>CANCEL</Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.memoActionBtn}
+            onPress={() => onOpenTable(item.id)}
+            hitSlop={4}
+          >
+            <Text style={styles.memoActionText}>OPEN TABLE</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 }
 
-// ─────────────────────────────────────────────
-//  Content (pure — no hooks except theme/styles)
 // ─────────────────────────────────────────────
 export function KOTMemoContent({ state, action }: KOTMemoContentProps) {
   const { theme } = useTheme();

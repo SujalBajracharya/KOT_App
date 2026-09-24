@@ -3,13 +3,10 @@ import { Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { voidOrder } from "@/store/slices/order.slice";
+import type { VoidedOrder } from "@/store/slices/order.slice";
 import { resetTable } from "@/store/slices/table.slice";
 import { KOTMemoAction, KOTMemoState, MemoFilter, MemoItem } from "./types";
 
-// ─────────────────────────────────────────────
-//  Hook params — injected by the Screen so the
-//  hook stays decoupled from navigation.
-// ─────────────────────────────────────────────
 export interface UseKOTMemoParams {
   /** Called when the user presses the back button */
   onBack: () => void;
@@ -52,29 +49,55 @@ export function useKOTMemo({
 }: UseKOTMemoParams): UseKOTMemoReturn {
   const dispatch = useDispatch();
   const savedOrders = useSelector((state: RootState) => state.order.orders);
-  const orderMeta = useSelector((state: RootState) => state.order.orderMeta);
+  const voidedOrders = useSelector(
+    (state: RootState) => state.order.voidedOrders,
+  );
   const [filter, setFilter] = useState<MemoFilter>("today");
   const [isLoading, setIsLoading] = useState(false);
 
   /**
-   * Build the full memo list from ALL orders in Redux (both ACTIVE and VOIDED).
-   * Status is derived from orderMeta so it stays reactive.
+   * Build the full memo list:
+   *   - TODAY entries come exclusively from `orders` (active only).
+   *   - VOIDED entries come exclusively from `voidedOrders` (historical).
    */
   const allMemos = useMemo<MemoItem[]>(() => {
-    return Object.entries(savedOrders).map(([tableNo, items]) => {
-      const meta = orderMeta[tableNo];
-      const isVoided = meta?.status === "VOIDED";
+    const activeMemos: MemoItem[] = Object.entries(savedOrders).map(
+      ([tableNo, items]) => ({
+        id: tableNo,
+        kot: tableNo,
+        table: tableNo,
+        status: "sent" as const,
+        statusLabel: "SENT",
+        voidedAt: undefined,
+        lines: items
+          .map((item) => `${item.quantity} × ${item.name}`)
+          .join(", "),
+      }),
+    );
+
+    const voidedMemos: MemoItem[] = Object.entries(
+      voidedOrders as Record<string, VoidedOrder>,
+    ).map(([tableNo, voided]) => {
+      const voidedTime = new Date(voided.voidedAt).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
 
       return {
         id: tableNo,
         kot: tableNo,
         table: tableNo,
-        status: isVoided ? "voided" : "sent",
-        statusLabel: isVoided ? "VOIDED" : "SENT",
-        lines: items.map((item) => `${item.quantity} × ${item.name}`).join(", "),
+        status: "voided" as const,
+        statusLabel: "VOIDED",
+        voidedAt: voidedTime,
+        lines: voided.items
+          .map((item) => `${item.quantity} × ${item.name}`)
+          .join(", "),
       };
     });
-  }, [savedOrders, orderMeta]);
+
+    return [...activeMemos, ...voidedMemos];
+  }, [savedOrders, voidedOrders]);
 
   // Derived: memos filtered by active tab
   const memos = useMemo(

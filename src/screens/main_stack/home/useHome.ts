@@ -36,7 +36,6 @@ export function useHome(): UseHomeReturn {
   // ── Redux selectors ─────────────────────────────────────────────────────────
 
   const layouts = useSelector((state: RootState) => state.table.layouts);
-  const orderMeta = useSelector((state: RootState) => state.order.orderMeta);
   const orders = useSelector((state: RootState) => state.order.orders);
   const settlements = useSelector(
     (state: RootState) => state.settlement.settlements,
@@ -57,7 +56,7 @@ export function useHome(): UseHomeReturn {
   }, [layouts]);
 
   // ── Bills Waiting ────────────────────────────────────────────────────────────
-  // Orders that are ACTIVE (not voided) and not yet settled
+  // Orders in `orders` are always ACTIVE — voided orders are moved to voidedOrders
   const billsWaiting = useMemo(() => {
     const settledTableNos = new Set(
       settlements.filter((s) => s.status === "SETTLED").map((s) => s.TABLENO),
@@ -65,15 +64,12 @@ export function useHome(): UseHomeReturn {
 
     let count = 0;
     for (const tableNo of Object.keys(orders)) {
-      const meta = orderMeta[tableNo];
-      const isActive = !meta || meta.status === "ACTIVE";
-      const isSettled = settledTableNos.has(tableNo);
-      if (isActive && !isSettled) {
+      if (!settledTableNos.has(tableNo)) {
         count++;
       }
     }
     return count;
-  }, [orders, orderMeta, settlements]);
+  }, [orders, settlements]);
 
   // ── Rs Today ─────────────────────────────────────────────────────────────────
   // Sum of billTotal for settlements settled today
