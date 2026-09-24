@@ -63,12 +63,11 @@ export function useKOTMemo({
   const allMemos = useMemo<MemoItem[]>(() => {
     const activeMemos: MemoItem[] = Object.entries(savedOrders).map(
       ([tableNo, items]) => ({
-        id: tableNo,
+        id: `active-${tableNo}`,
         kot: tableNo,
         table: tableNo,
         status: "sent" as const,
         statusLabel: "SENT",
-        voidedAt: undefined,
         lines: items
           .map((item) => `${item.quantity} × ${item.name}`)
           .join(", "),
@@ -84,7 +83,7 @@ export function useKOTMemo({
       });
 
       return {
-        id: tableNo,
+        id: `voided-${tableNo}-${voided.voidedAt}`,
         kot: tableNo,
         table: tableNo,
         status: "voided" as const,
