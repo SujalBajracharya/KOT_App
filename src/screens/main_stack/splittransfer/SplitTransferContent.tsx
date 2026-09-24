@@ -89,58 +89,70 @@ export function SplitTransferContent({
                   </Text>
                 </View>
               }
-              renderItem={({ item: l }) => (
-                <View style={styles.splitItem}>
-                  <View style={styles.splitItemHeader}>
+              renderItem={({ item: l }) =>
+                state.activeMode === "move" ? (
+                  <View style={styles.moveItem}>
                     <Text style={styles.splitItemName}>{l.name}</Text>
                     <Text style={styles.splitItemQty}>{l.totalQty}</Text>
                   </View>
-                  <View style={styles.splitPartners}>
-                    <View style={styles.splitPartnerStay}>
-                      <Text style={styles.splitPartnerLabel}>
-                        {l.stayLabel}
-                      </Text>
-                      <Text style={styles.splitPartnerValue}>{l.stayQty}</Text>
+                ) : (
+                  <View style={styles.splitItem}>
+                    <View style={styles.splitItemHeader}>
+                      <Text style={styles.splitItemName}>{l.name}</Text>
+                      <Text style={styles.splitItemQty}>{l.totalQty}</Text>
                     </View>
-                    <View style={styles.splitPartnerMove}>
-                      <Text
-                        style={[
-                          styles.splitPartnerLabel,
-                          styles.splitPartnerLabelDark,
-                        ]}
-                      >
-                        {l.moveLabel}
-                      </Text>
-                      <View style={styles.quantityControls}>
-                        <Button
-                          onPress={() => action.onMoveQuantityChange(l.id, -1)}
-                          disabled={l.moveQty === 0}
-                          style={styles.quantityButton}
-                          accessibilityLabel={`Move less ${l.name}`}
-                        >
-                          <Text style={styles.quantityButtonText}>-</Text>
-                        </Button>
+                    <View style={styles.splitPartners}>
+                      <View style={styles.splitPartnerStay}>
+                        <Text style={styles.splitPartnerLabel}>
+                          {l.stayLabel}
+                        </Text>
+                        <Text style={styles.splitPartnerValue}>
+                          {l.stayQty}
+                        </Text>
+                      </View>
+                      <View style={styles.splitPartnerMove}>
                         <Text
                           style={[
-                            styles.splitPartnerValue,
-                            styles.splitPartnerValueDark,
+                            styles.splitPartnerLabel,
+                            styles.splitPartnerLabelDark,
                           ]}
                         >
-                          {l.moveQty}
+                          {l.moveLabel}
                         </Text>
-                        <Button
-                          onPress={() => action.onMoveQuantityChange(l.id, 1)}
-                          disabled={l.moveQty >= l.stayQty + l.moveQty}
-                          style={styles.quantityButton}
-                          accessibilityLabel={`Move more ${l.name}`}
-                        >
-                          <Text style={styles.quantityButtonText}>+</Text>
-                        </Button>
+                        <View style={styles.quantityControls}>
+                          <Button
+                            onPress={() =>
+                              action.onMoveQuantityChange(l.id, -1)
+                            }
+                            disabled={l.moveQty === 0}
+                            style={styles.quantityButton}
+                            accessibilityLabel={`Move less ${l.name}`}
+                          >
+                            <Text style={styles.quantityButtonText}>-</Text>
+                          </Button>
+                          <Text
+                            style={[
+                              styles.splitPartnerValue,
+                              styles.splitPartnerValueDark,
+                            ]}
+                          >
+                            {l.moveQty}
+                          </Text>
+                          <Button
+                            onPress={() =>
+                              action.onMoveQuantityChange(l.id, 1)
+                            }
+                            disabled={l.moveQty >= l.stayQty + l.moveQty}
+                            style={styles.quantityButton}
+                            accessibilityLabel={`Move more ${l.name}`}
+                          >
+                            <Text style={styles.quantityButtonText}>+</Text>
+                          </Button>
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              )}
+                )}
             />
           </View>
 
@@ -149,10 +161,14 @@ export function SplitTransferContent({
             <View style={styles.footer}>
               <View style={styles.footerSummary}>
                 <Text style={styles.footerSummaryText}>
-                  {state.movingSummary}
+                  {state.activeMode === "move"
+                    ? `Moving all items from ${state.sourceTable || "source"}`
+                    : state.movingSummary}
                 </Text>
                 <Text style={styles.footerSummaryText}>
-                  {state.stayingSummary}
+                  {state.activeMode === "move"
+                    ? "Source will be empty"
+                    : state.stayingSummary}
                 </Text>
               </View>
               <Button
@@ -169,7 +185,9 @@ export function SplitTransferContent({
                   borderColor: theme.colors.primary,
                 }}
               >
-                <Text style={styles.confirmButtonText}>CONFIRM SPLIT</Text>
+                <Text style={styles.confirmButtonText}>
+                  {state.activeMode === "move" ? "MOVE TABLE" : "CONFIRM SPLIT"}
+                </Text>
 
                 <Check size={20} color={theme.colors.onPrimary} />
               </Button>

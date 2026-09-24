@@ -44,6 +44,7 @@ export function useSplitTransfer(): UseSplitTransferReturn {
       active: false,
     },
   ]);
+  const activeMode = modes.find((mode) => mode.active)?.id ?? "split";
 
   const tableNumbers = useMemo(
     () =>
@@ -80,10 +81,13 @@ export function useSplitTransfer(): UseSplitTransferReturn {
           : {};
 
       return sourceItems.map((item) => {
-        const moveQty = Math.min(
-          item.quantity,
-          Math.max(0, moveQuantities[item.id] ?? 0),
-        );
+        const moveQty =
+          activeMode === "move"
+            ? item.quantity
+            : Math.min(
+                item.quantity,
+                Math.max(0, moveQuantities[item.id] ?? 0),
+              );
 
         return {
           id: item.id,
@@ -96,7 +100,7 @@ export function useSplitTransfer(): UseSplitTransferReturn {
         };
       });
     },
-    [destination, sourceItems, sourceTable, temporarySplit],
+    [activeMode, destination, sourceItems, sourceTable, temporarySplit],
   );
 
   const onBack = useCallback(() => {
@@ -175,9 +179,20 @@ export function useSplitTransfer(): UseSplitTransferReturn {
       return;
     }
 
-    const transfers = lines
-      .filter((line) => line.moveQty > 0)
-      .map((line) => ({ itemId: line.id, quantity: line.moveQty }));
+    if (activeMode === "move" && sourceItems.length === 0) {
+      Alert.alert("No items to move", "The selected source table has no items.");
+      return;
+    }
+
+    const transfers =
+      activeMode === "move"
+        ? sourceItems.map((item) => ({
+            itemId: item.id,
+            quantity: item.quantity,
+          }))
+        : lines
+            .filter((line) => line.moveQty > 0)
+            .map((line) => ({ itemId: line.id, quantity: line.moveQty }));
 
     if (transfers.length === 0) {
       Alert.alert(
@@ -187,80 +202,91 @@ export function useSplitTransfer(): UseSplitTransferReturn {
       return;
     }
 
-    const destinationItems = orders[destination] ?? [];
-    const destinationById = new Map(
-      destinationItems.map((item) => [item.id, item]),
-    );
-
-    for (const line of lines) {
-      if (line.moveQty === 0) continue;
-
-      const sourceItem = sourceItems.find((item) => item.id === line.id);
-      if (!sourceItem) continue;
-
-      const movedItem = {
-        ...sourceItem,
-        quantity: line.moveQty,
-      };
-      const existingItem = destinationById.get(movedItem.id);
-
-      destinationById.set(
-        movedItem.id,
-        existingItem
-          ? {
-              ...existingItem,
-              quantity: existingItem.quantity + movedItem.quantity,
-            }
-          : movedItem,
+    const completeTransfer = () => {
+      const destinationItems = orders[destination] ?? [];
+      const destinationById = new Map(
+        destinationItems.map((item) => [item.id, item]),
       );
-    }
 
-    const remainingSourceItems = sourceItems
-      .map((item) => {
-        const line = lines.find((currentLine) => currentLine.id === item.id);
-        return {
-          ...item,
-          quantity: line?.stayQty ?? item.quantity,
-        };
-      })
-      .filter((item) => item.quantity > 0);
-    const updatedDestinationItems = Array.from(destinationById.values());
-    const kotTime = new Date().toISOString();
+      for (const line of lines) {
+        if (line.moveQty === 0) continue;
 
-    dispatch(
-      splitAndTransferOrder({
-        sourceTable,
-        destinationTable: destination,
-        transfers,
-      }),
-    );
-    dispatch(
-      saveOrder({
-        tableNo: destination,
-        items: updatedDestinationItems,
-      }),
-    );
-    if (remainingSourceItems.length > 0) {
+        const sourceItem = sourceItems.find((item) => item.id === line.id);
+        if (!sourceItem) continue;
+
+        const movedItem = { ...sourceItem, quantity: line.moveQty };
+        const existingItem = destinationById.get(movedItem.id);
+
+        destinationById.set(
+          movedItem.id,
+          existingItem
+            ? {
+                ...existingItem,
+                quantity: existingItem.quantity + movedItem.quantity,
+              }
+            : movedItem,
+        );
+      }
+
+      const remainingSourceItems = sourceItems
+        .map((item) => {
+          const line = lines.find((currentLine) => currentLine.id === item.id);
+          return { ...item, quantity: line?.stayQty ?? item.quantity };
+        })
+        .filter((item) => item.quantity > 0);
+      const updatedDestinationItems = Array.from(destinationById.values());
+      const kotTime = new Date().toISOString();
+
+      dispatch(
+        splitAndTransferOrder({
+          sourceTable,
+          destinationTable: destination,
+          transfers,
+        }),
+      );
+      dispatch(
+        saveOrder({
+          tableNo: destination,
+          items: updatedDestinationItems,
+        }),
+      );
+      if (remainingSourceItems.length > 0) {
+        dispatch(
+          updateTableAfterKOT({
+            tableNo: sourceTable,
+            quantity: getOrderTotal(remainingSourceItems),
+            kotTime,
+          }),
+        );
+      } else {
+        dispatch(resetTable({ tableNo: sourceTable }));
+      }
       dispatch(
         updateTableAfterKOT({
-          tableNo: sourceTable,
-          quantity: getOrderTotal(remainingSourceItems),
+          tableNo: destination,
+          quantity: getOrderTotal(updatedDestinationItems),
           kotTime,
         }),
       );
-    } else {
-      dispatch(resetTable({ tableNo: sourceTable }));
+      setTemporarySplit({ sourceTable, moveQuantities: {} });
+      Alert.alert("Transfer complete", `Items moved to ${destination}.`);
+    };
+
+    if (activeMode === "move") {
+      Alert.alert(
+        "Confirm move",
+        `Move all items from ${sourceTable} to ${destination}?`,
+        [
+          { text: "CANCEL", style: "cancel" },
+          { text: "MOVE", onPress: completeTransfer },
+        ],
+      );
+      return;
     }
-    dispatch(
-      updateTableAfterKOT({
-        tableNo: destination,
-        quantity: getOrderTotal(updatedDestinationItems),
-        kotTime,
-      }),
-    );
-    setTemporarySplit({ sourceTable, moveQuantities: {} });
-    Alert.alert("Transfer complete", `Items moved to ${destination}.`);
+
+    completeTransfer();
   }, [
+    activeMode,
     destination,
     dispatch,
     lines,
@@ -278,6 +304,7 @@ export function useSplitTransfer(): UseSplitTransferReturn {
         ? `Table ${sourceTable} · Split & Transfer`
         : "Split & Transfer",
       modes,
+      activeMode,
       sourceTable,
       sourceTables,
       destinationTables,

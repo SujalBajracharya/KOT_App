@@ -114,6 +114,14 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.border,
     },
+    moveItem: {
+      padding: 16,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.border,
+    },
     splitItemHeader: {
       flexDirection: "row",
       justifyContent: "space-between",

@@ -20,6 +20,7 @@ export interface SplitLine {
 export interface SplitTransferState {
   tableLabel: string;
   modes: SplitModeItem[];
+  activeMode: SplitMode;
   sourceTable: string;
   sourceTables: string[];
   destinationTables: string[];
