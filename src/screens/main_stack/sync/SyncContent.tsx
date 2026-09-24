@@ -10,22 +10,23 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/theme/ThemeContext";
-import { useOrientation } from "@/hooks/useOrientation";
-import { SignInContentProps } from "./types";
+import { AppHeader } from "@/components/common/Header";
 import { createStyles } from "./styles";
-import { ServerSetup } from "@/components/signin/ServerSetup";
+import { SyncContentProps } from "./types";
+import { PrimaryButton } from "@/components/common/PrimaryButton";
 import { ArrowRight } from "lucide-react-native";
 
-export function SignInContent({ state, action }: SignInContentProps) {
+export function SyncContent({ state, action }: SyncContentProps) {
   const { theme } = useTheme();
-  const { isLandscape } = useOrientation();
-  const styles = createStyles(theme, isLandscape);
+  const styles = createStyles(theme);
 
   return (
     <SafeAreaView
       style={styles.safeArea}
       edges={["top", "bottom", "left", "right"]}
     >
+      <AppHeader onBack={action.onBack} title="SYNC Your Today's Activity" />
+
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -35,34 +36,19 @@ export function SignInContent({ state, action }: SignInContentProps) {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Top Main Section */}
+          {/* ── Main section ── */}
           <View style={styles.mainSection}>
-            {/* RMS · KOT Header */}
-            <Text style={styles.brandTag}>RMS · KOT</Text>
+            {/* Last synced info */}
+            <View style={styles.syncInfoBlock}>
+              <Text style={styles.syncInfoLabel}>LAST SYNCED AT</Text>
+              <Text style={styles.syncInfoValue}>{state.lastSyncedAt}</Text>
+            </View>
 
-            {/* Divider line */}
-            <View style={[styles.topDivider]} />
-
-            {/* Screen Title */}
-            <Text style={styles.title}>{"Sign\nin"}</Text>
-
-            {/* Subtitle / Terminal info */}
-            <Text style={styles.subtitle}>
-              Terminal 04 · Division 01 · connected to 103.94.159.121
-            </Text>
-
-            {/* General Error Banner */}
-            {state.error ? (
-              <View style={styles.errorBanner}>
-                <Text style={styles.errorBannerText}>{state.error}</Text>
-              </View>
-            ) : null}
-
-            {/* Form Fields */}
+            {/* ── Credential form ── */}
             <View style={styles.formGroup}>
-              {/* Username Input */}
+              {/* Username */}
               <View style={styles.inputContainer}>
-                <Text style={[styles.fieldLabel]}>USERNAME</Text>
+                <Text style={styles.fieldLabel}>USERNAME</Text>
                 <View
                   style={[
                     styles.inputWrapper,
@@ -75,7 +61,7 @@ export function SignInContent({ state, action }: SignInContentProps) {
                     style={styles.input}
                     value={state.username}
                     onChangeText={action.setUsername}
-                    placeholder="sushant.k"
+                    placeholder="admin"
                     placeholderTextColor={theme.colors.textSecondary + "80"}
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -89,7 +75,7 @@ export function SignInContent({ state, action }: SignInContentProps) {
                 ) : null}
               </View>
 
-              {/* Password Input */}
+              {/* Password */}
               <View style={styles.inputContainer}>
                 <Text style={styles.fieldLabel}>PASSWORD</Text>
                 <View
@@ -101,7 +87,7 @@ export function SignInContent({ state, action }: SignInContentProps) {
                   ]}
                 >
                   <TextInput
-                    style={[styles.input, { color: theme.colors.text }]}
+                    style={styles.input}
                     value={state.password}
                     onChangeText={action.setPassword}
                     placeholder="••••••••"
@@ -128,43 +114,27 @@ export function SignInContent({ state, action }: SignInContentProps) {
                   </Text>
                 ) : null}
               </View>
-
-              {/* Remember Terminal Checkbox */}
-              <Pressable
-                style={styles.checkboxRow}
-                onPress={() => action.setRememberTerminal((prev) => !prev)}
-                disabled={state.isLoading}
-                hitSlop={4}
-              >
-                <View
-                  style={[
-                    styles.checkbox,
-                    state.rememberTerminal
-                      ? styles.checkboxChecked
-                      : styles.checkboxUnchecked,
-                  ]}
-                >
-                  {state.rememberTerminal && (
-                    <Text style={styles.checkmark}>✓</Text>
-                  )}
-                </View>
-                <Text style={styles.checkboxLabel}>Remember this terminal</Text>
-              </Pressable>
             </View>
+
+            {/* ── Stay-on-screen notice ── */}
+            <Text style={styles.warningText}>
+              <Text style={styles.warningAsterisk}>* </Text>
+              Please stay on this screen when the data is being synced to the
+              server
+              <Text style={styles.warningAsterisk}> *</Text>
+            </Text>
           </View>
 
-          {/* Bottom Footer Section */}
+          {/* ── Bottom section ── */}
           <View style={styles.bottomSection}>
-            {/* Top Border for Footer */}
             <View style={styles.bottomDivider} />
 
-            {/* Log In Action Button */}
             <Pressable
               style={[
-                styles.submitButton,
-                state.isLoading && styles.submitButtonDisabled,
+                styles.proceedButton,
+                state.isLoading && styles.proceedButtonDisabled,
               ]}
-              onPress={action.handleSignIn}
+              onPress={action.onProceedToSync}
               disabled={state.isLoading}
             >
               {state.isLoading ? (
@@ -174,26 +144,12 @@ export function SignInContent({ state, action }: SignInContentProps) {
                 />
               ) : (
                 <View style={styles.buttonInner}>
-                  <Text style={styles.submitButtonText}>LOG IN</Text>
+                  <Text style={styles.proceedButtonText}>PROCEED TO SYNC</Text>
                   <ArrowRight size={20} color={theme.colors.onPrimary} />
                 </View>
               )}
             </Pressable>
-
-            {/* Footer metadata row */}
-            <View style={styles.footerRow}>
-              <Pressable
-                hitSlop={6}
-                disabled={state.isLoading}
-                onPress={() => action.setOpenModal((prev) => !prev)}
-              >
-                <Text style={styles.serverSetupText}>SERVER SETUP</Text>
-              </Pressable>
-              <Text style={styles.versionText}>v31.0.9753</Text>
-            </View>
           </View>
-
-          {state.openModal && <ServerSetup state={state} action={action} />}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

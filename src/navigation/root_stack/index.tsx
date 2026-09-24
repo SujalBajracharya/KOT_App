@@ -10,6 +10,7 @@ import SplitTransferScreen from "@/screens/main_stack/splittransfer/SplitTransfe
 import KOTMemoScreen from "@/screens/main_stack/kot_memo/KotMemoScreen";
 import BillPaymentScreen from "@/screens/main_stack/bill&payment/BillPaymentScreen";
 import SettlementScreen from "@/screens/main_stack/settlement/SettlementScreen";
+import { SyncScreen } from "@/screens/main_stack/sync/SyncScreen";
 
 export type RootStackParamList = {
   signin: undefined;
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   notification: undefined;
   splittransfer: undefined;
   memo: undefined;
+  sync: undefined;
   bill: {
     TABLENO?: string;
   } | undefined;
@@ -43,6 +45,7 @@ const RootStackNavigator = () => {
       <Stack.Screen name="memo" component={KOTMemoScreen} />
       <Stack.Screen name="bill" component={BillPaymentScreen} />
       <Stack.Screen name="settlement" component={SettlementScreen} />
+      <Stack.Screen name="sync" component={SyncScreen} />
     </Stack.Navigator>
   );
 };

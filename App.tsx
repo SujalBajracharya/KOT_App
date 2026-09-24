@@ -19,6 +19,8 @@ import { Provider } from "react-redux";
 import store from "@/store";
 import { useOrientation } from "@/hooks/useOrientation";
 import { navigationRef } from "@/utils/app_navigation";
+import Toast from "react-native-toast-message";
+import toastConfig from "@/utils/toastConfig";
 
 // Prevent the splash screen from auto-hiding before fonts are ready.
 SplashScreen.preventAutoHideAsync();
@@ -119,6 +121,7 @@ export default function App() {
     <Provider store={store}>
       <ThemeProvider>
         <AppRoot />
+        <Toast config={toastConfig} />
       </ThemeProvider>
     </Provider>
   );

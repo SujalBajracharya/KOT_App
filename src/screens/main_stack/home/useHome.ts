@@ -1,8 +1,8 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import navigation from '@/utils/app_navigation';
-import { UseHomeReturn } from './types';
+import { useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import navigation from "@/utils/app_navigation";
+import { UseHomeReturn } from "./types";
 
 /** Returns true if an ISO timestamp string is from today (local date) */
 function isToday(isoString: string | null): boolean {
@@ -26,11 +26,11 @@ function formatRevenue(amount: number): string {
 }
 
 export function useHome(): UseHomeReturn {
-  const [userName] = useState('User');
-  const [terminal] = useState('04');
+  const [userName] = useState("User");
+  const [terminal] = useState("04");
   const [shift] = useState(2);
   const [notificationCount] = useState(2);
-  const [lastSynced] = useState('Never');
+  const [lastSynced] = useState("Never");
   const [menuItemCount] = useState(0);
 
   // ── Redux selectors ─────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ export function useHome(): UseHomeReturn {
     let count = 0;
     for (const layout of layouts) {
       for (const table of layout.tables) {
-        if (!table.disabled && table.status === 'FREE') {
+        if (!table.disabled && table.status === "FREE") {
           count++;
         }
       }
@@ -60,15 +60,13 @@ export function useHome(): UseHomeReturn {
   // Orders that are ACTIVE (not voided) and not yet settled
   const billsWaiting = useMemo(() => {
     const settledTableNos = new Set(
-      settlements
-        .filter((s) => s.status === 'SETTLED')
-        .map((s) => s.TABLENO),
+      settlements.filter((s) => s.status === "SETTLED").map((s) => s.TABLENO),
     );
 
     let count = 0;
     for (const tableNo of Object.keys(orders)) {
       const meta = orderMeta[tableNo];
-      const isActive = !meta || meta.status === 'ACTIVE';
+      const isActive = !meta || meta.status === "ACTIVE";
       const isSettled = settledTableNos.has(tableNo);
       if (isActive && !isSettled) {
         count++;
@@ -81,7 +79,7 @@ export function useHome(): UseHomeReturn {
   // Sum of billTotal for settlements settled today
   const revenueToday = useMemo(() => {
     const total = settlements
-      .filter((s) => s.status === 'SETTLED' && isToday(s.settledAt))
+      .filter((s) => s.status === "SETTLED" && isToday(s.settledAt))
       .reduce((sum, s) => sum + s.billTotal, 0);
     return formatRevenue(total);
   }, [settlements]);
@@ -89,25 +87,27 @@ export function useHome(): UseHomeReturn {
   // ── Actions ──────────────────────────────────────────────────────────────────
 
   const onTakeOrder = useCallback(() => {
-    navigation.navigate('table');
+    navigation.navigate("table");
   }, []);
 
   const onKOTMemo = useCallback(() => {
-    navigation.navigate('memo');
+    navigation.navigate("memo");
   }, []);
 
   const onSplitTransfer = useCallback(() => {
-    navigation.navigate('splittransfer');
+    navigation.navigate("splittransfer");
   }, []);
 
-  const onSyncMenu = useCallback(() => {}, []);
+  const onSyncMenu = useCallback(() => {
+    navigation.navigate("sync");
+  }, []);
 
   const onSettlement = useCallback(() => {
-    navigation.navigate('settlement');
+    navigation.navigate("settlement");
   }, []);
 
   const onNotifications = useCallback(() => {
-    navigation.navigate('notification');
+    navigation.navigate("notification");
   }, []);
 
   const onLogOut = useCallback(() => {}, []);
