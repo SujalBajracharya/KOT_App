@@ -1,14 +1,13 @@
 import React from "react";
-import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+import { FlatList, Modal, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Check } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
-import { SplitMode, SplitTransferContentProps } from "./types";
+import { SplitTransferContentProps } from "./types";
 import { createStyles } from "./styles";
 import { Button } from "@/components/common/Button";
-import { PrimaryButton } from "@/components/common/PrimaryButton";
 
 export function SplitTransferContent({
   state,
@@ -47,21 +46,32 @@ export function SplitTransferContent({
         {/* ── Two-panel layout in landscape / stacked in portrait ── */}
         <View style={styles.contentRow}>
           <View style={styles.mainContent}>
+            {/* ── Source ── */}
+            <View style={styles.destinationRow}>
+              <Text style={styles.destinationLabel}>SOURCE</Text>
+              <View style={styles.destinationSpacer} />
+              <Button
+                onPress={action.onChangeSourceTable}
+                style={styles.sourceSelector}
+              >
+                <Text style={styles.destinationChipText} numberOfLines={1}>
+                  {state.sourceTable || "SELECT TABLE"}
+                </Text>
+              </Button>
+            </View>
+
             {/* ── Destination ── */}
             <View style={styles.destinationRow}>
               <Text style={styles.destinationLabel}>DESTINATION</Text>
-              <View style={{flex: 0.2}} />
+              <View style={styles.destinationSpacer} />
 
               <Button
-                style={{ marginRight: 8, backgroundColor: theme.colors.text, flex: 1 }}
+                onPress={action.onChangeDestination}
+                style={styles.sourceSelector}
               >
-                <Text style={styles.destinationChipText}
-                numberOfLines={1}>
-                  {state.destination}
+                <Text style={styles.destinationChipText} numberOfLines={1}>
+                  {state.destination || "SELECT TABLE"}
                 </Text>
-              </Button>
-              <Button onPress={action.onChangeDestination} style={{flex: 0.2}}>
-                <Text style={styles.changeButtonText}>CHANGE</Text>
               </Button>
             </View>
 
@@ -70,6 +80,15 @@ export function SplitTransferContent({
               data={state.lines}
               keyExtractor={(l) => l.id}
               style={styles.splitList}
+              ListEmptyComponent={
+                <View style={styles.emptyState}>
+                  <Text style={styles.emptyStateText}>
+                    {state.sourceTable
+                      ? "No items on this table."
+                      : "Select a source table first."}
+                  </Text>
+                </View>
+              }
               renderItem={({ item: l }) => (
                 <View style={styles.splitItem}>
                   <View style={styles.splitItemHeader}>
@@ -92,14 +111,32 @@ export function SplitTransferContent({
                       >
                         {l.moveLabel}
                       </Text>
-                      <Text
-                        style={[
-                          styles.splitPartnerValue,
-                          styles.splitPartnerValueDark,
-                        ]}
-                      >
-                        {l.moveQty}
-                      </Text>
+                      <View style={styles.quantityControls}>
+                        <Button
+                          onPress={() => action.onMoveQuantityChange(l.id, -1)}
+                          disabled={l.moveQty === 0}
+                          style={styles.quantityButton}
+                          accessibilityLabel={`Move less ${l.name}`}
+                        >
+                          <Text style={styles.quantityButtonText}>-</Text>
+                        </Button>
+                        <Text
+                          style={[
+                            styles.splitPartnerValue,
+                            styles.splitPartnerValueDark,
+                          ]}
+                        >
+                          {l.moveQty}
+                        </Text>
+                        <Button
+                          onPress={() => action.onMoveQuantityChange(l.id, 1)}
+                          disabled={l.moveQty >= l.stayQty + l.moveQty}
+                          style={styles.quantityButton}
+                          accessibilityLabel={`Move more ${l.name}`}
+                        >
+                          <Text style={styles.quantityButtonText}>+</Text>
+                        </Button>
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -120,6 +157,7 @@ export function SplitTransferContent({
               </View>
               <Button
                 onPress={action.onConfirm}
+                disabled={!state.sourceTable}
                 style={{
                   flex: 0,
                   height: 64,
@@ -138,6 +176,49 @@ export function SplitTransferContent({
             </View>
           </View>
         </View>
+
+        <Modal
+          visible={state.isTableSelectorVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={action.onCloseTableSelector}
+        >
+          <Pressable
+            style={styles.modalBackdrop}
+            onPress={action.onCloseTableSelector}
+          >
+            <Pressable
+              style={styles.tablePicker}
+              onPress={(event) => event.stopPropagation()}
+            >
+              <Text style={styles.tablePickerTitle}>
+                {state.tableSelectionMode === "destination"
+                  ? "SELECT DESTINATION TABLE"
+                  : "SELECT SOURCE TABLE"}
+              </Text>
+              <FlatList
+                data={
+                  state.tableSelectionMode === "destination"
+                    ? state.destinationTables
+                    : state.sourceTables
+                }
+                keyExtractor={(tableNo) => tableNo}
+                renderItem={({ item: tableNo }) => (
+                  <Button
+                    onPress={() =>
+                      state.tableSelectionMode === "destination"
+                        ? action.onSelectDestinationTable(tableNo)
+                        : action.onSelectSourceTable(tableNo)
+                    }
+                    style={styles.tableOption}
+                  >
+                    <Text style={styles.tableOptionText}>{tableNo}</Text>
+                  </Button>
+                )}
+              />
+            </Pressable>
+          </Pressable>
+        </Modal>
       </View>
     </SafeAreaView>
   );

@@ -57,6 +57,14 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       borderBottomColor: theme.colors.border,
       backgroundColor: theme.colors.background,
     },
+    destinationSpacer: {
+      flex: 0.2,
+    },
+    sourceSelector: {
+      marginRight: 8,
+      backgroundColor: theme.colors.text,
+      flex: 1,
+    },
     destinationLabel: {
       fontSize: 11,
       fontWeight: "800",
@@ -91,6 +99,15 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     splitList: {
       flex: 1,
+    },
+    emptyState: {
+      padding: 24,
+      alignItems: "center",
+    },
+    emptyStateText: {
+      fontSize: 14,
+      fontWeight: "700",
+      color: theme.colors.textSecondary,
     },
     splitItem: {
       padding: 16,
@@ -157,6 +174,63 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     splitPartnerValueDark: {
       color: theme.colors.background,
+    },
+    quantityControls: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    quantityButton: {
+      minWidth: 28,
+      minHeight: 28,
+      marginHorizontal: 8,
+      paddingHorizontal: 6,
+      paddingVertical: 0,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.colors.primary,
+      borderColor: theme.colors.primary,
+    },
+    quantityButtonText: {
+      fontSize: 17,
+      fontWeight: "800",
+      color: theme.colors.onPrimary,
+    },
+    modalBackdrop: {
+      flex: 1,
+      backgroundColor: "rgba(0, 0, 0, 0.45)",
+      justifyContent: "center",
+      padding: 24,
+    },
+    tablePicker: {
+      maxHeight: "80%",
+      backgroundColor: theme.colors.surface,
+      borderRadius: 6,
+      paddingVertical: 8,
+    },
+    tablePickerTitle: {
+      paddingHorizontal: 16,
+      paddingVertical: 14,
+      fontSize: 13,
+      fontWeight: "800",
+      color: theme.colors.text,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.border,
+    },
+    tableOption: {
+      minHeight: 48,
+      paddingHorizontal: 16,
+      justifyContent: "center",
+      alignItems: "flex-start",
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.border,
+      backgroundColor: theme.colors.surface,
+    },
+    tableOptionText: {
+      fontSize: 14,
+      fontWeight: "700",
+      color: theme.colors.text,
     },
     footer: {
       padding: 16,

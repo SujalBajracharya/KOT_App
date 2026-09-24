@@ -48,7 +48,7 @@ const initialState: TablesState = {
         },
         {
           tableId: "f1-t2",
-          TABLENO: "1 floor-2",
+          TABLENO: "2 floor-1",
           capacity: 2,
           disabled: false,
           status: "FREE",
@@ -57,7 +57,7 @@ const initialState: TablesState = {
         },
         {
           tableId: "f1-t3",
-          TABLENO: "1 floor-3",
+          TABLENO: "3 floor-1",
           capacity: 6,
           disabled: false,
           status: "FREE",
@@ -66,7 +66,7 @@ const initialState: TablesState = {
         },
         {
           tableId: "f1-t4",
-          TABLENO: "1 floor-4",
+          TABLENO: "4 floor-1",
           capacity: 4,
           disabled: false,
           status: "FREE",
@@ -82,7 +82,7 @@ const initialState: TablesState = {
       tables: [
         {
           tableId: "f2-t1",
-          TABLENO: "1",
+          TABLENO: "1 floor-2",
           capacity: 4,
           disabled: false,
           status: "FREE",
@@ -91,7 +91,7 @@ const initialState: TablesState = {
         },
         {
           tableId: "f2-t2",
-          TABLENO: "2",
+          TABLENO: "2 floor-2",
           capacity: 4,
           disabled: false,
           status: "FREE",
@@ -100,7 +100,7 @@ const initialState: TablesState = {
         },
         {
           tableId: "f2-t3",
-          TABLENO: "3",
+          TABLENO: "3 floor-2",
           capacity: 6,
           disabled: false,
           status: "FREE",

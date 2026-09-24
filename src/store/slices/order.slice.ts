@@ -16,6 +16,15 @@ interface OrderState {
   orderMeta: Record<string, OrderMeta>;
 }
 
+interface SplitAndTransferPayload {
+  sourceTable: string;
+  destinationTable: string;
+  transfers: {
+    itemId: string;
+    quantity: number;
+  }[];
+}
+
 const initialState: OrderState = {
   tableNo: "",
   items: [],
@@ -64,6 +73,75 @@ const orderSlice = createSlice({
         voidedAt: new Date().toISOString(),
       };
     },
+
+    splitAndTransferOrder: (
+      state,
+      action: PayloadAction<SplitAndTransferPayload>,
+    ) => {
+      const { sourceTable, destinationTable, transfers } = action.payload;
+
+      if (sourceTable === destinationTable) return;
+
+      const sourceItems = state.orders[sourceTable] ?? [];
+      const destinationItems = state.orders[destinationTable] ?? [];
+      const transferById = new Map(
+        transfers
+          .filter(({ quantity }) => Number.isInteger(quantity) && quantity > 0)
+          .map(({ itemId, quantity }) => [itemId, quantity]),
+      );
+
+      if (transferById.size === 0) return;
+
+      const remainingItems: CartItem[] = [];
+      const movedItems: CartItem[] = [];
+
+      for (const item of sourceItems) {
+        const moveQuantity = Math.min(
+          item.quantity,
+          transferById.get(item.id) ?? 0,
+        );
+        const remainingQuantity = item.quantity - moveQuantity;
+
+        if (remainingQuantity > 0) {
+          remainingItems.push({ ...item, quantity: remainingQuantity });
+        }
+
+        if (moveQuantity > 0) {
+          movedItems.push({ ...item, quantity: moveQuantity });
+        }
+      }
+
+      if (movedItems.length === 0) return;
+
+      const destinationById = new Map(
+        destinationItems.map((item) => [item.id, item]),
+      );
+
+      for (const movedItem of movedItems) {
+        const existingItem = destinationById.get(movedItem.id);
+        destinationById.set(
+          movedItem.id,
+          existingItem
+            ? {
+                ...existingItem,
+                quantity: existingItem.quantity + movedItem.quantity,
+              }
+            : movedItem,
+        );
+      }
+
+      state.orders[sourceTable] = remainingItems;
+      state.orders[destinationTable] = Array.from(destinationById.values());
+      state.orderMeta[destinationTable] = {
+        status: "ACTIVE",
+        voidedAt: null,
+      };
+
+      if (state.tableNo === sourceTable) {
+        state.items = remainingItems;
+      }
+    },
+
   },
 });
 
@@ -72,6 +150,7 @@ export const {
   clearOrder,
   clearTableOrder,
   voidOrder,
+  splitAndTransferOrder,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;
