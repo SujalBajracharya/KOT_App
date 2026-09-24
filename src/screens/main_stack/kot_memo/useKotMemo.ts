@@ -3,7 +3,6 @@ import { Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { voidOrder } from "@/store/slices/order.slice";
-import type { VoidedOrder } from "@/store/slices/order.slice";
 import { resetTable } from "@/store/slices/table.slice";
 import { KOTMemoAction, KOTMemoState, MemoFilter, MemoItem } from "./types";
 
@@ -74,18 +73,16 @@ export function useKOTMemo({
       }),
     );
 
-    const voidedMemos: MemoItem[] = Object.entries(
-      voidedOrders as Record<string, VoidedOrder>,
-    ).map(([tableNo, voided]) => {
+    const voidedMemos: MemoItem[] = voidedOrders.map((voided) => {
       const voidedTime = new Date(voided.voidedAt).toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
       });
 
       return {
-        id: `voided-${tableNo}-${voided.voidedAt}`,
-        kot: tableNo,
-        table: tableNo,
+        id: `voided-${voided.id}`,
+        kot: voided.tableNo,
+        table: voided.tableNo,
         status: "voided" as const,
         statusLabel: "VOIDED",
         voidedAt: voidedTime,

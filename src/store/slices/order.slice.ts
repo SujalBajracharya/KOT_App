@@ -9,7 +9,9 @@ export interface OrderMeta {
 }
 
 /** Historical record preserved when an order is voided */
-export interface VoidedOrder {
+interface VoidedOrder {
+  id: string;
+  tableNo: string;
   items: CartItem[];
   voidedAt: string;
 }
@@ -24,7 +26,7 @@ interface OrderState {
   orderMeta: Record<string, OrderMeta>;
 
   /** Historical voided orders — never removed during normal void flow */
-  voidedOrders: Record<string, VoidedOrder>;
+  voidedOrders: VoidedOrder[];
 }
 
 interface SplitAndTransferPayload {
@@ -41,7 +43,7 @@ const initialState: OrderState = {
   items: [],
   orders: {},
   orderMeta: {},
-  voidedOrders: {},
+  voidedOrders: [],
 };
 
 const orderSlice = createSlice({
@@ -68,7 +70,7 @@ const orderSlice = createSlice({
       state.items = [];
       state.orders = {};
       state.orderMeta = {};
-      state.voidedOrders = {};
+      state.voidedOrders = [];
     },
 
     /** Remove a single table's order and metadata (called after settlement) */
@@ -87,15 +89,18 @@ const orderSlice = createSlice({
     voidOrder: (state, action: PayloadAction<string>) => {
       const tableNo = action.payload;
       const items = state.orders[tableNo];
+      const voidedAt = new Date().toISOString();
 
       // Nothing to void — bail out safely
       if (!items) return;
 
       // Preserve the full order in the voided history
-      state.voidedOrders[tableNo] = {
+      state.voidedOrders.push({
+        id: `voided-${tableNo}-${voidedAt}`,
+        tableNo,
         items: [...items],
-        voidedAt: new Date().toISOString(),
-      };
+        voidedAt,
+      });
 
       // Remove from active orders and metadata
       delete state.orders[tableNo];
@@ -175,7 +180,6 @@ const orderSlice = createSlice({
         state.items = remainingItems;
       }
     },
-
   },
 });
 
