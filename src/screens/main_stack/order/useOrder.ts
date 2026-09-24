@@ -99,6 +99,7 @@ export function useOrder(TABLENO: string): UseOrderReturn {
           thumbCode: item.MCODE,
           badge: item.isAvailable ? undefined : "UNAVAILABLE",
           inCart: Boolean(cartItem && cartItem.quantity > 0),
+          image: item.image,
         };
       });
   }, [activeCategory, cartItems, searchMode, searchQuery]);

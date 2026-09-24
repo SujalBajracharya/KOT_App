@@ -3,6 +3,7 @@ import {
   QuantitySheetState,
 } from "@/components/quantity&remarks/Quantity&Remarks";
 import { CartItem } from "./useOrder";
+import { ImageSourcePropType } from "react-native";
 
 export interface Category {
   id: string;
@@ -18,6 +19,7 @@ export interface MenuItem {
   thumbCode: string;
   badge?: string;
   inCart: boolean;
+  image: ImageSourcePropType;
 }
 
 export interface OrderState {

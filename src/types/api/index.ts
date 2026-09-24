@@ -71,6 +71,7 @@ export interface MenuItem {
   MGROUP: string;
   IsUnknown: number;
   MCAT1: string;
+  image:string;
 }
 
 export interface ChoiceItem {

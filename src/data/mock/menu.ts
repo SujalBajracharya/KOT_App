@@ -19,6 +19,7 @@ export const mockMenuItems: MenuItem[] = [
     MGROUP: 'PRGMMX140',
     IsUnknown: 0,
     MCAT1: '',
+    image: require("../../../assets/menu/chicken_keema.jpg"),
   },
 
   {
@@ -38,6 +39,7 @@ export const mockMenuItems: MenuItem[] = [
     MGROUP: 'PRGMMX140',
     IsUnknown: 0,
     MCAT1: '',
+    image: require("../../../assets/menu/paneer_tikka.jpg"),
   },
 
   {
@@ -57,6 +59,8 @@ export const mockMenuItems: MenuItem[] = [
     MGROUP: 'PRGMMX140',
     IsUnknown: 0,
     MCAT1: '',
+    image: require("../../../assets/menu/mushroom_chilli.jpg"),
+
   },
 
   {
@@ -76,6 +80,7 @@ export const mockMenuItems: MenuItem[] = [
     MGROUP: 'PRGMMX140',
     IsUnknown: 0,
     MCAT1: '',
+    image: require("../../../assets/menu/fish_fillet.jpg"),
   },
 
   // ── Main Course ───────────────────────────────────────────────────────────
@@ -96,6 +101,8 @@ export const mockMenuItems: MenuItem[] = [
     MGROUP: 'PRGMMX143',
     IsUnknown: 0,
     MCAT1: '',
+    image: require("../../../assets/menu/chicken_meat.jpg"),
+
   },
 
   {
@@ -115,6 +122,7 @@ export const mockMenuItems: MenuItem[] = [
     MGROUP: 'PRGMMX143',
     IsUnknown: 0,
     MCAT1: '',
+    image: require("../../../assets/menu/chicken_breast.jpg"),
   },
 
   {
@@ -133,6 +141,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 0,
     MGROUP: 'PRGMMX143',
     IsUnknown: 0,
+    image: require("../../../assets/menu/buff_keema.jpg"),
     MCAT1: '',
   },
 
@@ -152,6 +161,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 0,
     MGROUP: 'PRGMMX143',
     IsUnknown: 0,
+    image: require("../../../assets/menu/chicken_boneless.jpg"),
     MCAT1: '',
   },
 
@@ -171,6 +181,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 0,
     MGROUP: 'PRGMMX143',
     IsUnknown: 0,
+    image: require("../../../assets/menu/chicken_wings.jpg"),
     MCAT1: '',
   },
 
@@ -191,6 +202,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 0,
     MGROUP: 'PRGMMX145',
     IsUnknown: 0,
+    image: require("../../../assets/menu/chef_special_thali.jpg"),
     MCAT1: '',
   },
 
@@ -211,6 +223,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 0,
     MGROUP: 'PRGMMX147',
     IsUnknown: 0,
+    image: require("../../../assets/menu/lassi.jpg"),
     MCAT1: '',
   },
 
@@ -230,6 +243,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 1,
     MGROUP: 'PRGMMX147',
     IsUnknown: 0,
+    image: require("../../../assets/menu/soft_drink.jpg"),
     MCAT1: '',
   },
 
@@ -249,6 +263,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 1,
     MGROUP: 'PRGMMX147',
     IsUnknown: 0,
+    image: require("../../../assets/menu/mineral_water.jpg"),
     MCAT1: '',
   },
 
@@ -269,6 +284,7 @@ export const mockMenuItems: MenuItem[] = [
     IsBarItem: 0,
     MGROUP: 'PRGMMX140',
     IsUnknown: 0,
+    image: require("../../../assets/menu/veg_roll.jpg"),
     MCAT1: '',
   },
 ];

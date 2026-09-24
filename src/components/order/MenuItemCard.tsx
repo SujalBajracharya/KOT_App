@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Image,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
 import { MenuItem } from "@/screens/main_stack/order/types";
 
@@ -32,10 +27,7 @@ export function MenuItemCard({
     >
       <View style={styles.itemTop}>
         <Text
-          style={[
-            styles.itemName,
-            isInCart && styles.itemNameInCart,
-          ]}
+          style={[styles.itemName, isInCart && styles.itemNameInCart]}
           numberOfLines={2}
         >
           {item.name}
@@ -43,7 +35,7 @@ export function MenuItemCard({
 
         <View style={styles.itemThumb}>
           <Image
-            source={require("../../../assets/placeholderimage.jpg")}
+            source={item.image}
             style={styles.itemThumbImage}
             resizeMode="cover"
           />
@@ -52,25 +44,14 @@ export function MenuItemCard({
 
       <View>
         <View style={styles.itemBottom}>
-          <Text style={styles.itemUnit}>
-            {item.unit}
-          </Text>
+          <Text style={styles.itemUnit}>{item.unit}</Text>
 
-          <Text
-            style={[
-              styles.itemPrice,
-              isInCart && styles.itemPriceInCart,
-            ]}
-          >
+          <Text style={[styles.itemPrice, isInCart && styles.itemPriceInCart]}>
             {item.price}
           </Text>
         </View>
 
-        {item.badge ? (
-          <Text style={styles.itemBadge}>
-            {item.badge}
-          </Text>
-        ) : null}
+        {item.badge ? <Text style={styles.itemBadge}>{item.badge}</Text> : null}
       </View>
     </Pressable>
   );
