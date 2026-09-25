@@ -44,6 +44,17 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
+    searchInput: {
+      width: 140,
+      height: 40,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: theme.colors.borderStrong,
+      backgroundColor: theme.colors.surface,
+      color: theme.colors.text,
+      fontFamily: fonts.family.regular,
+      fontSize: 14,
+    },
     tableGrid: {
       flex: 1,
     },
@@ -53,6 +64,8 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     tableCell: {
       aspectRatio: 1 / 1,
       marginBottom: 2,
+      flexBasis: isLandscape ? "24.5%" : "49.7%",
+      maxWidth: isLandscape ? "24.5%" : "49.7%",
       flex: 1,
       borderWidth: 1,
       padding: 12,

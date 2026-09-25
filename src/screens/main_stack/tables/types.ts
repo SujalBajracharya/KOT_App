@@ -20,11 +20,14 @@ export interface TablesState {
   floors: Floor[];
   tables: TableItem[];
   refreshing: boolean;
+  searchQuery: string;
+  isSearchVisible: boolean;
 }
 
 export interface TablesAction {
   onBack: () => void;
   onSearch: () => void;
+  onSearchChange: (query: string) => void;
   onRefresh: () => void;
   onFloorSelect: (floorId: string) => void;
   onTablePress: (TABLENO: string) => void;

@@ -4,7 +4,7 @@ import {
   Pressable,
   RefreshControl,
   ScrollView,
-  Text,
+  TextInput,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +13,7 @@ import { useTheme } from "@/theme/ThemeContext";
 import { useOrientation } from "@/hooks/useOrientation";
 import { AppHeader } from "@/components/common/Header";
 import { IconButton } from "@/components/common/IconButton";
+import { AppText as Text } from "@/components/common/AppText";
 import { TableStatus, TablesContentProps } from "./types";
 import { createStyles } from "./styles";
 
@@ -50,6 +51,17 @@ export function TablesContent({ state, action }: TablesContentProps) {
           onBack={action.onBack}
           rightComponent={
             <>
+              {state.isSearchVisible ? (
+                <TextInput
+                  autoFocus
+                  value={state.searchQuery}
+                  onChangeText={action.onSearchChange}
+                  placeholder="Search tables"
+                  placeholderTextColor={theme.colors.textSecondary}
+                  style={styles.searchInput}
+                  returnKeyType="search"
+                />
+              ) : null}
               <IconButton onPress={action.onSearch}>
                 <Search size={20} color={theme.colors.text} />
               </IconButton>

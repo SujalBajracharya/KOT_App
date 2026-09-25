@@ -43,6 +43,8 @@ export function useTables(): UseTablesReturn {
   );
   const [refreshing, setRefreshing] = useState(false);
   const [refreshedAt, setRefreshedAt] = useState(() => Date.now());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const activeLayout =
     layouts.find(
@@ -75,11 +77,27 @@ export function useTables(): UseTablesReturn {
     });
   }, [activeLayout, refreshedAt]);
 
+  const filteredTables = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+
+    if (!normalizedQuery) return tables;
+
+    return tables.filter((table) =>
+      table.name.trim().toLowerCase().includes(normalizedQuery),
+    );
+  }, [searchQuery, tables]);
+
   const onBack = useCallback(() => {
     navigation.goBack();
   }, []);
 
-  const onSearch = useCallback(() => {}, []);
+  const onSearch = useCallback(() => {
+    setIsSearchVisible((visible) => !visible);
+  }, []);
+
+  const onSearchChange = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -104,13 +122,16 @@ export function useTables(): UseTablesReturn {
         name: layout.layoutName,
         active: layout.layoutId === activeFloorId,
       })),
-      tables,
+      tables: filteredTables,
       refreshing,
+      searchQuery,
+      isSearchVisible,
     },
 
     action: {
       onBack,
       onSearch,
+      onSearchChange,
       onRefresh,
       onFloorSelect,
       onTablePress,
