@@ -1,5 +1,12 @@
 import React from "react";
-import { FlatList, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Printer, Check } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
@@ -93,8 +100,7 @@ export function BillPaymentContent({ state, action }: BillContentProps) {
                       <Text
                         style={[
                           styles.discountTypeBtnText,
-                          state.discountType === t &&
-                            styles.TabTextActive,
+                          state.discountType === t && styles.TabTextActive,
                         ]}
                       >
                         {t === "flat" ? "Rs" : "%"}
@@ -103,7 +109,10 @@ export function BillPaymentContent({ state, action }: BillContentProps) {
                   ))}
                 </View>
 
-                <Button onPress={action.onApplyDiscount} style={{height: 46, flex: 3}}>
+                <Button
+                  onPress={action.onApplyDiscount}
+                  style={{ height: 46, flex: 3 }}
+                >
                   <Text style={styles.TabText}>APPLY</Text>
                 </Button>
               </View>
@@ -141,7 +150,10 @@ export function BillPaymentContent({ state, action }: BillContentProps) {
                       { width: 85, height: 46 },
                       state.selectedPayment === m.key && styles.TabActive,
                     ]}
-                    onPress={() => action.setPaymentMethod(m.key)}
+                    onPress={() => {
+                      action.setPaymentMethod(m.key);
+                      if (m.key === "QR") action.onQRPress();
+                    }}
                   >
                     <Text
                       style={[

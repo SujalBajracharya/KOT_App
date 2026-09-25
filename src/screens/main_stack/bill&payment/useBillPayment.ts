@@ -128,6 +128,16 @@ export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
     );
   }, [performSettle]);
 
+  const onQRPress = useCallback(() => {
+    if (!TABLENO) return;
+
+    navigation.navigate("qr", {
+      amount: `Rs ${calculations.total.toLocaleString()}`,
+      reference: `BILL · ${TABLENO}`,
+      tableLabel: TABLENO,
+    });
+  }, [TABLENO, calculations.total]);
+
   return {
     state: {
       tableLabel: TABLENO ? TABLENO : "Table",
@@ -151,6 +161,7 @@ export function useBillPayment(TABLENO?: string): UseBillPaymentReturn {
       onApplyDiscount,
       setPaymentMethod,
       onSettle,
+      onQRPress,
     },
   };
 }

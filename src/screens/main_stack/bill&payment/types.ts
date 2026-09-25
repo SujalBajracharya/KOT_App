@@ -12,7 +12,7 @@ export interface BillLine {
 
 export interface BillState {
   tableLabel: string;
-  billMeta: string;    // e.g. "BILL NO 2140 · 14:38"
+  billMeta: string; // e.g. "BILL NO 2140 · 14:38"
   lines: BillLine[];
   discountValue: string;
   discountType: DiscountType;
@@ -32,6 +32,7 @@ export interface BillAction {
   onApplyDiscount: () => void;
   setPaymentMethod: (m: PaymentMethod) => void;
   onSettle: () => void;
+  onQRPress: () => void;
 }
 
 export interface UseBillPaymentReturn {

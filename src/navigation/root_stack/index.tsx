@@ -11,6 +11,7 @@ import KOTMemoScreen from "@/screens/main_stack/kot_memo/KotMemoScreen";
 import BillPaymentScreen from "@/screens/main_stack/bill&payment/BillPaymentScreen";
 import SettlementScreen from "@/screens/main_stack/settlement/SettlementScreen";
 import { SyncScreen } from "@/screens/main_stack/sync/SyncScreen";
+import { QRScreen } from "@/screens/main_stack/qr/QRScreen";
 
 export type RootStackParamList = {
   signin: undefined;
@@ -24,9 +25,16 @@ export type RootStackParamList = {
   splittransfer: undefined;
   memo: undefined;
   sync: undefined;
-  bill: {
-    TABLENO?: string;
-  } | undefined;
+  qr: {
+    amount: string;
+    reference: string;
+    tableLabel: string;
+  };
+  bill:
+    | {
+        TABLENO?: string;
+      }
+    | undefined;
   settlement: undefined;
 };
 
@@ -46,6 +54,11 @@ const RootStackNavigator = () => {
       <Stack.Screen name="bill" component={BillPaymentScreen} />
       <Stack.Screen name="settlement" component={SettlementScreen} />
       <Stack.Screen name="sync" component={SyncScreen} />
+      <Stack.Screen
+        name="qr"
+        component={QRScreen}
+        options={{ headerShown: false, animation: "slide_from_bottom" }}
+      />
     </Stack.Navigator>
   );
 };
