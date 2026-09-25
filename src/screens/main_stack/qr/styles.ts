@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
+import { MIN_TOUCH_TARGET, spacing, typography, fonts } from "@/constants";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
 
@@ -75,7 +75,7 @@ export const createStyles = (theme: AppTheme) => {
     },
     methodTabText: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       fontSize: 12,
       letterSpacing: 0.8,
       color: theme.colors.textSecondary,
@@ -94,7 +94,7 @@ export const createStyles = (theme: AppTheme) => {
     },
     billAmountLabel: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.textSecondary,
       marginBottom: 4,
@@ -156,7 +156,7 @@ export const createStyles = (theme: AppTheme) => {
     },
     expiryText: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       fontSize: 11,
       letterSpacing: 1,
       color: theme.colors.primary,

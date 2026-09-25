@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { AppTheme } from '@/theme/ThemeContext';
 import { createGlobalStyles } from '@/styles/globalStyles';
+import { fonts } from '@/constants';
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
@@ -27,14 +28,14 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     shiftLabel: {
       fontSize: 11,
-      fontWeight: '800',
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
     },
     totalAmount: {
       fontSize: 32,
-      fontWeight: '800',
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
       marginTop: 4,
     },
@@ -61,7 +62,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     breakdownLabel: {
       flex: 1,
       fontSize: 14,
-      fontWeight: '600',
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     breakdownCount: {
@@ -71,7 +72,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     breakdownAmount: {
       fontSize: 14,
-      fontWeight: '800',
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     warningBanner: {
@@ -86,13 +87,13 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     warningIcon: {
       fontSize: 14,
-      fontWeight: '800',
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
     },
     warningText: {
       flex: 1,
       fontSize: 12,
-      fontWeight: '600',
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     footer: {
@@ -114,7 +115,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     printButtonText: {
       fontSize: 13,
-      fontWeight: '800',
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     endButton: {
@@ -127,7 +128,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     endButtonText: {
       fontSize: 13,
-      fontWeight: '800',
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
     },
   });

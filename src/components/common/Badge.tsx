@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
+import { AppText as Text } from '@/components/common/AppText';
 import { useTheme } from '@/theme/ThemeContext';
 import { createGlobalStyles } from '@/styles/globalStyles';
 

@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
+import { fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme) => {
   const global = createGlobalStyles(theme);
@@ -18,27 +19,27 @@ export const createStyles = (theme: AppTheme) => {
     lineNumber: {
       width: 24,
       fontSize: 12,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     lineName: {
       flex: 1,
       fontSize: 14,
-      fontWeight: "600",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     lineQty: {
       width: 40,
       textAlign: "center",
       fontSize: 13,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     lineAmount: {
       width: 80,
       textAlign: "right",
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
   });

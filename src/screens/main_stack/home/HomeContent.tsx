@@ -1,5 +1,6 @@
 import React from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
+import { AppText as Text } from '@/components/common/AppText';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronRight, Bell, LogOut } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";

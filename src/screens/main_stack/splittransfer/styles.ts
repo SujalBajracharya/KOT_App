@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
+import { fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
@@ -41,7 +42,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     modeTabText: {
       fontSize: 12,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
       letterSpacing: 0.5,
     },
@@ -67,7 +68,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     destinationLabel: {
       fontSize: 11,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
       letterSpacing: 2,
     },
@@ -85,7 +86,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     destinationChipText: {
       fontSize: 12,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.surface,
     },
     changeButton: {
@@ -94,7 +95,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     changeButtonText: {
       fontSize: 11,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     splitList: {
@@ -106,7 +107,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     emptyStateText: {
       fontSize: 14,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     splitItem: {
@@ -130,12 +131,12 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     splitItemName: {
       fontSize: 15,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     splitItemQty: {
       fontSize: 13,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     splitPartners: {
@@ -169,7 +170,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     splitPartnerLabel: {
       fontSize: 10,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     splitPartnerLabelDark: {
@@ -177,7 +178,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     splitPartnerValue: {
       fontSize: 17,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     splitPartnerValueDark: {
@@ -202,7 +203,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     quantityButtonText: {
       fontSize: 17,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
     },
     modalBackdrop: {
@@ -221,7 +222,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       paddingHorizontal: 16,
       paddingVertical: 14,
       fontSize: 13,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.border,
@@ -237,7 +238,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     tableOptionText: {
       fontSize: 14,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     footer: {
@@ -253,12 +254,12 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     footerSummaryText: {
       fontSize: 12,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     confirmButtonText: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
       letterSpacing: 0.5,
     },

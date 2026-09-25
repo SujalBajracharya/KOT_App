@@ -1,8 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { AppText as Text } from '@/components/common/AppText';
 import { Check, Info, X } from "lucide-react-native";
 import type { BaseToastProps } from "react-native-toast-message";
 import { useTheme } from "@/theme/ThemeContext";
+import { fonts } from "@/constants";
 
 const toastConfig = {
   success: ({ text1, text2 }: BaseToastProps) => (
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 14,
-    fontWeight: "700",
+    fontFamily: fonts.family.bold,
   },
 
   message: {

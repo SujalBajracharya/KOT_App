@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
+import { fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
@@ -38,7 +39,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     notificationBadgeText: {
       color: theme.colors.onPrimary,
       fontSize: 10,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
     },
     statsRow: {
       flexDirection: isLandscape ? "column" : "row",
@@ -61,18 +62,18 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     statValue: {
       fontSize: 28,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     statLabel: {
       fontSize: 11,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
       marginTop: 2,
     },
     statLabelAlert: {
       fontSize: 11,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
       marginTop: 2,
     },
@@ -100,7 +101,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     menuIndexText: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.surface,
     },
     menuTextGroup: {
@@ -108,7 +109,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     menuTitle: {
       fontSize: 18,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     menuSubtitle: {
@@ -118,7 +119,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     menuSyncAction: {
       fontSize: 12,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
     },
     footer: {
@@ -138,7 +139,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     settlementButtonText: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
       letterSpacing: 0.5,
     },

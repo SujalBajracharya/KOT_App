@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
+import { fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
@@ -40,7 +41,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     legendText: {
       fontSize: 10,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     tableGrid: {
@@ -86,7 +87,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     tableNumber: {
       fontSize: 18,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
     },
     tableNumberLight: {
       color: theme.colors.text,
@@ -96,7 +97,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     tableStatus: {
       fontSize: 10,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
     },
     tableStatusLight: {
       color: theme.colors.textSecondary,
@@ -107,7 +108,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     tableMeta: {
       fontSize: 11,
-      fontWeight: "600",
+      fontFamily: fonts.family.bold,
       marginTop: isLandscape ? 16 : 40,
     },
     tableMetaLight: {
@@ -119,7 +120,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     tableAmount: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       marginTop: 8,
     },
     tableAmountLight: {

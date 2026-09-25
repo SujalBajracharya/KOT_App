@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
+import { MIN_TOUCH_TARGET, spacing, typography, fonts } from "@/constants";
 import { AppTheme } from "@/theme/ThemeContext";
 
 export const createStyles = (theme: AppTheme) =>
@@ -34,7 +34,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     syncInfoLabel: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.textSecondary,
       marginBottom: 4,
@@ -62,7 +62,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     fieldLabel: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.textSecondary,
     },
@@ -113,7 +113,7 @@ export const createStyles = (theme: AppTheme) =>
       textAlign: "center",
     },
     warningAsterisk: {
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
     },
 
     // ── Bottom section ──
@@ -151,7 +151,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     buttonArrow: {
       fontSize: 22,
-      fontWeight: "bold",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
     },
   });

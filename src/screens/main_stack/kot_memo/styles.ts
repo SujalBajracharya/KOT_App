@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
-import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
+import { MIN_TOUCH_TARGET, spacing, typography, fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
@@ -82,7 +82,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     memoStatus: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       fontSize: 10,
       letterSpacing: 1,
     },
@@ -123,7 +123,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     memoActionText: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       fontSize: 11,
       letterSpacing: 0.8,
       color: theme.colors.text,

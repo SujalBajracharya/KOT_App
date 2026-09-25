@@ -1,5 +1,6 @@
 import React from "react";
-import { FlatList, Modal, Pressable, Text, View } from "react-native";
+import { FlatList, Modal, Pressable, View } from "react-native";
+import { AppText as Text } from '@/components/common/AppText';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Check } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";

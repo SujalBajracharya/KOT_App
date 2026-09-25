@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
+import { MIN_TOUCH_TARGET, spacing, typography, fonts } from "@/constants";
 import { AppTheme } from "@/theme/ThemeContext";
 
 export const createStyles = (theme: AppTheme, isPortrait: boolean = false) =>
@@ -176,7 +176,7 @@ export const createStyles = (theme: AppTheme, isPortrait: boolean = false) =>
     // ── Remarks section ──
     remarksLabel: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.textSecondary,
       marginHorizontal: spacing.lg,
@@ -204,7 +204,7 @@ export const createStyles = (theme: AppTheme, isPortrait: boolean = false) =>
     },
     remarkChipText: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       fontSize: 11,
       letterSpacing: 0.5,
       color: theme.colors.text,
@@ -240,7 +240,7 @@ export const createStyles = (theme: AppTheme, isPortrait: boolean = false) =>
     },
     lineTotalLabel: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.textSecondary,
     },

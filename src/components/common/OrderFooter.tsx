@@ -1,4 +1,5 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
+import { AppText as Text } from '@/components/common/AppText';
 import { ArrowRight } from "lucide-react-native";
 
 import { Divider } from "./Divider";

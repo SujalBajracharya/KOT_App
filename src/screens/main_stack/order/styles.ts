@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";
+import { fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
   const global = createGlobalStyles(theme);
@@ -27,16 +28,17 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       flex: 1,
       fontSize: 14,
       color: theme.colors.text,
+        fontFamily: fonts.family.regular,
       paddingVertical: 4,
     },
     searchToggleActive: {
       fontSize: 11,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
     },
     searchToggleInactive: {
       fontSize: 11,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     searchDivider: {
@@ -61,7 +63,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     categoryTabText: {
       fontSize: 11,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     categoryTabTextActive: {
@@ -97,7 +99,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     itemName: {
       width: isLandscape ? 75 : 55,
       fontSize: 14,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     itemNameInCart: {
@@ -119,7 +121,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     itemThumbCode: {
       fontSize: 10,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     itemBottom: {
@@ -134,7 +136,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     itemPrice: {
       fontSize: 16,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     itemPriceInCart: {
@@ -142,7 +144,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     itemBadge: {
       fontSize: 9,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
       marginTop: 4,
     },
@@ -162,12 +164,12 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     cartLabel: {
       fontSize: 12,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     cartSummary: {
       fontSize: 18,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.background,
       marginTop: 2,
     },
@@ -181,7 +183,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     reviewButtonText: {
       fontSize: 13,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
       letterSpacing: 0.5,
     },

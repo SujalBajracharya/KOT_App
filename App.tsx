@@ -21,6 +21,7 @@ import { useOrientation } from "@/hooks/useOrientation";
 import { navigationRef } from "@/utils/app_navigation";
 import Toast from "react-native-toast-message";
 import toastConfig from "@/utils/toastConfig";
+import { fonts } from "@/constants";
 
 // Prevent the splash screen from auto-hiding before fonts are ready.
 SplashScreen.preventAutoHideAsync();
@@ -69,19 +70,19 @@ function AppRoot() {
     },
     fonts: {
       regular: {
-        fontFamily: "Archivo_400Regular",
+        fontFamily: fonts.family.regular,
         fontWeight: "400",
       },
       medium: {
-        fontFamily: "Archivo_400Regular",
+        fontFamily: fonts.family.regular,
         fontWeight: "500",
       },
       bold: {
-        fontFamily: "Archivo_800ExtraBold",
+        fontFamily: fonts.family.bold,
         fontWeight: "800",
       },
       heavy: {
-        fontFamily: "Archivo_800ExtraBold",
+        fontFamily: fonts.family.bold,
         fontWeight: "800",
       },
     },

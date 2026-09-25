@@ -34,27 +34,27 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     lineNumber: {
       width: 24,
       fontSize: 12,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     lineName: {
       flex: 1,
       fontSize: 14,
-      fontWeight: "600",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     lineQty: {
       minWidth: 60,
       textAlign: "center",
       fontSize: 13,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     lineAmount: {
       width: 80,
       textAlign: "right",
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     footer: {
@@ -71,7 +71,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     discountLabel: {
       fontSize: 11,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     discountInput: {
@@ -85,7 +85,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     discountInputText: {
       fontSize: 13,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     discountTypeToggle: {
@@ -106,7 +106,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     discountTypeBtnText: {
       fontSize: 12,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
       textAlign: "center",
     },
@@ -124,7 +124,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     applyButtonText: {
       fontSize: 11,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
     },
     totalsBlock: {
@@ -144,7 +144,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     totalValue: {
       fontSize: 12,
-      fontWeight: "600",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     grandTotalRow: {
@@ -155,17 +155,17 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     grandTotalLabel: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     grandTotalValue: {
       fontSize: fonts.size.xxl,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
     },
     paymentMethodLabel: {
       fontSize: 10,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     paymentMethodRow: {
@@ -189,7 +189,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     paymentMethodText: {
       fontSize: 11,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
     },
     paymentMethodTextActive: {
@@ -211,7 +211,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     printButtonText: {
       fontSize: 13,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     settleButton: {
@@ -226,7 +226,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
     },
     settleButtonText: {
       fontSize: 13,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
     },
   });

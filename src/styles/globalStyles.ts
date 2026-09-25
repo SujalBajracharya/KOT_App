@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
-import { spacing, typography } from "@/constants";
+import { fonts, spacing, typography } from "@/constants";
 
 export const createGlobalStyles = (theme: AppTheme) => {
   return StyleSheet.create({
@@ -46,7 +46,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     },
     headerSubtitle: {
       fontSize: 11,
-      fontWeight: "600",
+      fontFamily: fonts.family.bold,
       color: theme.colors.textSecondary,
       textTransform: "uppercase",
       letterSpacing: 0.5,
@@ -91,20 +91,12 @@ export const createGlobalStyles = (theme: AppTheme) => {
       borderWidth: 1,
       borderColor: theme.colors.textSecondary,
       color: theme.colors.text,
+      fontFamily: fonts.family.regular,
       textAlignVertical: "center",
-    },
-    primaryButtonutton: {
-      paddingVertical: 12,
-      paddingHorizontal: 18,
-      alignItems: "center",
-      justifyContent: "center",
-      borderWidth: 1,
-      borderColor: theme.colors.textSecondary,
-      position: "relative",
     },
     ButtonText: {
       fontSize: 11,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
       letterSpacing: 0.5,
     },
@@ -131,7 +123,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     buttonPrimaryText: {
       color: theme.colors.onPrimary,
       fontSize: 14,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       letterSpacing: 0.5,
     },
     buttonSecondary: {
@@ -147,7 +139,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     buttonSecondaryText: {
       color: theme.colors.text,
       fontSize: 13,
-      fontWeight: "600",
+      fontFamily: fonts.family.bold,
     },
     inputWrapper: {
       borderWidth: 1,
@@ -161,6 +153,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     input: {
       fontSize: 14,
       color: theme.colors.text,
+      fontFamily: fonts.family.regular,
     },
     badge: {
       paddingHorizontal: 6,
@@ -170,7 +163,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     },
     badgeText: {
       fontSize: 10,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       letterSpacing: 0.5,
     },
     Tabs: {
@@ -213,7 +206,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     },
     TabText: {
       fontSize: 12,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
       textAlign: "center",
     },
@@ -255,7 +248,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     },
     totalValue: {
       fontSize: 13,
-      fontWeight: "600",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     grandTotalRow: {
@@ -265,12 +258,12 @@ export const createGlobalStyles = (theme: AppTheme) => {
     },
     grandTotalLabel: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     grandTotalValue: {
       fontSize: 24,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
     },
     actionRow: {
@@ -288,7 +281,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     },
     billButtonText: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     sendButton: {
@@ -304,7 +297,7 @@ export const createGlobalStyles = (theme: AppTheme) => {
     sendButtonText: {
       width: 75,
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
     },
   });

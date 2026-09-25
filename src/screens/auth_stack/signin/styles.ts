@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
+import { MIN_TOUCH_TARGET, spacing, typography, fonts } from "@/constants";
 import { AppTheme } from "@/theme/ThemeContext";
 
 export const createStyles = (theme: AppTheme, isLandscape: boolean = false) =>
@@ -68,7 +68,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) =>
     },
     fieldLabel: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.textSecondary,
     },
@@ -142,7 +142,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) =>
     },
     checkmark: {
       fontSize: 13,
-      fontWeight: "900",
+      fontFamily: fonts.family.bold,
       lineHeight: 15,
       color: theme.colors.background,
     },
@@ -185,7 +185,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) =>
     },
     buttonArrow: {
       fontSize: 22,
-      fontWeight: "bold",
+      fontFamily: fonts.family.bold,
       color: theme.colors.onPrimary,
     },
     footerRow: {
@@ -195,7 +195,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) =>
     },
     serverSetupText: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.primary,
     },

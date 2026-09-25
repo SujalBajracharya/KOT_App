@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { AppTheme } from "@/theme/ThemeContext";
+import { fonts } from "@/constants";
 
 export const createStyles = (theme: AppTheme) =>
   StyleSheet.create({
@@ -19,7 +20,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     lineQty: {
       fontSize: 14,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
     },
     lineBody: {
@@ -27,7 +28,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     lineName: {
       fontSize: 16,
-      fontWeight: "700",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     lineUnit: {
@@ -37,7 +38,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     lineNote: {
       fontSize: 10,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.primary,
       marginTop: 2,
     },
@@ -53,7 +54,7 @@ export const createStyles = (theme: AppTheme) =>
       width: 70,
       textAlign: "right",
       fontSize: 17,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
     stepperBtn: {
@@ -82,7 +83,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     stepperQtyText: {
       fontSize: 13,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       color: theme.colors.text,
     },
   });

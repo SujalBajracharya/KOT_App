@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { MIN_TOUCH_TARGET, spacing, typography } from "@/constants";
+import { MIN_TOUCH_TARGET, spacing, typography, fonts } from "@/constants";
 import { AppTheme } from "@/theme/ThemeContext";
 
 export const createStyles = (theme: AppTheme) =>
@@ -57,7 +57,7 @@ export const createStyles = (theme: AppTheme) =>
     // Section label (SERVER IP · PORT, DIVISION, TERMINAL, ORIENTATION)
     sectionLabel: {
       ...typography.caption,
-      fontWeight: "800",
+      fontFamily: fonts.family.bold,
       letterSpacing: 1,
       color: theme.colors.textSecondary,
       marginBottom: spacing.xs,
@@ -200,7 +200,7 @@ export const createStyles = (theme: AppTheme) =>
     },
     checkmark: {
       fontSize: 12,
-      fontWeight: "900",
+      fontFamily: fonts.family.bold,
       lineHeight: 14,
       color: theme.colors.background,
     },

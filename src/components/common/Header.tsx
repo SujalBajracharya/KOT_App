@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleProp, Text, View, ViewStyle } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
+import { AppText as Text } from '@/components/common/AppText';
 import { ArrowLeft } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { createGlobalStyles } from "@/styles/globalStyles";

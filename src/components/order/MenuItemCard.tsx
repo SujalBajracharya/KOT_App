@@ -1,5 +1,6 @@
 import React from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
+import { AppText as Text } from '@/components/common/AppText';
 
 import { MenuItem } from "@/screens/main_stack/order/types";
 

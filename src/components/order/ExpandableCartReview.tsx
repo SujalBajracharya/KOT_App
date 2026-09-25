@@ -1,5 +1,6 @@
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
+import { AppText as Text } from '@/components/common/AppText';
 import {
   ArrowRight,
   ChevronDown,
@@ -8,6 +9,7 @@ import {
 
 import { useTheme } from "@/theme/ThemeContext";
 import { useOrientation } from "@/hooks/useOrientation";
+import { fonts } from "@/constants";
 
 export interface CartReviewItem {
   id: string;
@@ -64,7 +66,7 @@ export function ExpandableCartReview({
           <Text
             style={{
               fontSize: 11,
-              fontWeight: "800",
+              fontFamily: fonts.family.bold,
               color: theme.colors.textSecondary,
               letterSpacing: 0.5,
             }}
@@ -76,7 +78,7 @@ export function ExpandableCartReview({
             style={{
               marginTop: 2,
               fontSize: 16,
-              fontWeight: "800",
+              fontFamily: fonts.family.bold,
               color: theme.colors.background,
             }}
           >
@@ -124,7 +126,7 @@ export function ExpandableCartReview({
                 style={{
                   width: 42,
                   fontSize: 12,
-                  fontWeight: "800",
+                  fontFamily: fonts.family.bold,
                   color: theme.colors.textSecondary,
                 }}
               >
@@ -136,7 +138,7 @@ export function ExpandableCartReview({
                 style={{
                   flex: 1,
                   fontSize: 13,
-                  fontWeight: "600",
+                  fontFamily: fonts.family.bold,
                   color: theme.colors.text,
                 }}
               >
@@ -147,7 +149,7 @@ export function ExpandableCartReview({
                 style={{
                   marginLeft: 12,
                   fontSize: 13,
-                  fontWeight: "700",
+                  fontFamily: fonts.family.bold,
                   color: theme.colors.text,
                 }}
               >
@@ -176,7 +178,7 @@ export function ExpandableCartReview({
         <Text
           style={{
             fontSize: 13,
-            fontWeight: "800",
+            fontFamily: fonts.family.bold,
             color: theme.colors.onPrimary,
             letterSpacing: 0.5,
           }}

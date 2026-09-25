@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { AppText as Text } from '@/components/common/AppText';
 import { Minus, Plus } from 'lucide-react-native';
 
 import { useTheme } from '@/theme/ThemeContext';
