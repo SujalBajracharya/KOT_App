@@ -1,6 +1,5 @@
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeft, RefreshCw } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
 import { createStyles } from "./styles";
 import { QRContentProps, QRPaymentMethod, QRPaymentStatus } from "./types";

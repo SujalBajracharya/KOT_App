@@ -57,27 +57,12 @@ export function HomeContent({ state, action }: HomeContentProps) {
           subtitle={`TERMINAL ${state.terminal} · SHIFT ${state.shift}`}
           showBack={false}
           rightComponent={
-            <>
-              <IconButton
-                style={styles.iconButtonRelative}
-                onPress={action.onNotifications}
-              >
-                <Bell size={20} color={theme.colors.text} />
-                {state.notificationCount > 0 && (
-                  <View style={styles.notificationBadge}>
-                    <Text style={styles.notificationBadgeText}>
-                      {state.notificationCount}
-                    </Text>
-                  </View>
-                )}
-              </IconButton>
-              <IconButton
-                style={styles.iconButtonRelative}
-                onPress={action.onLogOut}
-              >
-                <LogOut size={20} color={theme.colors.text} />
-              </IconButton>
-            </>
+            <IconButton
+              style={styles.iconButtonRelative}
+              onPress={action.onLogOut}
+            >
+              <LogOut size={20} color={theme.colors.text} />
+            </IconButton>
           }
         />
 
@@ -113,7 +98,7 @@ export function HomeContent({ state, action }: HomeContentProps) {
           </View>
 
           {/* ── Menu list ── */}
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <ScrollView
               style={styles.menuList}
               showsVerticalScrollIndicator={false}
