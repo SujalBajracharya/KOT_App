@@ -20,11 +20,10 @@ function formatAmount(amount?: number) {
     : `Rs ${amount.toLocaleString()}`;
 }
 
-function getElapsedMinutes(kotTime: string | null) {
+function getElapsedMinutes(kotTime: string | null, currentTime = Date.now()) {
   if (!kotTime) return 0;
 
   const startTime = new Date(kotTime).getTime();
-  const currentTime = Date.now();
 
   const elapsedMilliseconds = currentTime - startTime;
 
@@ -42,6 +41,8 @@ export function useTables(): UseTablesReturn {
   const [activeFloorId, setActiveFloorId] = useState(
     layouts[0]?.layoutId ?? "",
   );
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshedAt, setRefreshedAt] = useState(() => Date.now());
 
   const activeLayout =
     layouts.find(
@@ -55,7 +56,7 @@ export function useTables(): UseTablesReturn {
         label: "FREE",
       };
 
-      const elapsedMinutes = getElapsedMinutes(table.KOTTIME);
+      const elapsedMinutes = getElapsedMinutes(table.KOTTIME, refreshedAt);
 
       const meta =
         table.status === "OCCUPIED"
@@ -72,7 +73,7 @@ export function useTables(): UseTablesReturn {
         amount: formatAmount(table.QUANTITY),
       };
     });
-  }, [activeLayout]);
+  }, [activeLayout, refreshedAt]);
 
   const onBack = useCallback(() => {
     navigation.goBack();
@@ -80,7 +81,11 @@ export function useTables(): UseTablesReturn {
 
   const onSearch = useCallback(() => {}, []);
 
-  const onRefresh = useCallback(() => {}, []);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setRefreshedAt(Date.now());
+    setTimeout(() => setRefreshing(false), 2000);
+  }, []);
 
   const onFloorSelect = useCallback((floorId: string) => {
     setActiveFloorId(floorId);
@@ -100,6 +105,7 @@ export function useTables(): UseTablesReturn {
         active: layout.layoutId === activeFloorId,
       })),
       tables,
+      refreshing,
     },
 
     action: {

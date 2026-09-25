@@ -78,6 +78,11 @@ const orderSlice = createSlice({
       const tableNo = action.payload;
       delete state.orders[tableNo];
       delete state.orderMeta[tableNo];
+
+      if (state.tableNo === tableNo) {
+        state.tableNo = "";
+        state.items = [];
+      }
     },
 
     /**

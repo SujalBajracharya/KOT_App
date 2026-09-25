@@ -1,5 +1,12 @@
 import React from "react";
-import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, RefreshCw } from "lucide-react-native";
 import { useTheme } from "@/theme/ThemeContext";
@@ -106,15 +113,21 @@ export function TablesContent({ state, action }: TablesContentProps) {
           numColumns={isLandscape ? 4 : 2}
           style={styles.tableGrid}
           columnWrapperStyle={{ gap: 2 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={state.refreshing}
+              onRefresh={action.onRefresh}
+            />
+          }
           renderItem={({ item: t }) => {
             const dark = isDark(t.status);
             return (
               <Pressable
-                disabled={t.disabled == true}
+                disabled={t.disabled === true}
                 style={[
                   styles.tableCell,
                   cellStyles(t.status),
-                  t.disabled == true && styles.disabledTable,
+                  t.disabled === true && styles.disabledTable,
                 ]}
                 onPress={() => action.onTablePress(t.name)}
               >
@@ -133,7 +146,7 @@ export function TablesContent({ state, action }: TablesContentProps) {
                       dark ? styles.tableStatusDark : styles.tableStatusLight,
                     ]}
                   >
-                    {t.disabled == true? "DISABLED" : t.statusLabel}
+                      {t.disabled === true ? "DISABLED" : t.statusLabel}
                   </Text>
                 </View>
                 <View style={styles.tableCellFooter}>

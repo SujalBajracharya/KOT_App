@@ -19,6 +19,7 @@ export interface Floor {
 export interface TablesState {
   floors: Floor[];
   tables: TableItem[];
+  refreshing: boolean;
 }
 
 export interface TablesAction {

@@ -3,10 +3,10 @@ import navigation from "@/utils/app_navigation";
 import { mockMenuResponse } from "@/data/mock/menu";
 import { MenuItem, UseOrderReturn } from "./types";
 import { useDispatch, useSelector } from "react-redux";
-import { saveOrder } from "@/store/slices/order.slice";
+import { clearTableOrder, saveOrder } from "@/store/slices/order.slice";
 import { Alert } from "react-native";
 import { RootState } from "@/store";
-import { updateTableAfterKOT } from "@/store/slices/table.slice";
+import { resetTable, updateTableAfterKOT } from "@/store/slices/table.slice";
 
 export interface CartItem {
   id: string;
@@ -120,7 +120,29 @@ export function useOrder(TABLENO: string): UseOrderReturn {
     navigation.goBack();
   }, []);
 
-  const onNewKOT = useCallback(() => {}, []);
+  const onNewKOT = useCallback(() => {
+    Alert.alert(
+      "Start New KOT?",
+      "This will remove the current active orders for this table.",
+      [
+        { text: "No", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: () => {
+            dispatch(clearTableOrder(TABLENO));
+            dispatch(resetTable({ tableNo: TABLENO }));
+            setCartItemsByTable((prevByTable) => {
+              const next = { ...prevByTable };
+              delete next[TABLENO];
+              return next;
+            });
+            setIsCartExpanded(false);
+            setIsModalVisible(false);
+          },
+        },
+      ],
+    );
+  }, [dispatch, TABLENO]);
 
   const onItemPress = useCallback(
     (id: string) => {
