@@ -102,11 +102,9 @@ export function useHome(): UseHomeReturn {
     navigation.navigate("settlement");
   }, []);
 
-  const onNotifications = useCallback(() => {
-    navigation.navigate("notification");
+  const onLogOut = useCallback(() => {
+    navigation.resetToSignIn();
   }, []);
-
-  const onLogOut = useCallback(() => {}, []);
 
   return {
     state: {
