@@ -271,6 +271,22 @@ const tableSlice = createSlice({
       }
     },
 
+    occupyTable: (state, action: PayloadAction<{ tableNo: string }>) => {
+      const { tableNo } = action.payload;
+
+      for (const layout of state.layouts) {
+        const table = layout.tables.find((table) => table.TABLENO === tableNo);
+
+        if (!table) continue;
+
+        table.status = "OCCUPIED";
+        table.QUANTITY = 0;
+        table.KOTTIME = null;
+
+        break;
+      }
+    },
+
     transferReservation: (
       state,
       action: PayloadAction<{ sourceTable: string; destinationTable: string }>,
@@ -306,6 +322,7 @@ export const {
   updateTableKOTTime,
   resetTable,
   freeTable,
+  occupyTable,
   transferReservation,
 } = tableSlice.actions;
 

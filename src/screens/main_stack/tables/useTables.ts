@@ -6,6 +6,7 @@ import { TableItem, TableStatus, UseTablesReturn } from "./types";
 import { PopupTable } from "@/components/table/TableActionPopup";
 import {
   freeTable,
+  occupyTable,
   resetTable,
   transferReservation,
 } from "@/store/slices/table.slice";
@@ -90,8 +91,7 @@ export function useTables(): UseTablesReturn {
       layouts
         .flatMap((layout) => layout.tables)
         .filter(
-          (table) =>
-            table.status === "FREE" && table.TABLENO !== transferTable,
+          (table) => table.status === "FREE" && table.TABLENO !== transferTable,
         )
         .map((table) => ({ id: table.tableId, name: table.TABLENO })),
     [layouts, transferTable],
@@ -126,35 +126,37 @@ export function useTables(): UseTablesReturn {
   //   });
   // }, []);
 
-  const onTablePress = useCallback((TABLENO: string, STATUS: string) => {
-    console.log("STATUS", STATUS);
+  const onTablePress = useCallback(
+    (TABLENO: string, STATUS: string) => {
+      if (STATUS === "occupied" || STATUS === "free") {
+        // already has an order — go straight to order/bill
+        navigation.navigate("order", { TABLENO });
+        return;
+      }
 
-    if (STATUS === "occupied" || STATUS === "free") {
-      // already has an order — go straight to order/bill
-      navigation.navigate("order", { TABLENO });
-      return;
-    }
+      const reservedTime = layouts
+        .flatMap((layout) => layout.tables)
+        .find((table) => table.TABLENO === TABLENO)?.reservedTime;
 
-    const reservedTime = layouts
-      .flatMap((layout) => layout.tables)
-      .find((table) => table.TABLENO === TABLENO)?.reservedTime;
-
-    // reserved, free, or anything else — show the popup
-    setPopupTable({
-      id: TABLENO,
-      name: `Table ${TABLENO}`,
-      status: STATUS as TableStatus,
-      statusLabel: STATUS.toUpperCase(),
-      meta: "",
-      amount: "",
-      reservedTime,
-    });
-  }, [layouts]);
+      // reserved, free, or anything else — show the popup
+      setPopupTable({
+        id: TABLENO,
+        name: `Table ${TABLENO}`,
+        status: STATUS as TableStatus,
+        statusLabel: STATUS.toUpperCase(),
+        meta: "",
+        amount: "",
+        reservedTime,
+      });
+    },
+    [layouts],
+  );
 
   const onSetSeated = useCallback(
     (TABLENO: string) => {
-      dispatch(resetTable({ tableNo: TABLENO }));
+      dispatch(occupyTable({ tableNo: TABLENO }));
       setPopupTable(null);
+      navigation.navigate("order", { TABLENO });
     },
     [dispatch, navigation],
   );
@@ -164,7 +166,7 @@ export function useTables(): UseTablesReturn {
       dispatch(freeTable({ tableNo: TABLENO }));
       setPopupTable(null);
     },
-    [dispatch, navigation],
+    [dispatch],
   );
 
   const onTransferSeat = useCallback((TABLENO: string) => {
