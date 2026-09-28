@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FlatList,
+  Modal,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -190,10 +191,53 @@ export function TablesContent({ state, action }: TablesContentProps) {
           table={state.popupTable}
           onClose={action.onClosePopup}
           onSetSeated={action.onSetSeated}
-          onTransferSeat={(id) => console.log("[Tables] Transfer seat →", id)}
+          onTransferSeat={action.onTransferSeat}
           onCancelReservation={action.onSetFree}
           onCleanTable= {action.onSetFree}
         />
+        <Modal
+          visible={state.transferTable !== null}
+          transparent
+          animationType="slide"
+          onRequestClose={action.onCancelTransfer}
+        >
+          <Pressable
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              backgroundColor: "rgba(0,0,0,0.45)",
+              padding: 24,
+            }}
+            onPress={action.onCancelTransfer}
+          >
+            <Pressable
+              style={[styles.card, { maxHeight: "80%" }]}
+              onPress={() => {}}
+            >
+              <Text style={styles.headerTitle}>Select Destination Table</Text>
+
+              {state.transferDestinations.length === 0 ? (
+                <Text style={[styles.totalLabel, { marginTop: 12 }]}>
+                  No free tables available.
+                </Text>
+              ) : (
+                <ScrollView>
+                  {state.transferDestinations.map((table) => (
+                    <Pressable
+                      key={table.id}
+                      style={[styles.buttonSecondary, { marginTop: 8 }]}
+                      onPress={() => action.onTransferDestination(table.name)}
+                    >
+                      <Text style={styles.buttonSecondaryText}>
+                        {table.name}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              )}
+            </Pressable>
+          </Pressable>
+        </Modal>
       </View>
     </SafeAreaView>
   );

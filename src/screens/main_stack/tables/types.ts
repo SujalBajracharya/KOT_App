@@ -25,6 +25,8 @@ export interface TablesState {
   searchQuery: string;
   isSearchVisible: boolean;
   popupTable: PopupTable | null;
+  transferTable: string | null;
+  transferDestinations: Pick<TableItem, "id" | "name">[];
 }
 
 export interface TablesAction {
@@ -36,6 +38,9 @@ export interface TablesAction {
   onTablePress: (TABLENO: string, STATUS: string) => void;
   onSetSeated: (TABLENO: string) => void;
   onSetFree: (TABLENO: string) => void;
+  onTransferSeat: (TABLENO: string) => void;
+  onTransferDestination: (TABLENO: string) => void;
+  onCancelTransfer: () => void;
   onClosePopup: () => void;
 }
 

@@ -270,6 +270,32 @@ const tableSlice = createSlice({
         break;
       }
     },
+
+    transferReservation: (
+      state,
+      action: PayloadAction<{ sourceTable: string; destinationTable: string }>,
+    ) => {
+      const { sourceTable, destinationTable } = action.payload;
+      const tables = state.layouts.flatMap((layout) => layout.tables);
+      const source = tables.find((table) => table.TABLENO === sourceTable);
+      const destination = tables.find(
+        (table) => table.TABLENO === destinationTable,
+      );
+
+      if (
+        !source ||
+        !destination ||
+        source.status !== "RESERVED" ||
+        destination.status !== "FREE"
+      ) {
+        return;
+      }
+
+      destination.status = "RESERVED";
+      destination.reservedTime = source.reservedTime;
+      source.status = "FREE";
+      source.reservedTime = undefined;
+    },
   },
 });
 
@@ -280,6 +306,7 @@ export const {
   updateTableKOTTime,
   resetTable,
   freeTable,
+  transferReservation,
 } = tableSlice.actions;
 
 export default tableSlice.reducer;

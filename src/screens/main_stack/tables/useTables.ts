@@ -4,7 +4,11 @@ import navigation from "@/utils/app_navigation";
 import { RootState } from "@/store";
 import { TableItem, TableStatus, UseTablesReturn } from "./types";
 import { PopupTable } from "@/components/table/TableActionPopup";
-import { freeTable, resetTable } from "@/store/slices/table.slice";
+import {
+  freeTable,
+  resetTable,
+  transferReservation,
+} from "@/store/slices/table.slice";
 
 const tableStatusMap: Record<string, { status: TableStatus; label: string }> = {
   FREE: { status: "free", label: "FREE" },
@@ -38,6 +42,7 @@ export function useTables(): UseTablesReturn {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [popupTable, setPopupTable] = useState<PopupTable | null>(null);
+  const [transferTable, setTransferTable] = useState<string | null>(null);
 
   const dispatch = useDispatch();
 
@@ -79,6 +84,18 @@ export function useTables(): UseTablesReturn {
       table.name.trim().toLowerCase().includes(normalizedQuery),
     );
   }, [searchQuery, tables]);
+
+  const transferDestinations = useMemo(
+    () =>
+      layouts
+        .flatMap((layout) => layout.tables)
+        .filter(
+          (table) =>
+            table.status === "FREE" && table.TABLENO !== transferTable,
+        )
+        .map((table) => ({ id: table.tableId, name: table.TABLENO })),
+    [layouts, transferTable],
+  );
 
   const onBack = useCallback(() => {
     navigation.goBack();
@@ -150,6 +167,30 @@ export function useTables(): UseTablesReturn {
     [dispatch, navigation],
   );
 
+  const onTransferSeat = useCallback((TABLENO: string) => {
+    setTransferTable(TABLENO);
+  }, []);
+
+  const onTransferDestination = useCallback(
+    (destinationTable: string) => {
+      if (!transferTable) return;
+
+      dispatch(
+        transferReservation({
+          sourceTable: transferTable,
+          destinationTable,
+        }),
+      );
+      setTransferTable(null);
+      setPopupTable(null);
+    },
+    [dispatch, transferTable],
+  );
+
+  const onCancelTransfer = useCallback(() => {
+    setTransferTable(null);
+  }, []);
+
   return {
     state: {
       floors: layouts.map((layout) => ({
@@ -162,6 +203,8 @@ export function useTables(): UseTablesReturn {
       searchQuery,
       isSearchVisible,
       popupTable,
+      transferTable,
+      transferDestinations,
     },
 
     action: {
@@ -173,6 +216,9 @@ export function useTables(): UseTablesReturn {
       onTablePress,
       onSetSeated,
       onSetFree,
+      onTransferSeat,
+      onTransferDestination,
+      onCancelTransfer,
       onClosePopup: () => setPopupTable(null),
     },
   };

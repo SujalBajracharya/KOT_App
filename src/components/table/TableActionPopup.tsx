@@ -38,6 +38,7 @@ interface ActionItem {
   variant: Variant;
   onPress: () => void;
   dividerAbove?: boolean;
+  keepOpen?: boolean;
 }
 
 function getActions(
@@ -57,6 +58,7 @@ function getActions(
         {
           label: "Transfer Seat",
           variant: "secondary",
+          keepOpen: true,
           onPress: () => props.onTransferSeat?.(id),
         },
         {
@@ -186,7 +188,7 @@ export function TableActionPopup(props: TableActionPopupProps) {
                   ]}
                   onPress={() => {
                     btn.onPress();
-                    onClose();
+                    if (!btn.keepOpen) onClose();
                   }}
                   hitSlop={4}
                 >
