@@ -4,7 +4,7 @@ import { mockMenuResponse } from "@/data/mock/menu";
 import { MenuItem, UseOrderReturn } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { clearTableOrder, saveOrder } from "@/store/slices/order.slice";
-import { Alert } from "react-native";
+import { Alert, ImageSourcePropType } from "react-native";
 import { RootState } from "@/store";
 import { resetTable, updateTableAfterKOT } from "@/store/slices/table.slice";
 
@@ -99,7 +99,7 @@ export function useOrder(TABLENO: string): UseOrderReturn {
           thumbCode: item.MCODE,
           badge: item.isAvailable ? undefined : "UNAVAILABLE",
           inCart: Boolean(cartItem && cartItem.quantity > 0),
-          image: item.image,
+          image: item.image as ImageSourcePropType,
         };
       });
   }, [activeCategory, cartItems, searchMode, searchQuery]);
@@ -179,7 +179,85 @@ export function useOrder(TABLENO: string): UseOrderReturn {
   //   navigation.navigate("review");
   // }, []);
 
+  // const onSendToKitchen = useCallback(() => {
+  //   const total = cartItems.reduce(
+  //     (sum, item) => sum + item.RATE_A * item.quantity,
+  //     0,
+  //   );
+
+  //   const kotTime = new Date().toISOString();
+
+  //   const orderData = {
+  //     tableNo: TABLENO,
+  //     items: cartItems,
+  //   };
+
+  //   console.log("Saving order to Redux:", JSON.stringify(orderData, null, 2));
+
+  //   // Save food items to order slice
+  //   dispatch(saveOrder(orderData));
+
+  //   // Update table state
+  //   dispatch(
+  //     updateTableAfterKOT({
+  //       tableNo: TABLENO,
+  //       quantity: total,
+  //       kotTime,
+  //     }),
+  //   );
+
+  //   console.log("Order dispatched successfully:", {
+  //     orderData,
+  //     tableUpdate: {
+  //       tableNo: TABLENO,
+  //       quantity: total,
+  //       kotTime,
+  //       status: "OCCUPIED",
+  //     },
+  //   });
+
+  //   Alert.alert(
+  //     "Order Sent",
+  //     "Your order has been sent to the kitchen successfully.",
+  //   );
+  // }, [dispatch, TABLENO, cartItems]);
+
   const onSendToKitchen = useCallback(() => {
+    // Check whether the complete current cart
+    // is already the same as the order saved in Redux.
+    const isSameOrder =
+      cartItems.length === savedOrderItems.length &&
+      cartItems.every((item) => {
+        const savedItem = savedOrderItems.find(
+          (orderItem) => orderItem.id === item.id,
+        );
+
+        if (!savedItem) return false;
+
+        const sameRemarks =
+          item.activeRemarks.length === savedItem.activeRemarks.length &&
+          item.activeRemarks.every((remark) =>
+            savedItem.activeRemarks.includes(remark),
+          );
+
+        return (
+          item.id === savedItem.id &&
+          item.quantity === savedItem.quantity &&
+          sameRemarks &&
+          item.customNote === savedItem.customNote
+        );
+      });
+
+    if (isSameOrder) {
+      console.log(
+        "########################################## SAME ORDER ##########################################",
+      );
+
+      Alert.alert("No Changes", "This order is already sent to the kitchen.");
+
+      return;
+    }
+
     const total = cartItems.reduce(
       (sum, item) => sum + item.RATE_A * item.quantity,
       0,
@@ -220,7 +298,7 @@ export function useOrder(TABLENO: string): UseOrderReturn {
       "Order Sent",
       "Your order has been sent to the kitchen successfully.",
     );
-  }, [dispatch, TABLENO, cartItems]);
+  }, [dispatch, TABLENO, cartItems, savedOrderItems]);
 
   // Quantity modal actions
   const onCloseModal = useCallback(() => {

@@ -169,7 +169,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       color: theme.colors.textSecondary,
     },
     paymentMethodRow: {
-      gap: 10,
+      gap: 6,
       justifyContent: "space-between",
       flexDirection: "row",
     },
