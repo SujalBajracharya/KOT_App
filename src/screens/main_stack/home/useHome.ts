@@ -1,6 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootState } from "@/store";
+import type { RootStackParamList } from "@/navigation/root_stack";
 import navigation from "@/utils/app_navigation";
 import { UseHomeReturn } from "./types";
 
@@ -26,6 +29,8 @@ function formatRevenue(amount: number): string {
 }
 
 export function useHome(): UseHomeReturn {
+  const screenNavigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [userName] = useState("User");
   const [terminal] = useState("04");
   const [shift] = useState(2);
@@ -103,8 +108,8 @@ export function useHome(): UseHomeReturn {
   }, []);
 
   const onLogOut = useCallback(() => {
-    navigation.resetToSignIn();
-  }, []);
+    screenNavigation.reset({ index: 0, routes: [{ name: "signin" }] });
+  }, [screenNavigation]);
 
   return {
     state: {
@@ -124,7 +129,6 @@ export function useHome(): UseHomeReturn {
       onSplitTransfer,
       onSyncMenu,
       onSettlement,
-      onNotifications,
       onLogOut,
     },
   };

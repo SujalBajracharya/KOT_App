@@ -16,7 +16,6 @@ export interface HomeAction {
   onSplitTransfer: () => void;
   onSyncMenu: () => void;
   onSettlement: () => void;
-  onNotifications: () => void;
   onLogOut: () => void;
 }
 

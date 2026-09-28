@@ -7,8 +7,6 @@ export const navigationRef =
 const navigation = {
   navigate: navigationRef.navigate,
   goBack: navigationRef.goBack,
-  resetToSignIn: () =>
-    navigationRef.resetRoot({ index: 0, routes: [{ name: "signin" }] }),
 };
 
 export default navigation;

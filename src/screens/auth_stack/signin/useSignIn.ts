@@ -1,15 +1,19 @@
 import { useCallback, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { userVerification } from "@/services/auth/auth.service";
 import { UserVerificationResponse } from "@/types/auth";
 import { UseSignInReturn } from "./types";
 import { setServerConfig } from "@/store/slices/server.slice";
 import { useDispatch } from "react-redux";
-import navigation from "@/utils/app_navigation";
+import type { RootStackParamList } from "@/navigation/root_stack";
 
 const MOCK_DEVICE_ID = "cb5d237e-db9a-48dc-ac1c-282122aa0545";
 const DEFAULT_VERSION = 9999;
 
 export function useSignIn(): UseSignInReturn {
+  const screenNavigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [username, setUsernameState] = useState("");
   const [password, setPasswordState] = useState("");
   const [rememberTerminal, setRememberTerminal] = useState(true);
@@ -145,7 +149,7 @@ export function useSignIn(): UseSignInReturn {
 
         if (response.success) {
           setError(null);
-          navigation.navigate("home");
+          screenNavigation.replace("home");
           return response;
         } else {
           setError(response.message || "Invalid username or password");
@@ -161,7 +165,7 @@ export function useSignIn(): UseSignInReturn {
       } finally {
         setIsLoading(false);
       }
-    }, [username, password, isLoading, clearErrors]);
+    }, [username, password, isLoading, clearErrors, screenNavigation]);
 
   return {
     state: {
