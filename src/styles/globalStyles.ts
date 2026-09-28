@@ -70,6 +70,10 @@ export const createGlobalStyles = (theme: AppTheme) => {
       borderColor: theme.colors.textSecondary,
       position: "relative",
     },
+    CellPressed: {
+      transform: [{ scale: 0.97 }],
+      opacity: 0.85,
+    },
     primaryButton: {
       flex: 1,
       height: 64,

@@ -138,7 +138,9 @@ export function TablesContent({ state, action }: TablesContentProps) {
             return (
               <Pressable
                 disabled={t.disabled === true}
-                style={[
+                style={({ pressed }) => [
+                  styles.tableCell,
+                  pressed && styles.CellPressed,
                   styles.tableCell,
                   cellStyles(t.status),
                   t.disabled === true && styles.disabledTable,
@@ -193,7 +195,7 @@ export function TablesContent({ state, action }: TablesContentProps) {
           onSetSeated={action.onSetSeated}
           onTransferSeat={action.onTransferSeat}
           onCancelReservation={action.onSetFree}
-          onCleanTable= {action.onSetFree}
+          onCleanTable={action.onSetFree}
         />
         <Modal
           visible={state.transferTable !== null}

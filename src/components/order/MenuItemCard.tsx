@@ -19,10 +19,11 @@ export function MenuItemCard({
 }: MenuItemCardProps) {
   return (
     <Pressable
-      style={[
+      style={({pressed})=>[
         styles.itemCell,
         { marginBottom: 2 },
         isInCart && styles.itemCellInCart,
+        pressed && styles.CellPressed,
       ]}
       onPress={onPress}
     >
