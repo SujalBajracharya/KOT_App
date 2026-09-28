@@ -1,4 +1,6 @@
-export type TableStatus = "free" | "occupied" | "bill" | "held";
+import { PopupTable } from "@/components/table/TableActionPopup";
+
+export type TableStatus = "free" | "occupied" | "reserved" | "vacated";
 
 export interface TableItem {
   id: string;
@@ -22,6 +24,7 @@ export interface TablesState {
   refreshing: boolean;
   searchQuery: string;
   isSearchVisible: boolean;
+  popupTable: PopupTable | null;
 }
 
 export interface TablesAction {
@@ -30,7 +33,10 @@ export interface TablesAction {
   onSearchChange: (query: string) => void;
   onRefresh: () => void;
   onFloorSelect: (floorId: string) => void;
-  onTablePress: (TABLENO: string) => void;
+  onTablePress: (TABLENO: string, STATUS: string) => void;
+  onSetSeated: (TABLENO: string) => void;
+  onSetFree: (TABLENO: string) => void;
+  onClosePopup: () => void;
 }
 
 export interface UseTablesReturn {

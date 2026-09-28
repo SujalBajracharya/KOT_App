@@ -16,6 +16,7 @@ import { IconButton } from "@/components/common/IconButton";
 import { AppText as Text } from "@/components/common/AppText";
 import { TableStatus, TablesContentProps } from "./types";
 import { createStyles } from "./styles";
+import { TableActionPopup } from "@/components/table/TableActionPopup";
 
 export function TablesContent({ state, action }: TablesContentProps) {
   const { theme } = useTheme();
@@ -26,17 +27,17 @@ export function TablesContent({ state, action }: TablesContentProps) {
     switch (status) {
       case "occupied":
         return styles.tableCellOccupied;
-      case "bill":
-        return styles.tableCellBill;
-      case "held":
-        return styles.tableCellHeld;
+      case "reserved":
+        return styles.tableCellReserved;
+      case "vacated":
+        return styles.tableCellVacated;
       default:
         return styles.tableCellFree;
     }
   }
 
   function isDark(status: TableStatus) {
-    return status === "occupied" || status === "bill";
+    return status === "occupied" || status === "reserved";
   }
 
   return (
@@ -99,8 +100,8 @@ export function TablesContent({ state, action }: TablesContentProps) {
           {[
             { label: "FREE", variant: "free" },
             { label: "OCCUPIED", variant: "occupied" },
-            { label: "BILL", variant: "bill" },
-            { label: "HELD", variant: "held" },
+            { label: "RESERVED", variant: "reserved" },
+            { label: "VACATED", variant: "vacated" },
           ].map(({ label, variant }) => (
             <View key={label} style={styles.legendItem}>
               <View
@@ -108,8 +109,8 @@ export function TablesContent({ state, action }: TablesContentProps) {
                   styles.legendSwatch,
                   variant === "free" && styles.legendSwatchFree,
                   variant === "occupied" && styles.legendSwatchOccupied,
-                  variant === "bill" && styles.legendSwatchBill,
-                  variant === "held" && styles.legendSwatchHeld,
+                  variant === "reserved" && styles.legendSwatchBill,
+                  variant === "vacated" && styles.legendSwatchHeld,
                 ]}
               />
               <Text style={styles.legendText}>{label}</Text>
@@ -141,7 +142,7 @@ export function TablesContent({ state, action }: TablesContentProps) {
                   cellStyles(t.status),
                   t.disabled === true && styles.disabledTable,
                 ]}
-                onPress={() => action.onTablePress(t.name)}
+                onPress={() => action.onTablePress(t.name, t.status)}
               >
                 <View style={styles.tableCellHeader}>
                   <Text
@@ -158,7 +159,7 @@ export function TablesContent({ state, action }: TablesContentProps) {
                       dark ? styles.tableStatusDark : styles.tableStatusLight,
                     ]}
                   >
-                      {t.disabled === true ? "DISABLED" : t.statusLabel}
+                    {t.disabled === true ? "DISABLED" : t.statusLabel}
                   </Text>
                 </View>
                 <View style={styles.tableCellFooter}>
@@ -182,6 +183,16 @@ export function TablesContent({ state, action }: TablesContentProps) {
               </Pressable>
             );
           }}
+        />
+        {/* ── Table action popup ── */}
+        <TableActionPopup
+          visible={!!state.popupTable}
+          table={state.popupTable}
+          onClose={action.onClosePopup}
+          onSetSeated={action.onSetSeated}
+          onTransferSeat={(id) => console.log("[Tables] Transfer seat →", id)}
+          onCancelReservation={action.onSetFree}
+          onCleanTable= {action.onSetFree}
         />
       </View>
     </SafeAreaView>

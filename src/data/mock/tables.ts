@@ -47,7 +47,7 @@ const floor1Tables: Table[] = [
     disabled: false,
 
     capacity: 6,
-    status: "BILL",
+    status: "RESERVED",
     orderId: "ord-002",
   },
   {
@@ -112,7 +112,7 @@ const floor1Tables: Table[] = [
     disabled: false,
 
     capacity: 4,
-    status: "HELD",
+    status: "VACATED",
   },
   {
     tableId: "f1-t8",
@@ -127,7 +127,7 @@ const floor1Tables: Table[] = [
     disabled: true,
 
     capacity: 8,
-    status: "HELD",
+    status: "VACATED",
     orderId: "ord-004",
     kotCount: 3,
   },
@@ -147,7 +147,7 @@ const floor2Tables: Table[] = [
     disabled: false,
 
     capacity: 4,
-    status: "HELD",
+    status: "VACATED",
     orderId: "ord-005",
   },
   {

@@ -122,7 +122,7 @@ export type KOTStatus = "PENDING" | "PREPARING" | "READY" | "SERVED";
 
 // ── Tables ────────────────────────────────────────────────────────────────────
 
-export type TableStatus = "FREE" | "OCCUPIED" | "BILL" | "HELD";
+export type TableStatus = "FREE" | "OCCUPIED" | "RESERVED" | "VACATED";
 
 export interface Table {
   tableId: string;
@@ -133,15 +133,15 @@ export interface Table {
   PREBILL_STATUS: number;
   status: TableStatus;
   KOTR: number;
-  /** If OCCUPIED / BILL / HELD — occupancy head count */
+  /** If OCCUPIED / RESERVED  — occupancy head count */
   Occupied?: number;
-  /** If OCCUPIED / BILL / HELD — active order id */
+  /** If OCCUPIED / RESERVED / VACATED — active order id */
   orderId?: string;
   /** If OCCUPIED — number of KOTs sent */
   kotCount?: number;
   /** If OCCUPIED — elapsed time in minutes since first order */
   KOTTIME?: null | number;
-  /** If BILL / HELD — amount due */
+  /** If RESERVED / VACATED — amount due */
   QUANTITY?: number;
   disabled: boolean;
 }

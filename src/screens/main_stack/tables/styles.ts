@@ -72,7 +72,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       justifyContent: "space-between",
       // maxHeight: isLandscape ? 100 : 130,
     },
-    tableCellHeld: {
+    tableCellVacated: {
       backgroundColor: theme.colors.surface,
       borderColor: theme.colors.border,
     },
@@ -80,7 +80,7 @@ export const createStyles = (theme: AppTheme, isLandscape: boolean = false) => {
       backgroundColor: theme.colors.statusOccupied,
       borderColor: theme.colors.statusOccupied,
     },
-    tableCellBill: {
+    tableCellReserved: {
       backgroundColor: theme.colors.statusBill,
       borderColor: theme.colors.statusBill,
     },

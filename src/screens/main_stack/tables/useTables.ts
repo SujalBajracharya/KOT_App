@@ -1,23 +1,20 @@
 import { useCallback, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import navigation from "@/utils/app_navigation";
 import { RootState } from "@/store";
 import { TableItem, TableStatus, UseTablesReturn } from "./types";
+import { PopupTable } from "@/components/table/TableActionPopup";
+import { freeTable, resetTable } from "@/store/slices/table.slice";
 
-const tableStatusMap: Record<
-  string,
-  { status: TableStatus; label: string }
-> = {
+const tableStatusMap: Record<string, { status: TableStatus; label: string }> = {
   FREE: { status: "free", label: "FREE" },
   OCCUPIED: { status: "occupied", label: "OCCUPIED" },
-  BILL: { status: "bill", label: "BILL" },
-  HELD: { status: "held", label: "HELD" },
+  RESERVED: { status: "reserved", label: " RESERVED" },
+  VACATED: { status: "vacated", label: "VACATED" },
 };
 
 function formatAmount(amount?: number) {
-  return amount === undefined
-    ? ""
-    : `Rs ${amount.toLocaleString()}`;
+  return amount === undefined ? "" : `Rs ${amount.toLocaleString()}`;
 }
 
 function getElapsedMinutes(kotTime: string | null, currentTime = Date.now()) {
@@ -27,16 +24,11 @@ function getElapsedMinutes(kotTime: string | null, currentTime = Date.now()) {
 
   const elapsedMilliseconds = currentTime - startTime;
 
-  return Math.max(
-    0,
-    Math.floor(elapsedMilliseconds / (1000 * 60)),
-  );
+  return Math.max(0, Math.floor(elapsedMilliseconds / (1000 * 60)));
 }
 
 export function useTables(): UseTablesReturn {
-  const layouts = useSelector(
-    (state: RootState) => state.table.layouts,
-  );
+  const layouts = useSelector((state: RootState) => state.table.layouts);
 
   const [activeFloorId, setActiveFloorId] = useState(
     layouts[0]?.layoutId ?? "",
@@ -45,11 +37,12 @@ export function useTables(): UseTablesReturn {
   const [refreshedAt, setRefreshedAt] = useState(() => Date.now());
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [popupTable, setPopupTable] = useState<PopupTable | null>(null);
+
+  const dispatch = useDispatch();
 
   const activeLayout =
-    layouts.find(
-      (layout) => layout.layoutId === activeFloorId,
-    ) ?? layouts[0];
+    layouts.find((layout) => layout.layoutId === activeFloorId) ?? layouts[0];
 
   const tables = useMemo<TableItem[]>(() => {
     return (activeLayout?.tables ?? []).map((table) => {
@@ -109,11 +102,53 @@ export function useTables(): UseTablesReturn {
     setActiveFloorId(floorId);
   }, []);
 
-  const onTablePress = useCallback((TABLENO: string) => {
-    navigation.navigate("order", {
-      TABLENO,
+  // const onTablePress = useCallback((TABLENO: string, STATUS: string) => {
+  //   console.log("STASTUS", STATUS);
+  //   navigation.navigate("order", {
+  //     TABLENO,
+  //   });
+  // }, []);
+
+  const onTablePress = useCallback((TABLENO: string, STATUS: string) => {
+    console.log("STATUS", STATUS);
+
+    if (STATUS === "occupied" || STATUS === "free") {
+      // already has an order — go straight to order/bill
+      navigation.navigate("order", { TABLENO });
+      return;
+    }
+
+    const reservedTime = layouts
+      .flatMap((layout) => layout.tables)
+      .find((table) => table.TABLENO === TABLENO)?.reservedTime;
+
+    // reserved, free, or anything else — show the popup
+    setPopupTable({
+      id: TABLENO,
+      name: `Table ${TABLENO}`,
+      status: STATUS as TableStatus,
+      statusLabel: STATUS.toUpperCase(),
+      meta: "",
+      amount: "",
+      reservedTime,
     });
-  }, []);
+  }, [layouts]);
+
+  const onSetSeated = useCallback(
+    (TABLENO: string) => {
+      dispatch(resetTable({ tableNo: TABLENO }));
+      setPopupTable(null);
+    },
+    [dispatch, navigation],
+  );
+
+  const onSetFree = useCallback(
+    (TABLENO: string) => {
+      dispatch(freeTable({ tableNo: TABLENO }));
+      setPopupTable(null);
+    },
+    [dispatch, navigation],
+  );
 
   return {
     state: {
@@ -126,6 +161,7 @@ export function useTables(): UseTablesReturn {
       refreshing,
       searchQuery,
       isSearchVisible,
+      popupTable,
     },
 
     action: {
@@ -135,6 +171,9 @@ export function useTables(): UseTablesReturn {
       onRefresh,
       onFloorSelect,
       onTablePress,
+      onSetSeated,
+      onSetFree,
+      onClosePopup: () => setPopupTable(null),
     },
   };
 }

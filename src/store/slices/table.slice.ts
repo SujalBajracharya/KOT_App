@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type TableStatus = "FREE" | "OCCUPIED" | "BILL" | "HELD";
+export type TableStatus = "FREE" | "OCCUPIED" | "RESERVED" | "VACATED";
 
 export interface TableState {
   // Static table information
@@ -13,6 +13,7 @@ export interface TableState {
   status: TableStatus;
   QUANTITY: number;
   KOTTIME: string | null;
+  reservedTime?: string;
 }
 
 export interface TableLayoutState {
@@ -60,7 +61,8 @@ const initialState: TablesState = {
           TABLENO: "3 floor-1",
           capacity: 6,
           disabled: false,
-          status: "FREE",
+          status: "RESERVED",
+          reservedTime: "6:00",
           QUANTITY: 0,
           KOTTIME: null,
         },
@@ -69,7 +71,7 @@ const initialState: TablesState = {
           TABLENO: "4 floor-1",
           capacity: 4,
           disabled: false,
-          status: "FREE",
+          status: "VACATED",
           QUANTITY: 0,
           KOTTIME: null,
         },
@@ -165,9 +167,7 @@ const tableSlice = createSlice({
       const { tableNo, quantity, kotTime } = action.payload;
 
       for (const layout of state.layouts) {
-        const table = layout.tables.find(
-          (table) => table.TABLENO === tableNo,
-        );
+        const table = layout.tables.find((table) => table.TABLENO === tableNo);
 
         if (!table) continue;
 
@@ -189,9 +189,7 @@ const tableSlice = createSlice({
       const { tableNo, status } = action.payload;
 
       for (const layout of state.layouts) {
-        const table = layout.tables.find(
-          (table) => table.TABLENO === tableNo,
-        );
+        const table = layout.tables.find((table) => table.TABLENO === tableNo);
 
         if (!table) continue;
 
@@ -211,9 +209,7 @@ const tableSlice = createSlice({
       const { tableNo, quantity } = action.payload;
 
       for (const layout of state.layouts) {
-        const table = layout.tables.find(
-          (table) => table.TABLENO === tableNo,
-        );
+        const table = layout.tables.find((table) => table.TABLENO === tableNo);
 
         if (!table) continue;
 
@@ -233,9 +229,7 @@ const tableSlice = createSlice({
       const { tableNo, kotTime } = action.payload;
 
       for (const layout of state.layouts) {
-        const table = layout.tables.find(
-          (table) => table.TABLENO === tableNo,
-        );
+        const table = layout.tables.find((table) => table.TABLENO === tableNo);
 
         if (!table) continue;
 
@@ -245,16 +239,27 @@ const tableSlice = createSlice({
       }
     },
 
-    resetTable: (
-      state,
-      action: PayloadAction<{ tableNo: string }>,
-    ) => {
+    resetTable: (state, action: PayloadAction<{ tableNo: string }>) => {
       const { tableNo } = action.payload;
 
       for (const layout of state.layouts) {
-        const table = layout.tables.find(
-          (table) => table.TABLENO === tableNo,
-        );
+        const table = layout.tables.find((table) => table.TABLENO === tableNo);
+
+        if (!table) continue;
+
+        table.status = "VACATED";
+        table.QUANTITY = 0;
+        table.KOTTIME = null;
+
+        break;
+      }
+    },
+
+    freeTable: (state, action: PayloadAction<{ tableNo: string }>) => {
+      const { tableNo } = action.payload;
+
+      for (const layout of state.layouts) {
+        const table = layout.tables.find((table) => table.TABLENO === tableNo);
 
         if (!table) continue;
 
@@ -274,6 +279,7 @@ export const {
   updateTableQuantity,
   updateTableKOTTime,
   resetTable,
+  freeTable,
 } = tableSlice.actions;
 
 export default tableSlice.reducer;
